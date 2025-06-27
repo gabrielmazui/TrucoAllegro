@@ -78,7 +78,7 @@ int resolution(void){
     strcpy(strDisp, strDisp3);
     strcat(strDisp, strDisp2);
     strcat(strDisp, strDisp1);
-    
+
     int index = q;
     fullscreen = 1;
     char str1[3] = "ON";

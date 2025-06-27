@@ -5,6 +5,6 @@
 #include <allegro5/allegro_primitives.h>
 
 void drawnpaused(void){
-    // cria um retangulo com opacidade 100
+    
     al_flip_display();
 }

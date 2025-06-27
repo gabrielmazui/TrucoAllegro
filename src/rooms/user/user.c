@@ -21,7 +21,7 @@
 void UserLoop()
 {
     ALLEGRO_SAMPLE *error = al_load_sample("sounds/error.wav");
-    double lastTimeError;
+    double lastTimeError = 0.0;
     int PlayedError = 0;
 
     ALLEGRO_FONT *font1 = al_load_ttf_font("fonts/cartoon.ttf",70*scale,0), *font2 = al_load_ttf_font("fonts/retro.ttf",45*scale,0);
@@ -147,7 +147,7 @@ void UserLoop()
                         lenUser++;
                         username[lenUser] = '\0';
                     }
-            }else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE && escliberado){ 
+            }else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE && escliberado){
                 escliberado = 0;
                 paused();
                 continue;

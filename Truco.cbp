@@ -141,6 +141,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/extras/userverify.h" />
+		<Unit filename="src/paused/drawnpaused.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/paused/drawnpaused.h" />
+		<Unit filename="src/paused/paused.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/paused/paused.h" />
 		<Unit filename="src/rooms/MainGame/drawn6.c">
 			<Option compilerVar="CC" />
 		</Unit>

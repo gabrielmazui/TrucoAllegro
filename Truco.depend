@@ -769,7 +769,7 @@
 	<string.h>
 	"..\..\..\config\config.h"
 
-1750912399 source:c:\users\gabi0\downloads\truco\src\rooms\user\user.c
+1751045804 source:c:\users\gabi0\downloads\truco\src\rooms\user\user.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -924,7 +924,7 @@
 	<allegro5/allegro_ttf.h>
 	<allegro5/allegro_font.h>
 
-1750909723 source:c:\users\gabi0\downloads\truco\resolution\resolution.c
+1751045261 source:c:\users\gabi0\downloads\truco\resolution\resolution.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -948,7 +948,7 @@
 
 1750910843 c:\users\gabi0\downloads\truco\src\paused\paused.h
 
-1750912620 source:c:\users\gabi0\downloads\truco\src\paused\drawnpaused.c
+1750913062 source:c:\users\gabi0\downloads\truco\src\paused\drawnpaused.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
