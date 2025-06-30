@@ -145,6 +145,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/paused/drawnpaused.h" />
+		<Unit filename="src/paused/options.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/paused/options.h" />
 		<Unit filename="src/paused/paused.c">
 			<Option compilerVar="CC" />
 		</Unit>

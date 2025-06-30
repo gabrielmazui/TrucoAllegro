@@ -184,6 +184,7 @@ int resolution(void){
         larguraEscolhida = larguras[index];
         alturaEscolhida = alturas[index];
     }
+    resInd = index;
     al_destroy_event_queue(event_queueRes);
     al_destroy_display(displayRes);
     al_destroy_timer(timerRes);

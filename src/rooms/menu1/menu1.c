@@ -13,7 +13,7 @@
 #include "menu1.h"
 #include "drawn1.h"
 
-void menuLoop1()
+void menuLoop1(void)
 {
     ALLEGRO_FONT *font1 = al_load_ttf_font("fonts/cartoon.ttf",90*scale,0), *font2 = al_load_ttf_font("fonts/cartoon.ttf",70*scale,0);
 

@@ -17,6 +17,8 @@
 #include "..\..\animations\errorposition.h"
 #include "drawn3.h"
 #include "..\..\paused\paused.h"
+#include "..\menu1\menu1.h"
+#include "..\..\extras\newres.h"
 
 void UserLoop()
 {
@@ -79,11 +81,13 @@ void UserLoop()
 
     int lenUser = 0;
     int verDone = 1;
-    int escliberado = 1;
+    double lastEsc = 0.0;
+    int newRes = 0;
     while(1)
     {
         if(al_event_queue_is_empty(event_queue)){
             if(animReady){
+                if(toMenu1 || exitGame || newRes) break;
                 drawn3(255, txtTypeOp, txtX1, txtX2, txtY1, txtY2, centroY, centroX, y_ajustado, alturaPergunta, interrogacao, whiteToRed, blackToRed, font1, font2);
             }
         }
@@ -107,7 +111,7 @@ void UserLoop()
         else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
             al_destroy_display(display);
             al_destroy_timer(timer);
-            al_destroy_sample(menuTheme);
+            al_destroy_audio_stream(menuTheme);
             return;
 
         }else if(event.type == ALLEGRO_EVENT_KEY_CHAR && animReady){
@@ -147,14 +151,32 @@ void UserLoop()
                         lenUser++;
                         username[lenUser] = '\0';
                     }
-            }else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE && escliberado){
-                escliberado = 0;
-                paused();
+            }else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE &&((al_get_time() - lastEsc) >= 0.3)){
+                lastEsc = al_get_time();
+                menu_snapshot = al_create_bitmap(larguraEscolhida, alturaEscolhida); // tirar print da tela (para a transicao)
+                al_set_target_bitmap(menu_snapshot);
+                drawn3(255, txtTypeOp, txtX1, txtX2, txtY1, txtY2, centroY, centroX, y_ajustado, alturaPergunta, interrogacao, whiteToRed, blackToRed, font1, font2);
+                al_set_target_backbuffer(display);
+                paused(menu_snapshot, 0, &lastEsc, &newRes);
+                al_flush_event_queue(event_queue);
                 continue;
             }
-        }else if(event.type == ALLEGRO_EVENT_KEY_UP && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
-            escliberado = 1;
         }
     }
-    charChooseLoop();
+    if(toMenu1){
+        al_destroy_audio_stream(menuTheme);
+        toMenu1 = 0;
+        al_flush_event_queue(event_queue);
+        menuLoop1();
+    }else if(exitGame){
+        return;
+    }else if(newRes){
+        al_destroy_display(display);
+        al_destroy_audio_stream(menuTheme);
+        al_flush_event_queue(event_queue);
+        newres();
+    }
+    else{
+        charChooseLoop();
+    } 
 }

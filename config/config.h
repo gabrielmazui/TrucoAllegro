@@ -20,19 +20,21 @@
 extern ALLEGRO_DISPLAY *display;
 extern ALLEGRO_EVENT_QUEUE *event_queue;
 extern ALLEGRO_TIMER *timer;
-extern ALLEGRO_SAMPLE *menuTheme;
+extern ALLEGRO_AUDIO_STREAM *menuTheme;
 extern ALLEGRO_BITMAP* menu_snapshot;
 ALLEGRO_BITMAP *background;
 int larguraB;
 int alturaB;
-extern float menuSound;
+extern int menuSound;
+extern int resInd;
 extern float scale;
 extern int larguraEscolhida;
 extern int alturaEscolhida;
 extern int fullscreen;
 extern int gamePaused;
 extern ALLEGRO_EVENT event;
-
 extern char username[USER_MAX];
+extern int toMenu1;
+extern int exitGame;
 
 #endif

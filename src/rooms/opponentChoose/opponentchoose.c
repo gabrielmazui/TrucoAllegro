@@ -51,7 +51,7 @@ void opponentChooseLoop()
         }else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
             al_destroy_display(display);
             al_destroy_timer(timer);
-            al_destroy_sample(menuTheme);
+            al_destroy_audio_stream(menuTheme);
             return;
         }else if(event.type == ALLEGRO_EVENT_KEY_CHAR){
             if(event.keyboard.keycode == ALLEGRO_KEY_ENTER){

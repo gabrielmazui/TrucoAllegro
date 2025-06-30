@@ -20,7 +20,7 @@ void menuLoop2()
     larguraB = al_get_bitmap_width(background);
     alturaB = al_get_bitmap_height(background);
 
-    menuTheme = al_load_sample("sounds/menuTheme.wav");
+    menuTheme = al_load_audio_stream("sounds/menuTheme.wav", 4, 2048);
     ALLEGRO_SAMPLE *click = al_load_sample("sounds/gameStart.wav");
 
     ALLEGRO_FONT *font1 = al_load_ttf_font("fonts/cartoon.ttf",150*scale,0),*font2 = al_load_ttf_font("fonts/retro.ttf",40*scale,0);
@@ -67,9 +67,9 @@ void menuLoop2()
 
     double paused_time;
     int paused = 0;
-    menuSound = 0.6;
-    al_play_sample(menuTheme, menuSound, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
-
+    al_attach_audio_stream_to_mixer(menuTheme, al_get_default_mixer());
+    al_set_audio_stream_gain(menuTheme, menuSound/10.0);
+    al_set_audio_stream_playing(menuTheme, true);
     while(1)
     {
         if(al_event_queue_is_empty(event_queue)){
@@ -82,7 +82,7 @@ void menuLoop2()
             al_destroy_font(font2);
             al_destroy_display(display);
             al_destroy_timer(timer);
-            al_destroy_sample(menuTheme);
+            al_destroy_audio_stream(menuTheme);
             return;
         }else if((event.type==ALLEGRO_EVENT_KEY_DOWN || event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) && !paused && BackReady){
             al_play_sample(click, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
