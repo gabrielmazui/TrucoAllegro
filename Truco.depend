@@ -488,7 +488,7 @@
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 
-1751263856 source:c:\users\gabi0\downloads\truco\main.c
+1751352992 source:c:\users\gabi0\downloads\truco\main.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -769,7 +769,7 @@
 	<string.h>
 	"..\..\..\config\config.h"
 
-1751264510 source:c:\users\gabi0\downloads\truco\src\rooms\user\user.c
+1751347869 source:c:\users\gabi0\downloads\truco\src\rooms\user\user.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -938,7 +938,7 @@
 
 1750908872 c:\users\gabi0\downloads\truco\resolution\drawnres.h
 
-1751264205 source:c:\users\gabi0\downloads\truco\src\paused\paused.c
+1751349866 source:c:\users\gabi0\downloads\truco\src\paused\paused.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -960,9 +960,9 @@
 	<allegro5/allegro_primitives.h>
 	"../../config/config.h"
 
-1751263039 c:\users\gabi0\downloads\truco\src\paused\options.h
+1751348534 c:\users\gabi0\downloads\truco\src\paused\options.h
 
-1751263434 source:c:\users\gabi0\downloads\truco\src\paused\options.c
+1751349832 source:c:\users\gabi0\downloads\truco\src\paused\options.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -972,9 +972,10 @@
 
 1751263589 c:\users\gabi0\downloads\truco\src\extras\newres.h
 
-1751264738 source:c:\users\gabi0\downloads\truco\src\extras\newres.c
+1751290818 source:c:\users\gabi0\downloads\truco\src\extras\newres.c
 	<stdio.h>
 	<allegro5/allegro5.h>
+	<math.h>
 	"..\..\config\config.h"
 	"..\rooms\menu1\menu1.h"
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <allegro5/allegro5.h>
+#include <math.h>
 #include "..\..\config\config.h"
 #include "..\rooms\menu1\menu1.h"
 void newres(void){

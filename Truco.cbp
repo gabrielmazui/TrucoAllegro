@@ -137,6 +137,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/animations/transition.h" />
+		<Unit filename="src/extras/newres.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/extras/newres.h" />
 		<Unit filename="src/extras/userverify.c">
 			<Option compilerVar="CC" />
 		</Unit>
