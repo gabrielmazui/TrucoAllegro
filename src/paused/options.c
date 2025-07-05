@@ -30,7 +30,7 @@ void drawnOptions(ALLEGRO_BITMAP* menu_snapshot, ALLEGRO_FONT *font, ALLEGRO_FON
     al_draw_bitmap(menu_snapshot, 0, 0, 0);
 
     int p1 = al_get_text_width(font, "FullScreen:") + 30;
-    
+
     int seta = al_get_text_width(font, "<") + (al_get_text_width(font, "OFF") / 2) + 10;
     int seta2 = (al_get_text_width(font, "OFF") / 2) + 10;
 
@@ -58,9 +58,9 @@ void drawnOptions(ALLEGRO_BITMAP* menu_snapshot, ALLEGRO_FONT *font, ALLEGRO_FON
     al_draw_text(font6, al_map_rgba(255, 255, 255, 255), larguraEscolhida/2 - (400*scale) + p3 + seta5 + seta6, alturaEscolhida/2 + distance/2, 0,">");
 
     al_draw_text(font7, al_map_rgba(255, 255, 255, 255), larguraEscolhida/2 - (400*scale), alturaEscolhida/2 + ((float)(1.0)*txtHeight) + distance * 2, 0,"Return");
-     
+
     al_draw_text(font8, al_map_rgba(op2, op2, op2, 255), larguraEscolhida/2 , alturaEscolhida/2 + (200*scale), ALLEGRO_ALIGN_CENTRE,"Apply Resolution");
-    al_flip_display();  
+    al_flip_display();
 }
 
 void options(ALLEGRO_BITMAP* menu_snapshot, int* clicked, int* optionsMenu, int* newRes, int* closeEsc, double* lastEsc)
@@ -105,7 +105,7 @@ void options(ALLEGRO_BITMAP* menu_snapshot, int* clicked, int* optionsMenu, int*
     ALLEGRO_FONT *font9 = al_load_ttf_font("fonts/retro.ttf", aux1,0);
     ALLEGRO_FONT *font10 = al_load_ttf_font("fonts/retro.ttf", aux1,0);
     ALLEGRO_FONT *font11 = al_load_ttf_font("fonts/retro.ttf", aux1,0);
-    
+
     ALLEGRO_FONT *fontA = al_load_ttf_font("fonts/retro.ttf", aux1,0);
     ALLEGRO_FONT *fontB = al_load_ttf_font("fonts/retro.ttf", aux1,0);
     ALLEGRO_FONT *fontC = al_load_ttf_font("fonts/retro.ttf", aux1,0);
@@ -138,9 +138,9 @@ void options(ALLEGRO_BITMAP* menu_snapshot, int* clicked, int* optionsMenu, int*
     int buttonA = 0;
     int buttonB = 0;
     int buttonC = 0;
-    
+
     char* volumVals[11] = {"0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0"};
-    
+
     void verifyButtons(void){
         if(button1Ac && f < quant-1){
             f++;
@@ -227,7 +227,7 @@ void options(ALLEGRO_BITMAP* menu_snapshot, int* clicked, int* optionsMenu, int*
             font11 = fonts[f11];
         }else if(f11 > 0 && !button11Ac){
             f11--;
-            font11 = fonts[f11];
+   ;
         }
 
         if(buttonA && fA < quant-1){
@@ -392,8 +392,8 @@ void options(ALLEGRO_BITMAP* menu_snapshot, int* clicked, int* optionsMenu, int*
             }
             verifyButtons();
             drawnOptions(menu_snapshot, font, font1, font2, font3, font4, font5, font6, font7, font8, font9, font10, font11, fontA, fontB, fontC, txtHeight, str1, str2, volumVals[menuSound], op, op2);
-        }  
-        al_wait_for_event(event_queue, &event); 
+        }
+        al_wait_for_event(event_queue, &event);
         if(event.type==ALLEGRO_EVENT_DISPLAY_CLOSE){
             al_destroy_display(display);
             al_destroy_timer(timer);
@@ -472,7 +472,7 @@ void options(ALLEGRO_BITMAP* menu_snapshot, int* clicked, int* optionsMenu, int*
                     larguraEscolhida = larguras[resInd];
                     fullscreen = fullscreenAux;
                     break;
-                }   
+                }
             }
         }else if(event.type == ALLEGRO_EVENT_KEY_DOWN){
             if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE && ((al_get_time() - *lastEsc) >= 0.3))
@@ -671,7 +671,7 @@ void options(ALLEGRO_BITMAP* menu_snapshot, int* clicked, int* optionsMenu, int*
                 if(usingKey == 1){
                     *clicked = 0;
                     *optionsMenu = 0;
-                    break; 
+                    break;
                 }
                 if(usingKey == 8 && different){
                     *newRes = 1;

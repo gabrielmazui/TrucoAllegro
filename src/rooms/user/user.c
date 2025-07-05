@@ -120,7 +120,7 @@ void UserLoop()
             if(event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
                 if (lenUser > 0) {
                     lenUser--;
-                    username[lenUser] = '\0';
+                    user.name[lenUser] = '\0';
                 }
             }else if(event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                 if(animReady && verDone){
@@ -147,9 +147,9 @@ void UserLoop()
                 if(unichar == 32 && lenUser == 0){
                         continue;
                      }else{
-                        username[lenUser] = (char)unichar;
+                        user.name[lenUser] = (char)unichar;
                         lenUser++;
-                        username[lenUser] = '\0';
+                        user.name[lenUser] = '\0';
                     }
             }else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE &&((al_get_time() - lastEsc) >= 0.3)){
                 lastEsc = al_get_time();

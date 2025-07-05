@@ -1,6 +1,6 @@
 #ifndef DRAWN6_H
 #define DRAWN6_H
 
-void drawn6(int x);
+void drawn6(ALLEGRO_BITMAP* card1, ALLEGRO_BITMAP* card2, ALLEGRO_BITMAP* card3, ALLEGRO_BITMAP* OPcard1, ALLEGRO_BITMAP* OPcard2, ALLEGRO_BITMAP* OPcard3,ALLEGRO_BITMAP* reverso, ALLEGRO_FONT *font, ALLEGRO_BITMAP* mesa);
 
 #endif

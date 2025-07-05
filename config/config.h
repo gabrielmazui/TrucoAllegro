@@ -22,6 +22,15 @@ extern ALLEGRO_EVENT_QUEUE *event_queue;
 extern ALLEGRO_TIMER *timer;
 extern ALLEGRO_AUDIO_STREAM *menuTheme;
 extern ALLEGRO_BITMAP* menu_snapshot;
+
+typedef struct character{
+    char name[USER_MAX+1];
+    ALLEGRO_BITMAP* pfp;
+}character; 
+
+extern character opponent;
+extern character user;
+
 ALLEGRO_BITMAP *background;
 int larguraB;
 int alturaB;
@@ -33,7 +42,6 @@ extern int alturaEscolhida;
 extern int fullscreen;
 extern int gamePaused;
 extern ALLEGRO_EVENT event;
-extern char username[USER_MAX];
 extern int toMenu1;
 extern int exitGame;
 

@@ -105,10 +105,6 @@ void menuLoop2()
             }
         }
     }
-    if(!username[0]){
-        UserLoop();
-    }else{
-        charChooseLoop();
-    }
+    UserLoop();
     return;
 }

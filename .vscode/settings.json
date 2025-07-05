@@ -1,6 +1,11 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
-        "config.h": "c"
+        "config.h": "c",
+        "transition.h": "c",
+        "newres.h": "c",
+        "menu1.h": "c",
+        "stdio.h": "c",
+        "string.h": "c"
     }
 }

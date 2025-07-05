@@ -6,13 +6,14 @@
 #include <string.h>
 #include "config.h"
 
-char username[USER_MAX] = "";
 ALLEGRO_DISPLAY *display = NULL;
 ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 ALLEGRO_TIMER *timer = NULL;
 ALLEGRO_AUDIO_STREAM *menuTheme = NULL;
 ALLEGRO_BITMAP* menu_snapshot = NULL;
 ALLEGRO_BITMAP *background = NULL;
+character opponent = { "", NULL };
+character user = { "", NULL };
 int larguraB;
 int alturaB;
 ALLEGRO_EVENT event;

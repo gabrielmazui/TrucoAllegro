@@ -12,6 +12,6 @@ void drawn3(int x, int x2, int txtX1, int txtX2, int txtY1, int txtY2, int centr
     al_draw_text(font1, al_map_rgba(255,229,32, x), larguraEscolhida/2 + (325*scale), interrogacao, ALLEGRO_ALIGN_CENTRE,"?");
     al_draw_filled_rectangle(txtX1, txtY1, txtX2, txtY2, al_map_rgba(blackToRed, 0, 0, x2));
     al_draw_rectangle(txtX1, txtY1, txtX2, txtY2, al_map_rgb(255, whiteToRed, whiteToRed), 2);
-    al_draw_text(font2, al_map_rgba(255, whiteToRed, whiteToRed, x), centroX, y_ajustado, ALLEGRO_ALIGN_CENTRE,username);
+    al_draw_text(font2, al_map_rgba(255, whiteToRed, whiteToRed, x), centroX, y_ajustado, ALLEGRO_ALIGN_CENTRE,user.name);
     al_flip_display();
 }
