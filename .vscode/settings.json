@@ -6,6 +6,7 @@
         "newres.h": "c",
         "menu1.h": "c",
         "stdio.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "limits": "c"
     }
 }

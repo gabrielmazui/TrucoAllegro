@@ -346,8 +346,12 @@ void paused(ALLEGRO_BITMAP* menu_snapshot, int restart, double* lastEsc, int* ne
                             }
 
                         }else if(mouse_x <= x1 + f5L && (mouse_y >= alturaEscolhida/2 - ((float)(3.0/2.0)*txtHeight)- distance && mouse_y<= alturaEscolhida/2 - ((float)(3.0/2.0)*txtHeight)- distance + txtHeight)){
-                            clicked = 1;
-                            fprintf(stdout, "restart\n");
+                            if(al_get_time() - *lastEsc >= 0.3){
+                                al_flush_event_queue(event_queue);
+                                clicked = 1;
+                                restartGame = 1;
+                                break;
+                            }
 
                         }else if(mouse_x <= x1 + f2L && (mouse_y >= alturaEscolhida/2 - ((float)(1.0/2.0)*txtHeight) && mouse_y<= alturaEscolhida/2 - ((float)(1.0/2.0)*txtHeight) + txtHeight)){
                             clicked = 1;

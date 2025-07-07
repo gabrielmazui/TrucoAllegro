@@ -26,3 +26,5 @@ float scale;
 int gamePaused = 0;
 int toMenu1 = 0;
 int exitGame = 0;
+int restartGame = 0;
+const char* nomesNaipes[4] = {"Espadas", "Bastos", "Ouro",  "Copas"};

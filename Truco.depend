@@ -537,7 +537,7 @@
 
 1750396347 c:\users\gabi0\downloads\truco\src\menu1\menu1.h
 
-1751704719 c:\users\gabi0\downloads\truco\config\config.h
+1751873239 c:\users\gabi0\downloads\truco\config\config.h
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -650,7 +650,7 @@
 	"..\..\config\config.h"
 	"..\animations\transition.h"
 
-1751704981 source:c:\users\gabi0\downloads\truco\config\config.c
+1751837650 source:c:\users\gabi0\downloads\truco\config\config.c
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
 	<allegro5/allegro_font.h>
@@ -712,7 +712,7 @@
 
 1750396352 c:\users\gabi0\downloads\truco\src\rooms\menu2\menu2.h
 
-1751700716 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\maingame.c
+1751873302 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\maingame.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -722,6 +722,8 @@
 	<allegro5/allegro_audio.h>
 	<allegro5/allegro_acodec.h>
 	<string.h>
+	<stdlib.h>
+	<time.h>
 	"..\..\..\config\config.h"
 	"..\..\..\config\config.h"
 	"..\..\animations\transition.h"
@@ -870,7 +872,7 @@
 	<allegro5/allegro_primitives.h>
 	"..\..\..\config\config.h"
 
-1750747826 source:c:\users\gabi0\downloads\truco\src\rooms\menu2\drawn2.c
+1751745264 source:c:\users\gabi0\downloads\truco\src\rooms\menu2\drawn2.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -879,7 +881,7 @@
 	<allegro5/allegro_primitives.h>
 	"..\..\..\config\config.h"
 
-1750645062 source:c:\users\gabi0\downloads\truco\src\rooms\user\drawn3.c
+1751705124 source:c:\users\gabi0\downloads\truco\src\rooms\user\drawn3.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -916,9 +918,9 @@
 
 1750645290 c:\users\gabi0\downloads\truco\src\rooms\opponentchoose\drawn5.h
 
-1751695699 c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.h
+1751789924 c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.h
 
-1751705102 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.c
+1751873370 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -947,7 +949,7 @@
 
 1750908872 c:\users\gabi0\downloads\truco\resolution\drawnres.h
 
-1751393740 source:c:\users\gabi0\downloads\truco\src\paused\paused.c
+1751837722 source:c:\users\gabi0\downloads\truco\src\paused\paused.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>

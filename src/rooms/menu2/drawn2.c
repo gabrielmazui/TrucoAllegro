@@ -12,5 +12,4 @@ void drawn2(int alturaBackground, int alturaTitulo, int alturaPress, int opPlay,
     al_draw_text(font2, al_map_rgba(255,255,255, opPlay), larguraEscolhida/2, alturaPress, ALLEGRO_ALIGN_CENTER, "Press to play");
 
     al_flip_display();
-
 }

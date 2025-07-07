@@ -22,15 +22,6 @@ extern ALLEGRO_EVENT_QUEUE *event_queue;
 extern ALLEGRO_TIMER *timer;
 extern ALLEGRO_AUDIO_STREAM *menuTheme;
 extern ALLEGRO_BITMAP* menu_snapshot;
-
-typedef struct character{
-    char name[USER_MAX+1];
-    ALLEGRO_BITMAP* pfp;
-}character; 
-
-extern character opponent;
-extern character user;
-
 ALLEGRO_BITMAP *background;
 int larguraB;
 int alturaB;
@@ -44,5 +35,72 @@ extern int gamePaused;
 extern ALLEGRO_EVENT event;
 extern int toMenu1;
 extern int exitGame;
+extern int restartGame;
+
+
+
+typedef struct character{
+    char name[USER_MAX+1];
+    ALLEGRO_BITMAP* pfp;
+}character; 
+
+extern character opponent;
+extern character user;
+
+// main game
+typedef enum {
+    OUROS, ESPADAS, COPAS, BASTOS
+} Naipe;
+
+typedef enum {
+    AS = 1, DOIS, TRES, QUATRO, CINCO, SEIS, SETE, DEZ, ONZE, DOZE
+} Valor;
+
+typedef struct carta{
+    ALLEGRO_BITMAP* img;
+    Naipe naipe;
+    Valor valor;
+    int envido;
+    int power;
+    int out;
+}Carta;
+
+typedef struct Cards{
+    Carta arrCartasUsr[3];
+    Carta arrCartasOpp[3];
+    int cartasJogadas[6][2]; // [[quem jogou(1 ou 2), carta jogada]] 1 -> user 2 -> bot
+}Cards;
+
+typedef struct images{
+    ALLEGRO_BITMAP* fosforo;
+    ALLEGRO_BITMAP* reverso;
+    ALLEGRO_BITMAP* mesa;
+}images;
+
+typedef struct Animations{
+    int animationHappening;
+    int baralhoAnimation;
+    int cordsAux[7];
+    int cords[12];
+    // funcao jogar carta
+}Animations;
+
+typedef struct Round{
+    int usrTurn;
+    int cardsPlayed;
+    void (*jogarCarta)(int, int); // quem vai jogar, index da carta
+}Round;
+
+typedef struct game{
+    int opponentPoints;
+    int userPoints;
+    images imagens;
+    Cards* cartas; 
+    Animations* animations;
+    int gameRounds;
+    Round* round;
+}Game;
+
+const char* nomesNaipes[4];
 
 #endif
