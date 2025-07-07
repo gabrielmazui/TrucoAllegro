@@ -49,7 +49,7 @@ extern character user;
 
 // main game
 typedef enum {
-    OUROS, ESPADAS, COPAS, BASTOS
+    ESPADAS, BASTOS, OUROS, COPAS
 } Naipe;
 
 typedef enum {
@@ -68,6 +68,7 @@ typedef struct carta{
 typedef struct Cards{
     Carta arrCartasUsr[3];
     Carta arrCartasOpp[3];
+    int cartasJogadasOrdem[6][2];
     int cartasJogadas[6][2]; // [[quem jogou(1 ou 2), carta jogada]] 1 -> user 2 -> bot
 }Cards;
 
@@ -88,11 +89,17 @@ typedef struct Round{
     int mao;
     int usrTurn;
     int cardsPlayed;
+    int pointsRound;
+    int firstRoundEndVerify;
+    double timeRoundEndVerify;
+    int firstBotJogadaVerify;
+    double timeBotJogadaVerify;
     int roundsWon[3];
     void (*jogarCarta)(int, int); // quem vai jogar, index da carta
 }Round;
 
 typedef struct game{
+    int maxPoints;
     int opponentPoints;
     int userPoints;
     images imagens;

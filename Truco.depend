@@ -537,7 +537,7 @@
 
 1750396347 c:\users\gabi0\downloads\truco\src\menu1\menu1.h
 
-1751873239 c:\users\gabi0\downloads\truco\config\config.h
+1751918883 c:\users\gabi0\downloads\truco\config\config.h
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -712,7 +712,7 @@
 
 1750396352 c:\users\gabi0\downloads\truco\src\rooms\menu2\menu2.h
 
-1751873302 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\maingame.c
+1751919720 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\maingame.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -920,7 +920,7 @@
 
 1751789924 c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.h
 
-1751873370 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.c
+1751918699 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>

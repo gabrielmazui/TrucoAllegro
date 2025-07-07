@@ -57,14 +57,13 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2){
     if(!card3.out){
         al_draw_scaled_bitmap(card3.img, 0, 0, al_get_bitmap_width(card3.img), al_get_bitmap_height(card3.img), xCard3, yCard3, 118*scale, 180*scale, 0);
     }
-    
-    if(!OPcard2.out){
+    if(!OPcard1.out){
         al_draw_scaled_bitmap(reverso, 0, 0, al_get_bitmap_width(reverso), al_get_bitmap_height(reverso), xOppCard1, yOppCard1, 118*scale, 180*scale, 0);
     }
     if(!OPcard2.out){
         al_draw_scaled_bitmap(reverso, 0, 0, al_get_bitmap_width(reverso), al_get_bitmap_height(reverso), xOppCard2, yOppCard2, 118*scale, 180*scale, 0);
     }
-    if(!OPcard2.out){
+    if(!OPcard3.out){
         al_draw_scaled_bitmap(reverso, 0, 0, al_get_bitmap_width(reverso), al_get_bitmap_height(reverso), xOppCard3, yOppCard3, 118*scale, 180*scale, 0);
     }
 
@@ -132,7 +131,7 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2){
         if(game.cartas->cartasJogadas[i][0] == 0){
             break;
         }else{
-            cartaNaMesa(game.cartas->cartasJogadas[i][0], game.cartas->cartasJogadas[i][1]);
+            cartaNaMesa(game.cartas->cartasJogadasOrdem[i][0], game.cartas->cartasJogadasOrdem[i][1]);
         }
     }
 
