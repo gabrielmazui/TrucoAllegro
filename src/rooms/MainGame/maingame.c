@@ -77,6 +77,34 @@ void jogarCarta(int user, int cardIndex){
     }
 }
 
+void restartGameFunc(void){
+    restartGame = 0;
+    chooseCards(0);
+    game.opponentPoints = 0;
+    game.userPoints = 0;
+    memset((game.cartas->cartasJogadas), 0, sizeof(game.cartas->cartasJogadas));
+    int coordAux[12] = {x1, yUsr, x2, yUsr, x3, yUsr, x1, yOpp, x2, yOpp, x3, yOpp};
+    memcpy(game.animations->cords, coordAux, sizeof(coordAux));
+    game.gameRounds = 0;
+    game.round->usrTurn = 1;
+    game.round->cardsPlayed = 0;
+}
+
+void verificarTurno(void){
+    game.round->roundsWon[0]
+    if(game.round->cardsPlayed % 2 == 0){
+        if(game.round->cardsPlayed >= 4){
+            if(game.round->roundsWon[0] == game.round->roundsWon[1] || game.round->roundsWon[1] == game.round->roundsWon[2]){
+                // vencedor = game.round->roundsWon[1]
+            }else if(game.round->roundsWon[0] == 3 && (game.round->rounds[1] == 1 || game.round->roundsWon[1] == 2)){
+                // vencedor = game.round->roundsWon[1]
+            }else if(game.round->roundsWon[0] == 3 && game.round->roundsWon[1] == 3 && (game.round->rounds[2] == 1 || game.round->roundsWon[2] == 2)){
+                
+            }
+        }
+    }
+}
+
 void mainGameLoop(){
     srand(time(NULL));
 
@@ -92,7 +120,7 @@ void mainGameLoop(){
     int yOppTable = yOpp + (210*scale);
 
     Animations animations = {0, 0, {x1, x2, x3, yUsr, yOpp, yUsrTable, yOppTable}, {x1, yUsr, x2, yUsr, x3, yUsr, x1, yOpp, x2, yOpp, x3, yOpp}};
-    Round round = {1, 0, jogarCarta};
+    Round round = {1, 1, 0, {0}, jogarCarta};
     Carta baralho[40];
     carregar_baralho(baralho);
 
@@ -174,17 +202,7 @@ void mainGameLoop(){
         if(al_event_queue_is_empty(event_queue)){
             if(toMenu1 || exitGame || newRes) break;
             if(restartGame && animReady){
-                restartGame = 0;
-                chooseCards(0);
-                game.opponentPoints = 0;
-                game.userPoints = 0;
-                memset((game.cartas->cartasJogadas), 0, sizeof(game.cartas->cartasJogadas));
-                int coordAux[12] = {x1, yUsr, x2, yUsr, x3, yUsr, x1, yOpp, x2, yOpp, x3, yOpp};
-                memcpy(game.animations->cords, coordAux, sizeof(coordAux));
-                game.gameRounds = 0;
-                game.round->usrTurn = 1;
-                game.round->cardsPlayed = 0;
-
+                restartGameFunc();
                 drawn6(game,font, font2);
             }
             if(animReady){
@@ -225,6 +243,8 @@ void mainGameLoop(){
                     if(mouse_y >= yUsr && mouse_y <= yUsr + (180*scale)){
                         if(mouse_x >= x1 && mouse_x <= x1 + (118*scale) && game.cartas->arrCartasUsr[0].out == 0){
                             jogarCarta(1, 0);
+                            // funcao verificar proximo turno
+                            // no struct round colocaar quaantos pontos ta valendo(cuidado com al mazo)
                         }
                         else if(mouse_x >= x2 && mouse_x <= x2 + (118*scale) && game.cartas->arrCartasUsr[1].out == 0){
                             jogarCarta(1, 1);

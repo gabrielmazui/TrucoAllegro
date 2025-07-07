@@ -82,12 +82,13 @@ typedef struct Animations{
     int baralhoAnimation;
     int cordsAux[7];
     int cords[12];
-    // funcao jogar carta
 }Animations;
 
 typedef struct Round{
+    int mao;
     int usrTurn;
     int cardsPlayed;
+    int roundsWon[3];
     void (*jogarCarta)(int, int); // quem vai jogar, index da carta
 }Round;
 
