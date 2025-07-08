@@ -20,12 +20,14 @@ void charChooseLoop(){
     int pfpChoosed = 0;
     ALLEGRO_BITMAP* img1 = al_load_bitmap("images/chars/1.jpeg");
     ALLEGRO_BITMAP* img2 = al_load_bitmap("images/chars/2.jpeg");
+    ALLEGRO_BITMAP* img3 = al_load_bitmap("images/chars/3.jpeg");
+    ALLEGRO_BITMAP* img4 = al_load_bitmap("images/chars/4.jpeg");
     ALLEGRO_FONT *font = al_load_ttf_font("fonts/cartoon.ttf",70*scale,0);
 
     ALLEGRO_BITMAP* menu_snapshot = NULL;
     menu_snapshot = al_create_bitmap(larguraEscolhida, alturaEscolhida); // tirar print da tela (para a transicao)
     al_set_target_bitmap(menu_snapshot);
-    drawn4(255, font, img1, img2, pfpChoosed);
+    drawn4(255, font, img1, img2, img3, img4, pfpChoosed);
     al_set_target_backbuffer(display);
 
     int animationP1 = 0;
@@ -56,7 +58,7 @@ void charChooseLoop(){
         if(al_event_queue_is_empty(event_queue)){
             if(toMenu1 || exitGame || newRes) break;
             if(animReady){
-                drawn4(255, font, img1, img2, pfpChoosed);
+                drawn4(255, font, img1, img2, img3, img4, pfpChoosed);
             }else{
                 animationTransition(&animReady, menu_snapshot, &firstExec, &animationP1, &animationPaused, &timePaused, &auxEnd, &auxEnd2, grupoAy1, grupoAy2);
                 if(firstExec){
@@ -81,10 +83,10 @@ void charChooseLoop(){
                         user.pfp = img2;
                         break;
                     case 3:
-                        user.pfp = img1;
+                        user.pfp = img3;
                         break;
                     case 4:
-                        user.pfp = img1;
+                        user.pfp = img4;
                         break;
                 }
                 break;
@@ -92,7 +94,7 @@ void charChooseLoop(){
                 lastEsc = al_get_time();
                 menu_snapshot = al_create_bitmap(larguraEscolhida, alturaEscolhida); // tirar print da tela (para a transicao)
                 al_set_target_bitmap(menu_snapshot);
-                drawn4(255, font, img1, img2, pfpChoosed);
+                drawn4(255, font, img1, img2, img3, img4, pfpChoosed);
                 al_set_target_backbuffer(display);
                 paused(menu_snapshot, 0, &lastEsc, &newRes);
                 al_flush_event_queue(event_queue);

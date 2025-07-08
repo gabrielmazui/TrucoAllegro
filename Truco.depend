@@ -990,3 +990,306 @@
 	"..\..\config\config.h"
 	"..\rooms\menu1\menu1.h"
 
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\config\config.c
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<string.h>
+	"config.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\config\config.h
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\main.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	<math.h>
+	"src\rooms\menu1\menu1.h"
+	"config\config.h"
+	"resolution\resolution.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu1\menu1.h
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\resolution\resolution.h
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\resolution\drawnres.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\resolution\resolution.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_primitives.h>
+	<string.h>
+	"drawnres.h"
+	"..\config\config.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\resolution\drawnres.h
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\animations\colorerror.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\animations\errorposition.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	"..\..\config\config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\animations\interrogacao.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\animations\transition.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	"..\..\config\config.h"
+	"transition.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\animations\transition.h
+	"../../config/config.h"
+	<allegro5/allegro5.h>
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\extras\newres.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<math.h>
+	"..\..\config\config.h"
+	"..\rooms\menu1\menu1.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\extras\userverify.c
+	<stdio.h>
+	"../../config/config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\paused\drawnpaused.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_primitives.h>
+	"../../config/config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\paused\options.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_primitives.h>
+	"..\..\config\config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\paused\paused.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	"..\..\config\config.h"
+	"drawnpaused.h"
+	"paused.h"
+	"options.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\paused\drawnpaused.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\paused\paused.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\paused\options.h
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\maingame\drawn6.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	"..\..\..\config\config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\maingame\maingame.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	"..\..\..\config\config.h"
+	"..\..\..\config\config.h"
+	"..\..\animations\transition.h"
+	"drawn6.h"
+	"..\opponentChoose\opponentchoose.h"
+	"..\..\paused\paused.h"
+	"..\menu1\menu1.h"
+	"..\..\extras\newres.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\maingame\drawn6.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\opponentchoose\opponentchoose.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\extras\newres.h
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu1\drawn1.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	"..\..\..\config\config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu1\menu1.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	"..\..\..\config\config.h"
+	"..\menu2\menu2.h"
+	"menu1.h"
+	"drawn1.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu2\menu2.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu1\drawn1.h
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu2\drawn2.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	"..\..\..\config\config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu2\menu2.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	"..\user\user.h"
+	"..\..\..\config\config.h"
+	"..\charChoose\charchoose.h"
+	"drawn2.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\user\user.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\charchoose\charchoose.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\menu2\drawn2.h
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\opponentchoose\drawn5.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	"..\..\..\config\config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\opponentchoose\opponentchoose.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	"..\MainGame\maingame.h"
+	"..\..\..\config\config.h"
+	"..\..\animations\transition.h"
+	"drawn5.h"
+	"..\..\paused\paused.h"
+	"..\menu1\menu1.h"
+	"..\..\extras\newres.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\maingame\maingame.h
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	"..\..\..\config\config.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\opponentchoose\drawn5.h
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\user\drawn3.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	"..\..\..\config\config.h"
+
+1752006749 source:c:\users\matheus\documents\estudos\trucoallegro\src\rooms\user\user.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	"..\..\animations\transition.h"
+	"..\charChoose\charchoose.h"
+	"..\..\..\config\config.h"
+	"..\..\extras\userverify.h"
+	"..\..\animations\colorerror.h"
+	"..\..\animations\interrogacao.h"
+	"..\..\animations\errorposition.h"
+	"drawn3.h"
+	"..\..\paused\paused.h"
+	"..\menu1\menu1.h"
+	"..\..\extras\newres.h"
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\extras\userverify.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\animations\colorerror.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\animations\interrogacao.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\animations\errorposition.h
+
+1752006749 c:\users\matheus\documents\estudos\trucoallegro\src\rooms\user\drawn3.h
+
