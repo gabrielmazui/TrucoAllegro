@@ -6,7 +6,7 @@
 #include <allegro5/allegro_primitives.h>
 #include "..\..\..\config\config.h"
 
-void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2){
+void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *font3){
     Carta card1 = game.cartas->arrCartasUsr[0];
     Carta card2 = game.cartas->arrCartasUsr[1];
     Carta card3 = game.cartas->arrCartasUsr[2];
@@ -134,9 +134,6 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2){
             cartaNaMesa(game.cartas->cartasJogadasOrdem[i][0], game.cartas->cartasJogadasOrdem[i][1]);
         }
     }
-
-    //al_draw_scaled_bitmap(card1, 0, 0, al_get_bitmap_width(card1), al_get_bitmap_height(card1), larguraEscolhida/2 + (50*scale), yUsrTable, 118*scale, 180*scale, 0);
-    //al_draw_scaled_bitmap(OPcard1, 0, 0, al_get_bitmap_width(OPcard1), al_get_bitmap_height(OPcard1), larguraEscolhida/2 + (50*scale), yOppTable, 118*scale, 180*scale, 0);
     
     int xRect = (larguraEscolhida/2 - (118*scale)*2 - (30*scale) - (20*scale));
     al_draw_filled_rectangle((20*scale), (20*scale), xRect, (alturaEscolhida) - (150*scale), al_map_rgba(0, 0, 0, 125));
@@ -147,7 +144,7 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2){
     al_draw_text(font2, al_map_rgb(255,255,255), (20*scale)+ (xRect - (20*scale))/4.0, (20*scale) + (fontHeight2/2) + (10*scale), ALLEGRO_ALIGN_CENTRE, "Você");
     al_draw_text(font2, al_map_rgb(255,255,255), (20*scale)+ (xRect - (20*scale))*(3.0/4.0), (20*scale) + (fontHeight2/2) + (10*scale), ALLEGRO_ALIGN_CENTRE, opponent.name);
     
-   int alturaFos = al_get_bitmap_height(fosforo);
+    int alturaFos = al_get_bitmap_height(fosforo);
     int larguraFos = al_get_bitmap_width(fosforo); 
     float fosEscala = (8 * scale) / alturaFos;
 
@@ -181,9 +178,96 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2){
             angulo = ALLEGRO_PI / 4;
             dx -= fosAlturaEsc/4 + (2*scale);
             dy += fosAlturaEsc/4 + (2*scale);
-        }
+        }   
         al_draw_scaled_rotated_bitmap(fosforo, cx, cy, dx, dy, fosEscala, fosEscala, angulo, 0);
     }
+    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+    al_draw_rectangle((20*scale), (alturaEscolhida) - (130*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (80*scale), al_map_rgb(255, 255, 255), (float)2*scale);
+
+    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+    al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), xRect, alturaEscolhida - (80*scale), al_map_rgb(255, 255, 255), (float)2*scale);
+
+    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+    al_draw_rectangle((20*scale), alturaEscolhida - (70*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (20*scale), al_map_rgb(255, 255, 255), (float)2*scale);
+
+    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) +(10*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+    al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), alturaEscolhida - (70*scale), xRect, alturaEscolhida - (20*scale), al_map_rgb(255, 255, 255), (float)2*scale);
     
+    void mainButtons(void){
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
+        (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "TRUCO");
+
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
+        (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "ENVIDO");
+
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
+        (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "FLOR");
+
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
+        (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "MAZO");
+    }
+    
+    void envidoButtons(void){
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
+        (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "ENVIDO");
+
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
+        (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "REAL ENVIDO");
+
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
+        (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "FALTA ENVIDO");
+
+        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
+        (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
+        ALLEGRO_ALIGN_CENTRE, "VOLTAR");
+    }
+
+    void accOrDeny(void){
+        int botao_largura = 150 * scale;
+        int botao_altura = 50 * scale;
+        int y_botao = alturaEscolhida - botao_altura;
+        int x_centro_tela = larguraEscolhida/2;
+        int x1_quero = x_centro_tela - botao_largura;
+        int x2_quero = x_centro_tela;
+    
+        al_draw_filled_rectangle(x1_quero, y_botao, x2_quero, alturaEscolhida, al_map_rgba(150, 40, 0, 200));
+        al_draw_rectangle(x1_quero, y_botao, x2_quero, alturaEscolhida, al_map_rgb(255, 255, 255), 2 * scale);
+        al_draw_text(font3, al_map_rgb(255, 255, 255), (x1_quero + x2_quero) / 2, y_botao + botao_altura / 2 - al_get_font_line_height(font3) / 2, ALLEGRO_ALIGN_CENTRE, "QUERO");
+    
+        float x1_naoquero = x_centro_tela;
+        float x2_naoquero = x_centro_tela + botao_largura;
+    
+        al_draw_filled_rectangle(x1_naoquero, y_botao, x2_naoquero, alturaEscolhida, al_map_rgba(0, 100, 0, 200));
+        al_draw_rectangle(x1_naoquero, y_botao, x2_naoquero, alturaEscolhida, al_map_rgb(255, 255, 255), 2 * scale);
+        al_draw_text(font3, al_map_rgb(255, 255, 255),(x1_naoquero + x2_naoquero) / 2, y_botao + botao_altura / 2 - al_get_font_line_height(font3) / 2,ALLEGRO_ALIGN_CENTRE, "NÃO QUERO");
+    } 
+
+    if(game.chamadas->mainButtons == 1){
+        mainButtons();
+    }
+
+    if(game.chamadas->aceitarPopUp == 1){
+        accOrDeny();
+    }
+
+    if(game.chamadas->envidoButtons == 1){
+        envidoButtons();
+    }
+
     al_flip_display();
 }

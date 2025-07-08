@@ -537,7 +537,7 @@
 
 1750396347 c:\users\gabi0\downloads\truco\src\menu1\menu1.h
 
-1751918883 c:\users\gabi0\downloads\truco\config\config.h
+1752000619 c:\users\gabi0\downloads\truco\config\config.h
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -675,7 +675,7 @@
 	<stdio.h>
 	"../../config/config.h"
 
-1751705068 source:c:\users\gabi0\downloads\truco\src\rooms\charchoose\charchoose.c
+1752015713 source:c:\users\gabi0\downloads\truco\src\rooms\charchoose\charchoose.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -712,7 +712,7 @@
 
 1750396352 c:\users\gabi0\downloads\truco\src\rooms\menu2\menu2.h
 
-1751919720 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\maingame.c
+1751961644 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\maingame.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -750,7 +750,7 @@
 
 1750396361 c:\users\gabi0\downloads\truco\src\rooms\user\user.h
 
-1751704332 source:c:\users\gabi0\downloads\truco\src\rooms\opponentchoose\opponentchoose.c
+1751964426 source:c:\users\gabi0\downloads\truco\src\rooms\opponentchoose\opponentchoose.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -896,9 +896,9 @@
 
 1750643633 c:\users\gabi0\downloads\truco\src\rooms\user\drawn3.h
 
-1751683730 c:\users\gabi0\downloads\truco\src\rooms\charchoose\drawn4.h
+1752015638 c:\users\gabi0\downloads\truco\src\rooms\charchoose\drawn4.h
 
-1751692811 source:c:\users\gabi0\downloads\truco\src\rooms\charchoose\drawn4.c
+1752015621 source:c:\users\gabi0\downloads\truco\src\rooms\charchoose\drawn4.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -918,9 +918,9 @@
 
 1750645290 c:\users\gabi0\downloads\truco\src\rooms\opponentchoose\drawn5.h
 
-1751789924 c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.h
+1751935326 c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.h
 
-1751918699 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.c
+1751954880 source:c:\users\gabi0\downloads\truco\src\rooms\maingame\drawn6.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>

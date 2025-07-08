@@ -21,7 +21,7 @@ void opponentChooseLoop()
     // tirar print
     ALLEGRO_BITMAP* menu_snapshot = NULL;
 
-    character op1 = {"Matheus", al_load_bitmap("images/chars/2.jpeg")};
+    character op1 = {"Matheus", al_load_bitmap("images/chars/2.jpeg"), 0.5, 0.5, 0.5};
     opponent = op1;
     menu_snapshot = al_create_bitmap(larguraEscolhida, alturaEscolhida); // tirar print da tela (para a transicao)
     al_set_target_bitmap(menu_snapshot);

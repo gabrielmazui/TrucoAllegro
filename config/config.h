@@ -38,10 +38,12 @@ extern int exitGame;
 extern int restartGame;
 
 
-
 typedef struct character{
     char name[USER_MAX+1];
     ALLEGRO_BITMAP* pfp;
+    double mentira;
+    double desconfianca;
+    double agressividade;
 }character; 
 
 extern character opponent;
@@ -68,8 +70,10 @@ typedef struct carta{
 typedef struct Cards{
     Carta arrCartasUsr[3];
     Carta arrCartasOpp[3];
+    int cantarFlor[2];
     int cartasJogadasOrdem[6][2];
     int cartasJogadas[6][2]; // [[quem jogou(1 ou 2), carta jogada]] 1 -> user 2 -> bot
+    int pontosEnvido[2]; // pontos de cada jogador
 }Cards;
 
 typedef struct images{
@@ -86,6 +90,7 @@ typedef struct Animations{
 }Animations;
 
 typedef struct Round{
+    int alMazo;
     int mao;
     int usrTurn;
     int cardsPlayed;
@@ -98,6 +103,46 @@ typedef struct Round{
     void (*jogarCarta)(int, int); // quem vai jogar, index da carta
 }Round;
 
+typedef struct Chamadas{
+    int respostaBot;
+    int pontosValendoCantada;
+    int pontosNegarCantada;
+
+    int firstChamada;
+    double timeFirstChamada;
+    int aceitarPopUp;
+    int cantado;
+    int resultadoPopUp;
+
+    int Truco; //(usuario que cantou truco)
+
+    int p1FalarPontos;
+    int p2falarPontos;
+    int primeiroEnvido;
+    int envidoFeito;
+    int envido; //(usuario que cantou envido)
+    int envido2;
+    int realEnvido;
+    int faltaEnvido;
+
+    int flor; // usuario que cantou flor
+
+    int mainButtons;
+    int envidoButtons;
+    int trucoButtons;
+    int florButtons;
+}Chamadas;
+
+typedef struct Calculo{
+    double fatorHistoricoPontos;
+    double forcaMaoBotPontos;
+    double forcaMaoUsrPontos;
+    double valorChamadaPontos;
+    double inversovalorChamadaPontos;
+    double valorRespostaPontos;
+    double inversovalorRespostaPontos;
+}Calculo;
+
 typedef struct game{
     int maxPoints;
     int opponentPoints;
@@ -107,6 +152,8 @@ typedef struct game{
     Animations* animations;
     int gameRounds;
     Round* round;
+    Chamadas* chamadas;
+    Calculo* calculo;
 }Game;
 
 const char* nomesNaipes[4];
