@@ -80,6 +80,7 @@ typedef struct images{
     ALLEGRO_BITMAP* fosforo;
     ALLEGRO_BITMAP* reverso;
     ALLEGRO_BITMAP* mesa;
+    ALLEGRO_BITMAP* nuvem;
 }images;
 
 typedef struct Animations{
@@ -103,7 +104,16 @@ typedef struct Round{
     void (*jogarCarta)(int, int); // quem vai jogar, index da carta
 }Round;
 
+
 typedef struct Chamadas{
+    double msgPopUpTimerUsr;
+    int msgPopUpOnUsr;
+    int msgPopUpAuxUsr;
+    char usrMsg[80];
+    double msgPopUpTimer;
+    int msgPopUpOn;
+    int msgPopUpAux;
+    char botMsg[80];
     int respostaBot;
     int pontosValendoCantada;
     int pontosNegarCantada;
@@ -113,8 +123,13 @@ typedef struct Chamadas{
     int aceitarPopUp;
     int cantado;
     int resultadoPopUp;
+    int resultadoPopUpAux;
+    double resultadoPopUpTimer;
 
-    int Truco; //(usuario que cantou truco)
+    int truco; //(usuario que cantou truco)
+    int retruco;
+    int valeQuatro;
+    int trucoFeito;
 
     int p1FalarPontos;
     int p2falarPontos;

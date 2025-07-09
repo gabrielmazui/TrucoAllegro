@@ -4,6 +4,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <string.h>
 #include "..\..\..\config\config.h"
 
 void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *font3){
@@ -19,16 +20,49 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
     ALLEGRO_BITMAP * mesa = game.imagens.mesa;
     ALLEGRO_BITMAP * reverso = game.imagens.reverso;
 
+    ALLEGRO_COLOR branco = al_map_rgb(255, 255, 255);
+    ALLEGRO_COLOR amarelo = al_map_rgb(255,229,32);
+    ALLEGRO_COLOR cinza = al_map_rgb(180,180,180);
+
+    ALLEGRO_COLOR usuarioBorda;
+    ALLEGRO_COLOR oponenteBorda;
+
+    if(game.round->firstRoundEndVerify == 1){
+        if(game.chamadas->cantado == 0){
+            if(game.round->usrTurn == 1){
+                usuarioBorda = amarelo;
+                oponenteBorda = branco;
+            }else{
+                usuarioBorda = branco;
+                oponenteBorda = amarelo;
+            }
+        }else{
+            if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2 || game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->valeQuatro == 2){
+                usuarioBorda = amarelo;
+                oponenteBorda = branco;
+            }else{
+                usuarioBorda = branco;
+                oponenteBorda = amarelo;
+            }
+        }
+    }else{
+        usuarioBorda = branco;
+        oponenteBorda = branco;
+    }
+
     al_draw_tinted_scaled_bitmap(background, al_map_rgb(255, 255, 255), 0, 0, larguraB, alturaB, 0, 0, larguraEscolhida, alturaEscolhida, 0);
     al_draw_scaled_bitmap(opponent.pfp, 0, 0, al_get_bitmap_width(opponent.pfp), al_get_bitmap_height(opponent.pfp), larguraEscolhida - (150*scale) - (100*scale), (50*scale), 150*scale, 150*scale, 0);
+    al_draw_rectangle(larguraEscolhida - (150*scale) - (100 * scale), (50*scale), larguraEscolhida - (100 * scale), (50*scale) + (150*scale) ,oponenteBorda, 3*scale);
+    
     al_draw_scaled_bitmap(user.pfp, 0, 0, al_get_bitmap_width(user.pfp), al_get_bitmap_height(user.pfp), larguraEscolhida - (150*scale) - (100*scale), alturaEscolhida - (150*scale) - (50*scale), 150*scale, 150*scale, 0);
-    al_draw_scaled_bitmap(user.pfp, 0, 0, al_get_bitmap_width(user.pfp), al_get_bitmap_height(user.pfp), larguraEscolhida - (150*scale) - (100*scale), alturaEscolhida - (150*scale) - (50*scale), 150*scale, 150*scale, 0);
+    al_draw_rectangle(larguraEscolhida - (150*scale) - (100 * scale), alturaEscolhida - (150*scale) - (50*scale), larguraEscolhida - (100 * scale), alturaEscolhida - (50*scale),usuarioBorda, 3*scale);
+
     al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), larguraEscolhida/2 - (118*scale)*2 - (30*scale), alturaEscolhida/2 - (306*scale)/2, 470*scale, 285*scale, 0);
     al_draw_rectangle(larguraEscolhida/2 - (118*scale)*2 - (30*scale), alturaEscolhida/2 - (306*scale)/2, larguraEscolhida/2 - (118*scale)*2 - (30*scale) + (470*scale), alturaEscolhida/2 - (306*scale)/2 + (285*scale), al_map_rgb(0, 0, 0), (float)2*scale);
     
     int fontHeight = al_get_font_line_height(font);
-    al_draw_text(font, al_map_rgb(255, 255, 255),larguraEscolhida - (150*scale) - (100*scale) + (150*scale)/2, alturaEscolhida - (150*scale) - (50*scale) - (10*scale) - fontHeight, ALLEGRO_ALIGN_CENTRE, user.name);
-    al_draw_text(font, al_map_rgb(255, 255, 255),larguraEscolhida - (150*scale) - (100*scale)+ (150*scale)/2, (50*scale) + (150*scale) + (10*scale), ALLEGRO_ALIGN_CENTRE, opponent.name);
+    al_draw_text(font, usuarioBorda, larguraEscolhida - (150*scale) - (100*scale) + (150*scale)/2, alturaEscolhida - (150*scale) - (50*scale) - (10*scale) - fontHeight, ALLEGRO_ALIGN_CENTRE, user.name);
+    al_draw_text(font, oponenteBorda, larguraEscolhida - (150*scale) - (100*scale)+ (150*scale)/2, (50*scale) + (150*scale) + (10*scale), ALLEGRO_ALIGN_CENTRE, opponent.name);
     
     int xCard1 = game.animations->cords[0];
     int yCard1 = game.animations->cords[1];
@@ -181,60 +215,120 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         }   
         al_draw_scaled_rotated_bitmap(fosforo, cx, cy, dx, dy, fosEscala, fosEscala, angulo, 0);
     }
-    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
-    al_draw_rectangle((20*scale), (alturaEscolhida) - (130*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (80*scale), al_map_rgb(255, 255, 255), (float)2*scale);
-
-    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
-    al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), xRect, alturaEscolhida - (80*scale), al_map_rgb(255, 255, 255), (float)2*scale);
-
-    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
-    al_draw_rectangle((20*scale), alturaEscolhida - (70*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (20*scale), al_map_rgb(255, 255, 255), (float)2*scale);
-
-    al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) +(10*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
-    al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), alturaEscolhida - (70*scale), xRect, alturaEscolhida - (20*scale), al_map_rgb(255, 255, 255), (float)2*scale);
+    
     
     void mainButtons(void){
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ALLEGRO_COLOR b1 = cinza, b2 = cinza, b3 = cinza, b4 = cinza;
+        if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
+            if(game.chamadas->cantado == 0 && game.round->usrTurn == 1){
+                if(game.chamadas->trucoFeito == 0){
+                    b1 = branco;
+                }
+                if(game.round->cardsPlayed < 2 && game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0){
+                    b2 = branco;
+                }
+                b3 = branco;
+                b4 = branco;
+            }
+        }
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle((20*scale), (alturaEscolhida) - (130*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (80*scale), b1, (float)2*scale);
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), xRect, alturaEscolhida - (80*scale), b2, (float)2*scale);
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle((20*scale), alturaEscolhida - (70*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (20*scale), b3, (float)2*scale);
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) +(10*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), alturaEscolhida - (70*scale), xRect, alturaEscolhida - (20*scale), b4, (float)2*scale);
+
+        al_draw_text(font3, b1,
         ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
         (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "TRUCO");
 
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        al_draw_text(font3, b2,
         ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
         (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "ENVIDO");
 
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        al_draw_text(font3, b3,
         ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
         (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "FLOR");
 
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+
+        al_draw_text(font3, b4,
         ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
         (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "MAZO");
     }
     
     void envidoButtons(void){
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        ALLEGRO_COLOR b1 = cinza, b2 = cinza, b3 = cinza, b4 = cinza;
+        if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
+            if(game.round->cardsPlayed < 2 && (game.chamadas->cantado == 0 || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
+                if((game.chamadas->envido == 2 || game.chamadas->cantado == 0)){
+                    b1 = branco;
+                }if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->cantado == 0){
+                    b2 = branco;
+                }
+                if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->cantado == 0){
+                    b3 = branco;
+                }
+                if(!game.chamadas->cantado){
+                    b4 = branco;
+                }
+            }
+        }
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle((20*scale), (alturaEscolhida) - (130*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (80*scale), b1, (float)2*scale);
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), (alturaEscolhida) - (130*scale), xRect, alturaEscolhida - (80*scale), b2, (float)2*scale);
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), (20*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle((20*scale), alturaEscolhida - (70*scale), ((xRect + (20*scale))/2) - (10*scale), alturaEscolhida - (20*scale), b3, (float)2*scale);
+
+        al_draw_scaled_bitmap(mesa, 0, 0, al_get_bitmap_width(mesa), al_get_bitmap_height(mesa), ((xRect + (20*scale))/2) +(10*scale), (alturaEscolhida) - (70*scale), ((xRect-(20*scale))/2) - (10*scale) , 50*scale, 0);
+        al_draw_rectangle(((xRect + (20*scale))/2) + (10*scale), alturaEscolhida - (70*scale), xRect, alturaEscolhida - (20*scale), b4, (float)2*scale);
+
+
+        al_draw_text(font3, b1,
         ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
         (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "ENVIDO");
 
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        al_draw_text(font3, b2,
         ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
         (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "REAL ENVIDO");
 
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+        al_draw_text(font3, b3,
         ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
         (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "FALTA ENVIDO");
-
-        al_draw_text(font3, al_map_rgb(255, 255, 255),
+    
+        al_draw_text(font3, b4,
         ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
         (((alturaEscolhida - (70*scale)) + (alturaEscolhida - (20*scale))) / 2) - al_get_font_line_height(font3)/2,
         ALLEGRO_ALIGN_CENTRE, "VOLTAR");
+    }
+
+    void trucoButtons(void){
+        int botao_largura = 150 * scale;
+        int botao_altura = 50 * scale;
+        int largura_total = botao_largura * 2;
+        int altura_botao = 45 * scale;
+        int x = (larguraEscolhida - largura_total) / 2;
+        int y = alturaEscolhida - botao_altura - altura_botao;
+        
+        al_draw_filled_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgba(196, 143, 0, 200));
+        al_draw_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgb(255, 255, 255), 2 * scale);
+        al_draw_text(font3, al_map_rgb(255, 255, 255), x + largura_total / 2, y + altura_botao / 2 - al_get_font_line_height(font3) / 2, ALLEGRO_ALIGN_CENTRE, "CANTAR EM CIMA");
     }
 
     void accOrDeny(void){
@@ -245,28 +339,140 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         int x1_quero = x_centro_tela - botao_largura;
         int x2_quero = x_centro_tela;
     
-        al_draw_filled_rectangle(x1_quero, y_botao, x2_quero, alturaEscolhida, al_map_rgba(150, 40, 0, 200));
+        al_draw_filled_rectangle(x1_quero, y_botao, x2_quero, alturaEscolhida, al_map_rgba(0, 100, 0, 200));
         al_draw_rectangle(x1_quero, y_botao, x2_quero, alturaEscolhida, al_map_rgb(255, 255, 255), 2 * scale);
         al_draw_text(font3, al_map_rgb(255, 255, 255), (x1_quero + x2_quero) / 2, y_botao + botao_altura / 2 - al_get_font_line_height(font3) / 2, ALLEGRO_ALIGN_CENTRE, "QUERO");
     
         float x1_naoquero = x_centro_tela;
         float x2_naoquero = x_centro_tela + botao_largura;
     
-        al_draw_filled_rectangle(x1_naoquero, y_botao, x2_naoquero, alturaEscolhida, al_map_rgba(0, 100, 0, 200));
+        al_draw_filled_rectangle(x1_naoquero, y_botao, x2_naoquero, alturaEscolhida, al_map_rgba(150, 40, 0, 200));
         al_draw_rectangle(x1_naoquero, y_botao, x2_naoquero, alturaEscolhida, al_map_rgb(255, 255, 255), 2 * scale);
         al_draw_text(font3, al_map_rgb(255, 255, 255),(x1_naoquero + x2_naoquero) / 2, y_botao + botao_altura / 2 - al_get_font_line_height(font3) / 2,ALLEGRO_ALIGN_CENTRE, "NÃO QUERO");
     } 
 
+    
+    void resultadosPopUp(void){
+        float larguraRet = 400 * scale;
+        float alturaRet = 200 * scale;
+        
+        float xRet = (larguraEscolhida - larguraRet) / 2;
+        float yRet = (alturaEscolhida - alturaRet) / 2;
+        
+        
+        al_draw_filled_rectangle(xRet, yRet, xRet + larguraRet, yRet + alturaRet, al_map_rgba(0, 0, 0, 200));
+        
+       
+        al_draw_rectangle(xRet, yRet, xRet + larguraRet, yRet + alturaRet, al_map_rgb(255, 255, 255), 3 * scale);
+        
+        char Titleholder[40];
+        char auxWinner[40];
+        int p1 = game.cartas->pontosEnvido[0];
+        int p2 = game.cartas->pontosEnvido[1];
+        int winner = (p1 > p2) ? 1 : (p2 > p1) ? 2 : game.round->mao;
+        if(winner == 1){
+            char aux[40] = "Você";
+            memcpy(auxWinner, aux, sizeof(auxWinner));
+        }else{
+            memcpy(auxWinner, opponent.name, sizeof(auxWinner));
+        }
+
+        sprintf(Titleholder, "%s %s", auxWinner, "venceu");
+        float yTitulo = yRet + (15 * scale);
+        al_draw_text(font, al_map_rgb(255, 255, 255), xRet + larguraRet / 2, yTitulo, ALLEGRO_ALIGN_CENTRE, Titleholder);
+         
+        float yCentro = yRet + alturaRet / 2 + al_get_font_line_height(font) / 2;
+        
+        float xEsquerda = xRet + (30 * scale); 
+        
+        char p2mao[10] = "";
+        char p1mao[10] = "";
+        if(p1 == p2){
+            char* auxS = "(Mão)";
+            if(game.round->mao == 1){
+                memcpy(p1mao, auxS, sizeof(p1mao));
+            }else{
+                memcpy(p2mao, auxS, sizeof(p1mao));
+            }
+        }
+        char p1Txt[40];
+        char p2Txt[40];
+        if(game.chamadas->p1FalarPontos){
+            sprintf(p1Txt, "Você: %d pontos %s", p1, p1mao);
+        }else{
+            char auxFin[25] = "Você: É bom...";
+            memcpy(p1Txt, auxFin, sizeof(auxFin));
+        }
+
+        if(game.chamadas->p2falarPontos){
+            sprintf(p2Txt, "%s: %d pontos %s", opponent.name, p2, p2mao);
+        }else{
+            char auxFin[25];
+            sprintf(auxFin, "%s: É bom...", opponent.name);
+            memcpy(p2Txt, auxFin, sizeof(auxFin));
+        }
+
+        al_draw_text(font, al_map_rgb(255, 255, 255), xEsquerda, yCentro - al_get_font_line_height(font), 0, p1Txt);
+        al_draw_text(font, al_map_rgb(255, 255, 255), xEsquerda, yCentro + (5 * scale), 0, p2Txt);
+        
+        
+        const char* textoOk = "OK";
+        float larguraBotao = 80 * scale;
+        float alturaBotao = 40 * scale;
+        float xBotao = xRet + (larguraRet / 2) - (larguraBotao / 2);
+        float yBotao = yRet + alturaRet + (15 * scale);
+        
+       
+        al_draw_filled_rectangle(xBotao, yBotao, xBotao + larguraBotao, yBotao + alturaBotao, al_map_rgba(0, 0, 0, 200));
+        
+        al_draw_rectangle(xBotao, yBotao, xBotao + larguraBotao, yBotao + alturaBotao, al_map_rgb(255, 255, 255), 2 * scale);
+        
+        al_draw_text(font2, al_map_rgb(255, 255, 255), xBotao + larguraBotao / 2, yBotao + alturaBotao / 2 - al_get_font_line_height(font2) / 2, ALLEGRO_ALIGN_CENTRE, textoOk);
+    }
+    
+    int nuvemLarguraOriginal = 666;
+    int nuvemAlturaOriginal = 375;
+    float larguraNuvem = nuvemLarguraOriginal * scale * 0.5;
+    float alturaNuvem = nuvemAlturaOriginal * scale * 0.5;
+
+    void nuvemBot(void){
+        float xNuvem = larguraEscolhida - (150 * scale) - (45 * scale) - larguraNuvem; 
+        float yNuvem = (50 * scale) + (150 * scale / 2) - (alturaNuvem / 2); 
+        float cx = xNuvem + larguraNuvem / 2;
+        float cy = (yNuvem + alturaNuvem / 2 - al_get_font_line_height(font3) / 2) - (10*scale);
+        al_draw_scaled_bitmap(game.imagens.nuvem, 0, 0, nuvemLarguraOriginal, nuvemAlturaOriginal, xNuvem, yNuvem, larguraNuvem, alturaNuvem, 0);
+        al_draw_text(font3, al_map_rgb(0, 0, 0), cx, cy, ALLEGRO_ALIGN_CENTRE, game.chamadas->botMsg);
+    }
+    void nuvemUsr(void){
+        float xNuvem = larguraEscolhida - (150 * scale) - (45 * scale) - larguraNuvem; 
+        float yNuvem = alturaEscolhida - (150 * scale) - (50 * scale) + (150 * scale / 2) - (alturaNuvem / 2);
+        float cx = xNuvem + larguraNuvem / 2;
+        float cy = (yNuvem + alturaNuvem / 2 - al_get_font_line_height(font3) / 2) - (10*scale);
+        al_draw_scaled_bitmap(game.imagens.nuvem, 0, 0, nuvemLarguraOriginal, nuvemAlturaOriginal, xNuvem, yNuvem, larguraNuvem, alturaNuvem, 0);
+        al_draw_text(font3, al_map_rgb(0, 0, 0), cx, cy, ALLEGRO_ALIGN_CENTRE, game.chamadas->usrMsg);
+    }
+    
     if(game.chamadas->mainButtons == 1){
         mainButtons();
     }
-
     if(game.chamadas->aceitarPopUp == 1){
         accOrDeny();
+        // se quiser animar depois coloca ele em baixo do truco em todas situacoes
     }
-
     if(game.chamadas->envidoButtons == 1){
         envidoButtons();
+    }
+    if(game.chamadas->msgPopUpOn == 1){
+        nuvemBot();
+    }
+    if(game.chamadas->msgPopUpOnUsr == 1){
+        nuvemUsr();
+    }
+    if(game.chamadas->resultadoPopUp == 1){
+        resultadosPopUp();
+    }
+    if(game.chamadas->trucoButtons == 1){
+        trucoButtons();
     }
 
     al_flip_display();
