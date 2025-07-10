@@ -218,15 +218,41 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
     
     
     void mainButtons(void){
+        char trucoTxt[16] = "Truco"; 
         ALLEGRO_COLOR b1 = cinza, b2 = cinza, b3 = cinza, b4 = cinza;
         if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
-            if(game.chamadas->cantado == 0 && game.round->usrTurn == 1){
-                if(game.chamadas->trucoFeito == 0){
-                    b1 = branco;
+            if(game.chamadas->valeQuatro == 0 && game.round->usrTurn == 1 && (game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->cantado == 0)){
+                b1 = branco;
+                if(game.chamadas->cantado == 0){
+                    strcpy(trucoTxt, "Truco");
+                }else if(game.chamadas->truco == 2){
+                    strcpy(trucoTxt, "Retruco");
+                }else if(game.chamadas->retruco == 2){
+                    strcpy(trucoTxt, "Vale 4");
+                }else if(game.chamadas->valeQuatro){
+                strcpy(trucoTxt, "Vale 4");
+                b1 = cinza;
                 }
-                if(game.round->cardsPlayed < 2 && game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0){
+            }else{
+                if(game.chamadas->truco){
+                    strcpy(trucoTxt, "Truco");
+                    b1 = cinza;
+                }else if(game.chamadas->retruco){
+                    strcpy(trucoTxt, "Retruco");
+                    b1 = cinza;
+                }else if(game.chamadas->valeQuatro){
+                    strcpy(trucoTxt, "Vale 4");
+                    b1 = cinza;
+                }
+            }
+            
+
+            if(((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
+                if(game.round->cardsPlayed < 2){
                     b2 = branco;
                 }
+            }
+            if(game.round->usrTurn == 1 && game.chamadas->trucoAux == 0){
                 b3 = branco;
                 b4 = branco;
             }
@@ -247,7 +273,7 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         al_draw_text(font3, b1,
         ((20*scale) + (((xRect + (20*scale))/2) - (10*scale))) / 2,
         (((alturaEscolhida - (130*scale)) + (alturaEscolhida - (80*scale))) / 2) - al_get_font_line_height(font3)/2,
-        ALLEGRO_ALIGN_CENTRE, "TRUCO");
+        ALLEGRO_ALIGN_CENTRE, trucoTxt);
 
         al_draw_text(font3, b2,
         ((((xRect + (20*scale))/2) + (10*scale)) + xRect) / 2,
@@ -269,7 +295,7 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
     void envidoButtons(void){
         ALLEGRO_COLOR b1 = cinza, b2 = cinza, b3 = cinza, b4 = cinza;
         if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
-            if(game.round->cardsPlayed < 2 && (game.chamadas->cantado == 0 || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
+            if(game.round->cardsPlayed < 2 && (game.chamadas->cantado == 0 || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
                 if((game.chamadas->envido == 2 || game.chamadas->cantado == 0)){
                     b1 = branco;
                 }if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->cantado == 0){
@@ -325,10 +351,17 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         int altura_botao = 45 * scale;
         int x = (larguraEscolhida - largura_total) / 2;
         int y = alturaEscolhida - botao_altura - altura_botao;
+
+        char trucoAccStr[25];
+        if(game.chamadas->truco == 2){
+            sprintf(trucoAccStr, "%s", "Retruco");
+        }else if(game.chamadas->retruco == 2){
+            sprintf(trucoAccStr, "%s", "Quero vale 4");
+        }
         
         al_draw_filled_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgba(196, 143, 0, 200));
         al_draw_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgb(255, 255, 255), 2 * scale);
-        al_draw_text(font3, al_map_rgb(255, 255, 255), x + largura_total / 2, y + altura_botao / 2 - al_get_font_line_height(font3) / 2, ALLEGRO_ALIGN_CENTRE, "CANTAR EM CIMA");
+        al_draw_text(font3, al_map_rgb(255, 255, 255), x + largura_total / 2, y + altura_botao / 2 - al_get_font_line_height(font3) / 2, ALLEGRO_ALIGN_CENTRE, trucoAccStr);
     }
 
     void accOrDeny(void){
@@ -361,7 +394,6 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         
         
         al_draw_filled_rectangle(xRet, yRet, xRet + larguraRet, yRet + alturaRet, al_map_rgba(0, 0, 0, 200));
-        
        
         al_draw_rectangle(xRet, yRet, xRet + larguraRet, yRet + alturaRet, al_map_rgb(255, 255, 255), 3 * scale);
         

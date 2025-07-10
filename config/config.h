@@ -68,6 +68,8 @@ typedef struct carta{
 }Carta;
 
 typedef struct Cards{
+    int indexEnvidop1[2];
+    int indexEnvidop2[2];
     Carta arrCartasUsr[3];
     Carta arrCartasOpp[3];
     int cantarFlor[2];
@@ -91,7 +93,9 @@ typedef struct Animations{
 }Animations;
 
 typedef struct Round{
+    int trucoNegado;
     int alMazo;
+    int alMazo2;
     int mao;
     int usrTurn;
     int cardsPlayed;
@@ -106,6 +110,10 @@ typedef struct Round{
 
 
 typedef struct Chamadas{
+    int envidoAceito;
+    int cartasNaMesaVerify;
+    double cartasNaMesaVerifyTimer;
+    int cartasNaMesa;
     double msgPopUpTimerUsr;
     int msgPopUpOnUsr;
     int msgPopUpAuxUsr;
@@ -129,7 +137,7 @@ typedef struct Chamadas{
     int truco; //(usuario que cantou truco)
     int retruco;
     int valeQuatro;
-    int trucoFeito;
+    int trucoAux;
 
     int p1FalarPontos;
     int p2falarPontos;
@@ -149,6 +157,13 @@ typedef struct Chamadas{
 }Chamadas;
 
 typedef struct Calculo{
+    double situacaoRound; // se = 0 , 0.5, se 1, 1.0, se -1, 0
+    double responderTruco;
+    double cantarTruco;
+    double blefeTruco; // cantar com mao ruim
+    double blefeInversoTruco; // nao cantar com mao boa
+    double forcaMaoTruco;
+    double cartasParaJogar[3];
     double fatorHistoricoPontos;
     double forcaMaoBotPontos;
     double forcaMaoUsrPontos;

@@ -128,14 +128,73 @@ void chooseCards(int starter){
     memset(cartasUsadas, 0, sizeof(cartasUsadas));
     memset((game.cartas->cartasJogadasOrdem), 0, sizeof(game.cartas->cartasJogadasOrdem));
 }
-
+int cartasNamesa(void){
+    if(game.chamadas->envidoAceito){
+        printf("oi");
+        char strUsr[80];
+        char strBot[80];
+        int envidoUsr = game.cartas->pontosEnvido[0];
+        int envidoBot = game.cartas->pontosEnvido[1];
+        int winnerEnvido = (envidoUsr > envidoBot) ? envidoUsr : (envidoBot > envidoUsr) ? envidoBot : game.round->mao;
+        
+        int cartasJogadasAux = game.round->cardsPlayed;
+        if(winnerEnvido == 1){
+            if(game.cartas->indexEnvidop1[1] == -1){
+                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
+                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop1[0];
+            }else{
+                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
+                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop1[0];
+                game.cartas->cartasJogadas[cartasJogadasAux+1][0] = winnerEnvido;
+                game.cartas->cartasJogadas[cartasJogadasAux+1][1] = game.cartas->indexEnvidop1[1];
+            }
+            
+            sprintf(game.chamadas->usrMsg, "Meus pontos..");
+            memcpy(game.chamadas->usrMsg, strUsr, sizeof(strUsr));
+            game.chamadas->msgPopUpOn = 1;
+            game.chamadas->msgPopUpTimer = al_get_time();
+        }else{
+            if(game.cartas->indexEnvidop2[1] == -1){
+                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
+                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop2[0];
+            }else{
+                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
+                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop2[0];
+                game.cartas->cartasJogadas[cartasJogadasAux+1][0] = winnerEnvido;
+                game.cartas->cartasJogadas[cartasJogadasAux+1][1] = game.cartas->indexEnvidop2[1];
+            }
+            sprintf(strBot, "Meus pontos..", game.cartas->pontosEnvido[0]);
+            memcpy(game.chamadas->botMsg, strBot, sizeof(strBot));
+            game.chamadas->msgPopUpOn = 1;
+            game.chamadas->msgPopUpTimer = al_get_time();
+        }
+        if(game.chamadas->cartasNaMesaVerify == 1){
+            game.chamadas->cartasNaMesaVerify = 0;
+            game.chamadas->cartasNaMesaVerifyTimer = al_get_time();
+            return 0;
+        }
+        if(al_get_time() - game.chamadas->cartasNaMesaVerifyTimer >= 15.0){
+            return 1;
+        }else{
+            return 0;
+        }
+        
+    }else{
+        return 1;
+    }
+}
 void endRound(int user){
+    
     if(game.round->firstRoundEndVerify){
         game.round->firstRoundEndVerify = 0;
         game.round->timeRoundEndVerify = al_get_time();
         return;
     }
     if(al_get_time() - game.round->timeRoundEndVerify >= 2.0){
+        if(cartasNamesa() == 0){
+            printf("oi");
+            return;
+        }
         if(user == 1){
             game.userPoints += game.round->pointsRound;
             if(game.userPoints >= game.maxPoints){
@@ -147,6 +206,17 @@ void endRound(int user){
                 //end game
             }
         }
+       
+
+        game.chamadas->msgPopUpOnUsr = 1;
+        game.chamadas->msgPopUpTimerUsr = al_get_time();
+
+        game.chamadas->msgPopUpOn = 1;
+        game.chamadas->msgPopUpTimer = al_get_time();
+        
+        game.round->alMazo2 = 0;
+        game.round->alMazo = 0;
+        game.round->trucoNegado = 0;
         game.chamadas->cantado = 0;
         game.chamadas->envido = 0;
         game.chamadas->envido2 = 0;
@@ -163,8 +233,10 @@ void endRound(int user){
         game.chamadas->truco = 0;
         game.chamadas->retruco = 0;
         game.chamadas->valeQuatro = 0;
-        game.chamadas->trucoFeito = 0;
         game.chamadas->trucoButtons = 0;
+        game.chamadas->trucoAux = 0;
+        game.round->firstBotJogadaVerify = 1;
+        game.chamadas->cartasNaMesaVerify = 1;
 
         game.gameRounds += 1;
         game.round->mao = (game.round->mao == 1) ? 2 : 1;
@@ -180,7 +252,6 @@ void endRound(int user){
         game.round->timeRoundEndVerify = 0.0;
         memset(game.round->roundsWon, 0, sizeof(game.round->roundsWon));
         game.round->alMazo = 0;
-        
         verificarEnvidoPontos();
         verificarFlor();
     }
@@ -195,6 +266,7 @@ void verificarTurno(void){
         int secondCardIndex = game.cartas->cartasJogadas[(game.round->cardsPlayed) - 1][1];
         int secondCardPower = (secondCardPlayer == 1) ? game.cartas->arrCartasUsr[secondCardIndex].power : game.cartas->arrCartasOpp[secondCardIndex].power; 
         if(firstCardPower > secondCardPower){
+            game.calculo->situacaoRound -= 1;
             game.round->roundsWon[(game.round->cardsPlayed/2) - 1] = firstCardPlayer;
             game.round->usrTurn = firstCardPlayer;
             if(game.round->firstRoundEndVerify == 1){
@@ -206,6 +278,7 @@ void verificarTurno(void){
                 memcpy(game.cartas->cartasJogadasOrdem[(game.round->cardsPlayed) - 2], matrizAux1, sizeof(matrizAux1));
             }
         }else if(firstCardPower < secondCardPower){
+            game.calculo->situacaoRound += 1;
             game.round->roundsWon[(game.round->cardsPlayed/2) - 1] = secondCardPlayer;
             game.round->usrTurn = secondCardPlayer;
         }else{
@@ -282,8 +355,49 @@ void verificarFlor(void){
     }
     game.cartas->cantarFlor[1] = verAux2;
 }
+void calcularCarta(){
+    int rodadaAtual = (game.round->cardsPlayed/2) + 1;
+    int cartasNaMesaUsr = 0;
+    double forcaMaoUsr = 0.0;
 
+    int powerTotalBot = 0;
+
+    double auxForcaMaoBot = 0.0;
+    for(int j = 0; j < 3; j++){
+        powerTotalBot += game.cartas->arrCartasOpp[j].power;
+        auxForcaMaoBot += powerTotalBot/14.0;
+        if(game.cartas->arrCartasUsr[j].out){
+            cartasNaMesaUsr++;
+            double auxF = (double)game.cartas->arrCartasUsr[j].power/14.0;
+            forcaMaoUsr += auxF;
+        }
+    }
+    if(cartasNaMesaUsr == 0){
+        forcaMaoUsr = 0.5;
+    }else{
+       forcaMaoUsr = forcaMaoUsr/(double)cartasNaMesaUsr;
+    }
+    forcaMaoUsr = forcaMaoUsr/auxForcaMaoBot;
+    
+    for(int i = 0; i < 3; i++){
+        Carta cartaAux = game.cartas->arrCartasOpp[i];
+        double forcaReal = cartaAux.power;
+        double riscoPerderCarta = (forcaReal*opponent.desconfianca)/rodadaAtual;
+        double auxForcaIaCarta = (forcaReal*0.5) + (forcaMaoUsr*0.4) - (riscoPerderCarta*0.5);
+        game.calculo->cartasParaJogar[i] = auxForcaIaCarta;
+    }
+
+    // truco
+    double forcaMaoTruco = powerTotalBot/36.0;
+    double situationAux = (game.calculo->situacaoRound == 1) ? 1.0 : ((game.calculo->situacaoRound == 0) ? 0.5 : 0);
+
+    game.calculo->forcaMaoTruco = forcaMaoTruco;
+    game.calculo->blefeTruco = (opponent.mentira*0.6) + ((1.0 - forcaMaoTruco)*0.3) - (forcaMaoUsr*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
+    game.calculo->blefeInversoTruco = (opponent.mentira*0.6) + (forcaMaoTruco*0.4) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.25;
+    game.calculo->cantarTruco = (forcaMaoTruco*0.5) + (opponent.agressividade*0.35) - (opponent.desconfianca *0.4) - (forcaMaoUsr*0.3) + (situationAux)*0.3 + (((double)rand()/(double)RAND_MAX)-0.5)*0.15;
+}
 void definirCalculoPontos(void){
+    // envido calculos
     int botPoints = game.cartas->pontosEnvido[1];
     double agressividade = opponent.agressividade;
     double mentira = opponent.mentira;
@@ -307,22 +421,31 @@ void definirCalculoPontos(void){
     
     game.calculo->valorRespostaPontos = (0.65*forcaMaoBot) + (agressividade*0.35) - (forcaMaoUsr * 0.2) + (faltaEnvidoFator*0.5) - (desconfianca*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
     game.calculo->inversovalorRespostaPontos = (agressividade*0.35) - (forcaMaoUsr * 0.3) - (faltaEnvidoFator*0.5) + (desconfianca*0.4) + (mentira*0.65) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.35;
-}
 
+
+}
     
 void verificarEnvidoPontos(void){
     int maxUsr = 0;
     for(int i = 0; i < 3; i++){
         if(game.cartas->arrCartasUsr[i].envido > maxUsr){
             maxUsr = game.cartas->arrCartasUsr[i].envido;
+            game.cartas->indexEnvidop1[0] = i;
+            game.cartas->indexEnvidop1[1] = -1;
         }
     }
     if(game.cartas->arrCartasUsr[0].naipe == game.cartas->arrCartasUsr[1].naipe){
         game.cartas->pontosEnvido[0] = game.cartas->arrCartasUsr[0].envido + game.cartas->arrCartasUsr[1].envido + 20;
+        game.cartas->indexEnvidop1[0] = 0;
+        game.cartas->indexEnvidop1[1] = 1;
     }else if(game.cartas->arrCartasUsr[0].naipe == game.cartas->arrCartasUsr[2].naipe){
         game.cartas->pontosEnvido[0] = game.cartas->arrCartasUsr[0].envido + game.cartas->arrCartasUsr[2].envido + 20;
+        game.cartas->indexEnvidop1[0] = 0;
+        game.cartas->indexEnvidop1[1] = 2;
     }else if(game.cartas->arrCartasUsr[1].naipe == game.cartas->arrCartasUsr[2].naipe){
         game.cartas->pontosEnvido[0] = game.cartas->arrCartasUsr[1].envido + game.cartas->arrCartasUsr[2].envido + 20;
+        game.cartas->indexEnvidop1[0] = 1;
+        game.cartas->indexEnvidop1[1] = 2;
     }else{
         game.cartas->pontosEnvido[0] = maxUsr;
     }
@@ -331,14 +454,22 @@ void verificarEnvidoPontos(void){
     for(int i = 0; i < 3; i++){
         if(game.cartas->arrCartasOpp[i].envido > maxUsr2){
             maxUsr2 = game.cartas->arrCartasOpp[i].envido;
+            game.cartas->indexEnvidop2[0] = i;
+            game.cartas->indexEnvidop2[1] = -1;
         }
     }
     if(game.cartas->arrCartasOpp[0].naipe == game.cartas->arrCartasOpp[1].naipe){
         game.cartas->pontosEnvido[1] = game.cartas->arrCartasOpp[0].envido + game.cartas->arrCartasOpp[1].envido + 20;
+        game.cartas->indexEnvidop2[0] = 0;
+        game.cartas->indexEnvidop2[1] = 1;
     }else if(game.cartas->arrCartasOpp[0].naipe == game.cartas->arrCartasOpp[2].naipe){
         game.cartas->pontosEnvido[1] = game.cartas->arrCartasOpp[0].envido + game.cartas->arrCartasOpp[2].envido + 20;
+        game.cartas->indexEnvidop2[0] = 0;
+        game.cartas->indexEnvidop2[1] = 2;
     }else if(game.cartas->arrCartasOpp[1].naipe == game.cartas->arrCartasOpp[2].naipe){
         game.cartas->pontosEnvido[1] = game.cartas->arrCartasOpp[1].envido + game.cartas->arrCartasOpp[2].envido + 20;
+        game.cartas->indexEnvidop2[0] = 1;
+        game.cartas->indexEnvidop2[1] = 2;
     }else{
         game.cartas->pontosEnvido[1] = maxUsr2;
     }
@@ -382,7 +513,20 @@ void msgBallonsUsr(int mode, int cantou, int type){
                 char Straux[80] = "Falta envido";
                 memcpy(str, Straux, sizeof(str));
             }
+        }else if(mode == 2){
+            if(type == 1){
+                char Straux[80] = "Truco";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 2){
+                char Straux[80] = "Retruco";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 3){
+                char Straux[80] = "vale 4";
+                memcpy(str, Straux, sizeof(str));
+            }
         }else if(mode == 4){
+            game.chamadas->msgPopUpAuxUsr = 1;
+            game.chamadas->msgPopUpTimerUsr = al_get_time();
             char Straux[80] = "Vou ao baralho";
             memcpy(str, Straux, sizeof(str));
         }
@@ -428,7 +572,20 @@ void msgBallon(int mode, int cantou, int type){
                 char Straux[80] = "Falta envido";
                 memcpy(str, Straux, sizeof(str));
             }
+        }else if(mode == 2){
+            if(type == 1){
+                char Straux[80] = "Truco";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 2){
+                char Straux[80] = "Retruco";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 3){
+                char Straux[80] = "vale 4";
+                memcpy(str, Straux, sizeof(str));
+            }
         }else if(mode == 4){
+            game.chamadas->msgPopUpAux = 1;
+            game.chamadas->msgPopUpTimer = al_get_time();
             char Straux[80] = "Vou ao baralho";
             memcpy(str, Straux, sizeof(str));
         }
@@ -436,14 +593,115 @@ void msgBallon(int mode, int cantou, int type){
     memcpy(game.chamadas->botMsg, str, sizeof(str));
 }
 
+void cantarTruco(int user, int trucoType){
+    // 1 truco
+    // 2 retruco
+    // 3 vale 4
+    game.chamadas->cantado = 1;
+    game.chamadas->mainButtons = 1;
+    game.chamadas->trucoAux = user;
+    if(user == 2){
+        game.chamadas->aceitarPopUp = 1;
+        game.chamadas->respostaBot = 0;
+        game.chamadas->trucoButtons = 1;
+        game.round->firstBotJogadaVerify = 1;
+        game.round->timeBotJogadaVerify = 0.0;
+    }else{
+        game.chamadas->respostaBot = 1;
+        game.chamadas->aceitarPopUp = 0;
+        game.chamadas->trucoButtons = 0;
+    }
+    switch(trucoType){
+        case 1:
+            if(user == 2){
+                msgBallon(2, 1, 1);
+            }else{
+                msgBallonsUsr(2, 1, 1);
+            }
+            game.chamadas->truco = user;
+            game.chamadas->pontosNegarCantada = 1;
+            game.chamadas->pontosValendoCantada = 2;
+            break;
+        case 2:
+            if(user == 2){
+                msgBallon(2, 1, 2);
+            }else{
+                msgBallonsUsr(2, 1, 2);
+            }
+            game.chamadas->truco = 0;
+            game.chamadas->retruco = user;
+            game.chamadas->pontosNegarCantada = 2;
+            game.chamadas->pontosValendoCantada = 3;
+            break;
+        case 3:
+            if(user == 2){
+                msgBallon(2, 1, 3);
+            }else{
+                msgBallonsUsr(2, 1, 3);
+            }
+            game.chamadas->retruco = 0;
+            game.chamadas->valeQuatro = user;
+            game.chamadas->pontosNegarCantada = 3;
+            game.chamadas->pontosValendoCantada = 4;
+            game.chamadas->trucoButtons = 0;
+            break;
+    }
+}
+
+void aceitarTruco(int user){
+    game.chamadas->trucoAux = 0;
+    if(user == 2){
+        msgBallon(1, 0, 1);
+    }else{
+        msgBallonsUsr(1, 0, 1);
+    }
+    game.round->pointsRound = game.chamadas->pontosValendoCantada;
+    game.chamadas->cantado = 1;
+    game.chamadas->respostaBot = 0;
+    game.chamadas->mainButtons = 1;
+    game.chamadas->trucoButtons = 0;
+    game.chamadas->aceitarPopUp = 0;
+    game.chamadas->msgPopUpAux = 1;
+    game.chamadas->msgPopUpTimer = al_get_time();
+    game.chamadas->msgPopUpAuxUsr = 1;
+    game.chamadas->msgPopUpTimerUsr = al_get_time();
+    game.round->firstBotJogadaVerify = 1;
+    game.round->timeBotJogadaVerify = 0.0;
+}
+
+void negarTruco(int user){
+    if(user == 2){
+        msgBallon(1, 0, 2);
+    }else{
+        msgBallonsUsr(1, 0, 2);
+    }
+    game.round->trucoNegado = user;
+    game.round->pointsRound = game.chamadas->pontosNegarCantada;
+    game.chamadas->cantado = 0;
+    game.chamadas->respostaBot = 0;
+    game.chamadas->mainButtons = 1;
+    game.chamadas->trucoButtons = 0;
+    game.chamadas->aceitarPopUp = 0;
+    game.chamadas->trucoAux = 0;
+    game.chamadas->msgPopUpAux = 1;
+    game.chamadas->msgPopUpTimer = al_get_time();
+    game.chamadas->msgPopUpAuxUsr = 1;
+    game.chamadas->msgPopUpTimerUsr = al_get_time();
+    game.round->firstBotJogadaVerify = 1;
+    game.round->timeBotJogadaVerify = 0.0;
+
+    endRound(user);
+}
+
 void cantarEnvido(int user, int envType){
-    printf("a");
     int opp = (user == 1) ? 2 : 1;
     if(user == 2){
         game.chamadas->aceitarPopUp = 1;
         game.chamadas->respostaBot = 0;
         game.chamadas->mainButtons = 0;
         game.chamadas->envidoButtons = 1;
+        game.round->firstBotJogadaVerify = 1;
+        game.round->timeBotJogadaVerify = 0.0;
     }else{
         game.chamadas->respostaBot = 1;
         game.chamadas->aceitarPopUp = 0;
@@ -590,6 +848,7 @@ void AceitarEnvido(int user){
         double historic = (game.cartas->pontosEnvido[0])/33.0;
         game.calculo->fatorHistoricoPontos = (historic+game.calculo->fatorHistoricoPontos)/2.0;
     }
+    game.chamadas->envidoAceito = 1;
     game.chamadas->cantado = 0;
     game.chamadas->envido = 0;
     game.chamadas->envido2 = 0;
@@ -601,6 +860,8 @@ void AceitarEnvido(int user){
     game.chamadas->mainButtons = 1;
     game.chamadas->envidoButtons = 0;
     game.chamadas->resultadoPopUpTimer = al_get_time();
+    game.round->firstBotJogadaVerify = 1;
+    game.round->timeBotJogadaVerify = 0.0;
 }
 
 void negarEnvido(int user){
@@ -624,19 +885,28 @@ void negarEnvido(int user){
     game.chamadas->respostaBot = 0;
     game.chamadas->mainButtons = 1;
     game.chamadas->envidoButtons = 0;
+    game.chamadas->pontosValendoCantada = 0;
+    game.chamadas->pontosNegarCantada = 0;
+    game.round->firstBotJogadaVerify = 1;
+    game.round->timeBotJogadaVerify = 0.0;
     
     // end game verificar
 }
 
 
 int botJogada(void){
+    if(game.chamadas->resultadoPopUp == 1 || game.chamadas->resultadoPopUpAux == 1){
+        game.round->firstBotJogadaVerify = 1;
+        game.round->timeBotJogadaVerify = 0.0;
+    }
     if(game.round->firstBotJogadaVerify == 1){
         game.round->firstBotJogadaVerify = 0;
         game.round->timeBotJogadaVerify = al_get_time();
         return 0;
     }
-    if(al_get_time() - game.round->timeBotJogadaVerify >= 2.0){
+    if(al_get_time() - game.round->timeBotJogadaVerify >= 2.0 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
         definirCalculoPontos();
+        calcularCarta();
         if(game.round->cardsPlayed < 2 && game.chamadas->envidoFeito == 0 && game.chamadas->cantado == 0){
             if (game.calculo->forcaMaoBotPontos >= 0.8 && game.calculo->inversovalorChamadaPontos >= 0.85 && game.round->cardsPlayed == 0){
             }else{
@@ -668,16 +938,130 @@ int botJogada(void){
                 }
             }
         }
-        int aux = game.round->cardsPlayed/2;
-        jogarCarta(2, aux);
-        game.round->firstBotJogadaVerify = 1;
-        game.round->timeBotJogadaVerify = 0.0;
-        return 1;
+
+        // decisao truco
+        if(game.chamadas->valeQuatro == 0){
+            if(game.chamadas->cantado == 0 || game.chamadas->trucoAux == 1){
+                if(game.calculo->forcaMaoTruco <= 0.4 && game.calculo->blefeTruco >= 0.8){
+                    if(game.chamadas->cantado == 0){
+                        if(game.calculo->blefeTruco >= 0.7){
+                            game.round->firstBotJogadaVerify = 1;
+                            game.round->timeBotJogadaVerify = 0.0;
+                            cantarTruco(2, 1);
+                            return 1;
+                        }
+                    }else if(game.chamadas->truco == 1){
+                        if(game.calculo->blefeTruco >= 0.88){
+                            game.round->firstBotJogadaVerify = 1;
+                            game.round->timeBotJogadaVerify = 0.0;
+                            cantarTruco(2, 2);
+                            return 1;
+                        }
+                    }else if(game.chamadas->retruco == 1){
+                        if(game.calculo->blefeTruco >= 1.05){
+                            game.round->firstBotJogadaVerify = 1;
+                            game.round->timeBotJogadaVerify = 0.0;
+                            cantarTruco(2, 3);
+                            return 1;
+                        }
+                    }
+                }else if(game.calculo->forcaMaoTruco >= 0.75 && game.calculo->blefeInversoTruco >= 0.85){
+                }else{
+                    if(game.chamadas->cantado == 0){
+                        if(game.calculo->cantarTruco >= 0.65){
+                            game.round->firstBotJogadaVerify = 1;
+                            game.round->timeBotJogadaVerify = 0.0;
+                            cantarTruco(2, 1);
+                            return 1;
+                        }
+                    }else if(game.chamadas->truco == 1){
+                        if(game.calculo->cantarTruco >= 0.8){
+                            game.round->firstBotJogadaVerify = 1;
+                            game.round->timeBotJogadaVerify = 0.0;
+                            cantarTruco(2, 2);
+                            return 1;
+                        }
+                    }else if(game.chamadas->retruco == 1){
+                        if(game.calculo->cantarTruco >= 0.95){
+                            game.round->firstBotJogadaVerify = 1;
+                            game.round->timeBotJogadaVerify = 0.0;
+                            cantarTruco(2, 3);
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
+        if(game.round->cardsPlayed % 2 == 0){
+            int matrizAux[1][2] = {{-10, -1}}; // valor, index
+            for(int i = 0; i < 3; i++){
+                if(game.cartas->arrCartasOpp[i].out == 0){
+                    if(matrizAux[0][0] < game.calculo->cartasParaJogar[i]){
+                        matrizAux[0][0] = game.calculo->cartasParaJogar[i];
+                        matrizAux[0][1] = i;
+                    }
+                }
+            }
+            if(game.chamadas->cantado == 0 || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 0 && game.chamadas->envido == 0 && game.chamadas->envido2 == 0 && game.chamadas->realEnvido == 0 && game.chamadas->faltaEnvido == 0)){
+                jogarCarta(2, matrizAux[0][1]);
+                game.round->firstBotJogadaVerify = 1;
+                game.round->timeBotJogadaVerify = 0.0;
+                return 1;
+            }
+        }else{
+            int cartaUsrIndex = game.cartas->cartasJogadas[game.round->cardsPlayed - 1][1];
+            int cartaUsrPower = game.cartas->arrCartasUsr[cartaUsrIndex].power;
+            
+            int menorPower = 999;
+            int indexMenor = -1;
+            int menorMatadora = 999;
+            int indexMatadora = -1;
+            
+            for(int i = 0; i < 3; i++){
+                if(game.cartas->arrCartasOpp[i].out == 0){
+                    int power = game.cartas->arrCartasOpp[i].power;
+            
+                    if(power < menorPower){
+                        menorPower = power;
+                        indexMenor = i;
+                    }
+                    if(power > cartaUsrPower && power < menorMatadora){
+                        menorMatadora = power;
+                        indexMatadora = i;
+                    }
+                }
+            }
+
+            int decisivo = 0;
+            int r1 = game.round->roundsWon[0];
+            int r2 = game.round->roundsWon[1];
+            int rodadaAtual = game.round->cardsPlayed / 2;
+            
+            if(rodadaAtual == 2){
+                if((r1 == 1 && r2 == 2) || (r1 == 2 && r2 == 1) || r1 == 3 || r2 == 3){
+                    decisivo = 1;
+                }
+            }
+            
+            if(indexMatadora != -1){
+                jogarCarta(2, indexMatadora);
+            } else if(decisivo){
+                game.round->alMazo2 = 1;
+                msgBallon(4, 1, 1);
+            } else {
+                jogarCarta(2, indexMenor);
+            }
+        }
+        
     }
     return 0;
 }
 
 void verificarCantadas(void){
+    if(game.chamadas->resultadoPopUp == 1 || game.chamadas->resultadoPopUpAux == 1){
+        game.round->firstBotJogadaVerify = 1;
+        game.round->timeBotJogadaVerify = 0.0;
+    }
     if(game.chamadas->respostaBot){
         if(game.chamadas->firstChamada == 1){
             game.chamadas->firstChamada = 0;
@@ -685,7 +1069,7 @@ void verificarCantadas(void){
             return;
         }else if(al_get_time() - game.chamadas->timeFirstChamada >= 2.5){
             definirCalculoPontos();
-            
+            calcularCarta();
             if(game.chamadas->envido == 1){
                 if(15 - game.userPoints <= game.chamadas->pontosNegarCantada){
                     if(15 - game.userPoints >= game.chamadas->pontosValendoCantada + 3){
@@ -763,9 +1147,36 @@ void verificarCantadas(void){
                         negarEnvido(2);
                     }
             }
+            // truco
+            if(game.chamadas->truco == 1){
+                if(game.calculo->forcaMaoTruco <= 0.4 && game.calculo->blefeTruco >= 0.88) {
+                    cantarTruco(2, 2);      
+                }else{
+                    if(game.calculo->cantarTruco >= 0.8){
+                        cantarTruco(2, 2);
+                    }else if(game.calculo->cantarTruco >= 0.65){
+                        aceitarTruco(2);
+                    }else{
+                        negarTruco(2);
+                    }
+                }
+            }else if(game.chamadas->retruco == 1){
+                if(game.calculo->forcaMaoTruco <= 0.4 && game.calculo->blefeTruco >= 1.0){
+                    cantarTruco(2, 3);
+                }else{
+                    if(game.calculo->cantarTruco >= 0.95){
+                        cantarTruco(2, 3);
+                    }else if(game.calculo->cantarTruco >= 1.05){
+                        aceitarTruco(2);
+                    }else{
+                        negarTruco(2);
+                    }
+                }
+            }
             game.chamadas->firstChamada = 1;
             game.chamadas->timeFirstChamada = 0.0;
-            printf("forcaMaoBotPontos =%.2f\n, valorRespostaPontos = %.2f\n, invesovalorRespostaPontos = %.2f\n, inversoValorChamada = %.2f\n, ValorChamada = %.2f\n, pontos=%d%n",game.calculo->forcaMaoBotPontos, game.calculo->valorRespostaPontos, game.calculo->inversovalorRespostaPontos, game.calculo->inversovalorChamadaPontos, game.calculo->valorChamadaPontos ,game.cartas->pontosEnvido[1]);
+            printf("forcaMaoBotPontos =%.2f\n, valorRespostaPontos = %.2f\n, invesovalorRespostaPontos = %.2f\n, inversoValorChamada = %.2f\n, ValorChamada = %.2f\n, pontos=%d\n\n\n ",game.calculo->forcaMaoBotPontos, game.calculo->valorRespostaPontos, game.calculo->inversovalorRespostaPontos, game.calculo->inversovalorChamadaPontos, game.calculo->valorChamadaPontos ,game.cartas->pontosEnvido[1]);
+            printf("forcaMaoTruco = %.2f\n, blefeInversoTruco = %.2f\n, blefeTruco = %.2f\n, cantarTruco = %.2f\n\n\n",game.calculo->forcaMaoTruco, game.calculo->blefeInversoTruco, game.calculo->blefeTruco, game.calculo->cantarTruco);
         }
     }
 }
@@ -778,7 +1189,7 @@ void mainGameLoop(){
     ALLEGRO_FONT *font3 = al_load_ttf_font("fonts/retro.ttf",20*scale,0);
 
     Animations animations = {0, 0, {x1, x2, x3, yUsr, yOpp, yUsrTable, yOppTable}, {x1, yUsr, x2, yUsr, x3, yUsr, x1, yOpp, x2, yOpp, x3, yOpp}};
-    Round round = {0, 1, 1, 0, 1, 1, 0, 1, 0,{0}, jogarCarta};
+    Round round = {0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0,{0}, jogarCarta};
     carregar_baralho(baralho);
 
     images imagens = {al_load_bitmap("images/fosforo.png"), al_load_bitmap("images/cards/reverso.png"), al_load_bitmap("images/mesa.jpg"), al_load_bitmap("images/nuvem.png")};
@@ -789,6 +1200,7 @@ void mainGameLoop(){
     Chamadas chamadas = {0};
     chamadas.mainButtons = 1;
     chamadas.firstChamada = 1;
+    
 
     game.maxPoints = 15;
     game.opponentPoints = 0;
@@ -800,6 +1212,7 @@ void mainGameLoop(){
     game.round = &round;
     game.chamadas = &chamadas;
     game.calculo = &calculo;
+    game.chamadas->cartasNaMesaVerify = 1;
 
     chooseCards(0);
 
@@ -851,14 +1264,20 @@ void mainGameLoop(){
         if(event.type == ALLEGRO_EVENT_TIMER){
             if(game.round->usrTurn == 2 && game.round->firstRoundEndVerify == 1){
                 botJogada();
-            }if(game.round->firstRoundEndVerify == 0){
+            }if(game.round->firstRoundEndVerify == 0 && game.chamadas->cartasNaMesaVerify == 0){
                 verificarTurno();
             }
-            if(game.chamadas->cantado){
+            if(game.chamadas->respostaBot){
                 verificarCantadas();
             }
             if(game.round->alMazo){
                 endRound(2);
+            }
+            if(game.round->alMazo2){
+                endRound(1);
+            }
+            if(game.round->trucoNegado){
+                endRound((game.round->trucoNegado == 2) ? 1 : 2);
             }
             if(game.chamadas->msgPopUpAux == 1){
                 if(al_get_time() - game.chamadas->msgPopUpTimer >= 3.5){
@@ -905,7 +1324,7 @@ void mainGameLoop(){
                 mouse_x = event.mouse.x;
                 mouse_y = event.mouse.y;
                 if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){  
-                    if(mouse_y >= yUsr && mouse_y <= yUsr + (180*scale) && game.round->usrTurn == 1 && game.chamadas->cantado == 0){
+                    if(mouse_y >= yUsr && mouse_y <= yUsr + (180*scale) && game.round->usrTurn == 1 && ((game.chamadas->trucoAux == 0 && game.chamadas->cantado == 1) || game.chamadas->cantado == 0)){
                         if(mouse_x >= x1 && mouse_x <= x1 + (118*scale) && game.cartas->arrCartasUsr[0].out == 0){
                             jogarCarta(1, 0);
                         }
@@ -915,8 +1334,8 @@ void mainGameLoop(){
                         else if(mouse_x >= x3 && mouse_x <= x3 + (118*scale) && game.cartas->arrCartasUsr[2].out == 0){
                             jogarCarta(1, 2);
                         }
-
                     }
+                    
                     int xRect = (larguraEscolhida / 2 - (118 * scale) * 2 - (30 * scale) - (20 * scale));
                     int botao_largura = ((xRect - (20 * scale)) / 2) - (10 * scale);
                     int botao_altura = 50 * scale;
@@ -952,60 +1371,102 @@ void mainGameLoop(){
                     int x1_naoquero = x_centro_tela_q;
                     int x2_naoquero = x_centro_tela_q + botao_largura_q;
 
-                    if(game.chamadas->aceitarPopUp && game.chamadas->cantado == 1){
+                    if(game.chamadas->aceitarPopUp && game.chamadas->cantado == 1 && (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2)){
                         if (mouse_x >= x1_quero && mouse_x <= x2_quero && mouse_y >= y_botao_q && mouse_y <= alturaEscolhida) {
                             AceitarEnvido(1);
                             game.chamadas->aceitarPopUp = 0;
                         }
 
                         if (mouse_x >= x1_naoquero && mouse_x <= x2_naoquero && mouse_y >= y_botao_q && mouse_y <= alturaEscolhida) {
-                            if(game.chamadas->envido || game.chamadas->envido2 || game.chamadas->realEnvido || game.chamadas->faltaEnvido){
-                                negarEnvido(1);
-                                game.chamadas->aceitarPopUp = 0;
+                            negarEnvido(1);
+                            game.chamadas->aceitarPopUp = 0;
+                            
+                        }
+                    }
+
+                    if(game.chamadas->aceitarPopUp && game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && (game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->valeQuatro == 2)){
+                        if (mouse_x >= x1_quero && mouse_x <= x2_quero && mouse_y >= y_botao_q && mouse_y <= alturaEscolhida) {
+                            aceitarTruco(1);
+                            game.chamadas->aceitarPopUp = 0;
+                            game.chamadas->trucoButtons = 0;
+                        }
+
+                        if (mouse_x >= x1_naoquero && mouse_x <= x2_naoquero && mouse_y >= y_botao_q && mouse_y <= alturaEscolhida) {
+                            negarTruco(1);
+                            game.chamadas->aceitarPopUp = 0;
+                            game.chamadas->trucoButtons = 0;
+                        }
+                    }
+
+                    int botao_largura2 = 150 * scale;
+                    int botao_altura2 = 50 * scale;
+                    int largura_total = botao_largura2 * 2;
+                    int altura_botao = 45 * scale;
+                    int xTruco = (larguraEscolhida - largura_total) / 2;
+                    int yTruco = alturaEscolhida - botao_altura2 - altura_botao;
+                    if(mouse_x >= xTruco && mouse_x <= xTruco + largura_total && mouse_y >= yTruco && mouse_y <= yTruco + altura_botao){
+                        if(game.chamadas->trucoButtons){
+                            if(game.chamadas->truco == 2){
+                                cantarTruco(1, 2);
+                            }else if(game.chamadas->retruco == 2){
+                                cantarTruco(1, 3);
                             }
                         }
                     }
 
-                    if(game.chamadas->mainButtons == 1 && game.chamadas->cantado == 0 && game.round->usrTurn == 1){
-                        
-                        if(mouse_x >= bt1_x1 && mouse_x <= bt1_x2 && mouse_y >= bt1_y1 && mouse_y <= bt1_y2 && game.chamadas->trucoFeito == 0) {
-                            printf("truco");
+                    if(game.chamadas->mainButtons == 1){
+                        if(mouse_x >= bt1_x1 && mouse_x <= bt1_x2 && mouse_y >= bt1_y1 && mouse_y <= bt1_y2 ) {
+                            if(game.chamadas->valeQuatro == 0 && game.round->usrTurn == 1 && (game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->cantado == 0)){
+                                if(game.chamadas->cantado == 0){
+                                    cantarTruco(1, 1);
+                                }else if(game.chamadas->truco == 2){
+                                    cantarTruco(1, 2);
+                                }else if(game.chamadas->retruco == 2){
+                                    cantarTruco(1, 3);
+                                }
+                            }
+                            
                         }
                         
-                        else if(mouse_x >= bt2_x1 && mouse_x <= bt2_x2 && mouse_y >= bt2_y1 && mouse_y <= bt2_y2){
+                        else if(mouse_x >= bt2_x1 && mouse_x <= bt2_x2 && mouse_y >= bt2_y1 && mouse_y <= bt2_y2 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
                             if(game.round->cardsPlayed < 2){
-                                if(game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0){
-                                    game.chamadas->envidoButtons = 1;
-                                    game.chamadas->mainButtons = 0;
-                                    continue;
-                                }
+                                game.chamadas->envidoButtons = 1;
+                                game.chamadas->mainButtons = 0;
+                                continue;
                             }
                         }
             
-                        else if(mouse_x >= bt3_x1 && mouse_x <= bt3_x2 && mouse_y >= bt3_y1 && mouse_y <= bt3_y2) {
+                        else if(mouse_x >= bt3_x1 && mouse_x <= bt3_x2 && mouse_y >= bt3_y1 && mouse_y <= bt3_y2 && game.round->usrTurn == 1) {
                             printf("flor");
                         }
 
-                        else if(mouse_x >= bt4_x1 && mouse_x <= bt4_x2 && mouse_y >= bt4_y1 && mouse_y <= bt4_y2) {
+                        else if(mouse_x >= bt4_x1 && mouse_x <= bt4_x2 && mouse_y >= bt4_y1 && mouse_y <= bt4_y2 && game.round->usrTurn == 1 && game.chamadas->trucoAux == 0) {
                             // verificaar truco retruco vale 4
-                            if(game.round->cardsPlayed == 0){
+                            if(game.round->cardsPlayed == 0 && (game.chamadas->truco == 0 && game.chamadas->retruco == 0 && game.chamadas->valeQuatro == 0)){
                                 game.round->pointsRound = 2;
                                 game.round->alMazo = 1;
                                 msgBallonsUsr(4, 1, 1);
                                 endRound(2);
                             }else{
                                 game.round->alMazo = 1;
-                                game.round->pointsRound = 1;
+                                game.round->pointsRound = game.round->pointsRound;
                                 msgBallonsUsr(4, 1, 1);
                                 endRound(2);
                             }
                         }
                     }  
-                    if(game.chamadas->envidoButtons == 1 && game.round->cardsPlayed < 2 && (game.chamadas->cantado == 0 || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
+                    if(game.chamadas->envidoButtons == 1 && game.round->cardsPlayed < 2 && (game.chamadas->cantado == 0 || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0) || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
+                        if(game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2){
+                            game.chamadas->trucoAux = 0;
+                            game.chamadas->cantado = 0;
+                            game.chamadas->truco = 0;
+                        }
+                        
                         if(mouse_x >= bt1_x1 && mouse_x <= bt1_x2 && mouse_y >= bt1_y1 && mouse_y <= bt1_y2 && (game.chamadas->envido == 2 || game.chamadas->cantado == 0)) {
                             cantarEnvido(1, 1);
                         }
-                
+                        
+
                         else if(mouse_x >= bt2_x1 && mouse_x <= bt2_x2 && mouse_y >= bt2_y1 && mouse_y <= bt2_y2 && (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->cantado == 0)) {
                             cantarEnvido(1, 2);
                         }
@@ -1042,9 +1503,11 @@ void mainGameLoop(){
                         int winner = (p1 > p2) ? 1 : (p2 > p1) ? 2 : game.round->mao;
                         if(winner == 1){
                             game.userPoints += game.chamadas->pontosValendoCantada;
-                        }else{
+                        }else{ 
                             game.opponentPoints += game.chamadas->pontosValendoCantada;
                         }
+                        game.chamadas->pontosValendoCantada = 0;
+                        game.chamadas->pontosNegarCantada = 0;
                     // verify game (se passou de 15 end game)
                     }
                 }
