@@ -1064,25 +1064,31 @@ void negarFlor(int user){
     printf("negarFlor");
     if(game.chamadas->flor){
         if(user == 1){
+            game.chamadas->msgPopUpOn = 0;
             msgBallonsUsr(1, 0, 2);
             game.opponentPoints += 3;
         }else{
+            game.chamadas->msgPopUpOnUsr = 0;
             msgBallon(1, 0, 2);
             game.userPoints += 3;
         }
     }else if(game.chamadas->contraFlor){
         if(user == 1){
+            game.chamadas->msgPopUpOn = 0;
             msgBallonsUsr(1, 0, 2);
             game.opponentPoints += 4;
         }else{
+            game.chamadas->msgPopUpOnUsr = 0;
             msgBallon(1, 0, 2);
             game.userPoints += 4;
         }
     }else if(game.chamadas->contraFlorResto){
         if(user == 1){
+            game.chamadas->msgPopUpOn = 0;
             msgBallonsUsr(1, 0, 2);
             game.opponentPoints += 6;
         }else{
+            game.chamadas->msgPopUpOnUsr = 0;
             msgBallon(1, 0, 2);
             game.userPoints += 6;
         }
