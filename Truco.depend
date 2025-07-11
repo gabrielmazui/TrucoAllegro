@@ -1152,7 +1152,7 @@
 	<allegro5/allegro_primitives.h>
 	"..\..\..\config\config.h"
 
-1752234758 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawn6.c
+1752270271 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawn6.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1302,7 +1302,7 @@
 
 1750643633 c:\users\gabi0\downloads\truco - copia\src\rooms\user\drawn3.h
 
-1752266332 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\maingame.c
+1752270628 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\maingame.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1323,6 +1323,36 @@
 	"..\menu1\menu1.h"
 	"maingame.h"
 	"..\..\extras\newres.h"
+	"venceu.h"
 
 1751935326 c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawn6.h
+
+1752267640 c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\venceu.h
+
+1752268079 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawnvenceu.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	"..\..\..\config\config.h"
+
+1752269279 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\venceu.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	"..\..\..\config\config.h"
+	"drawnvenceu.h"
+
+1752269264 c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawnvenceu.h
 

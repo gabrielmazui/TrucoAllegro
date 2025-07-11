@@ -9,6 +9,7 @@
         "string.h": "c",
         "limits": "c",
         "typeinfo": "c",
-        "paused.h": "c"
+        "paused.h": "c",
+        "drawnvenceu.h": "c"
     }
 }

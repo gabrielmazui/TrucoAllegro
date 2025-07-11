@@ -294,7 +294,7 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
     
     void envidoButtons(void){
         ALLEGRO_COLOR b1 = cinza, b2 = cinza, b3 = cinza, b4 = cinza;
-        if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
+        if(game.chamadas->envidoButtons == 1 && game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
             if(game.chamadas->flor == 0 && game.chamadas->florFeita == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0 && game.round->usrTurn == 1 && game.round->cardsPlayed< 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed < 2 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0) || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
                 if((game.chamadas->envido == 2 || game.chamadas->cantado == 0 || game.chamadas->truco == 2 )){
                     b1 = branco;

@@ -19,6 +19,7 @@
 #include "..\menu1\menu1.h"
 #include "maingame.h"
 #include "..\..\extras\newres.h"
+#include "venceu.h"
 
 #define x3 larguraEscolhida/2 + (50*scale)
 #define x2 x3 - (143*scale)
@@ -28,7 +29,8 @@
 #define yUsrTable yUsr - (210*scale)
 #define yOppTable yOpp + (210*scale)
 
-int backToMenu = 0;
+int venceu = 0;
+int perdeu = 0;
 Game game;
 Carta baralho[40];
 int cartasUsadas[40] = {0};
@@ -133,9 +135,7 @@ void chooseCards(int starter){
 
 void endRound(int user){
     printf("ednRound");
-    if(game.opponentPoints >= 30 || game.userPoints >=30){
-        backToMenu = 1;
-    }
+    
     if(game.round->firstRoundEndVerify){
         game.round->firstRoundEndVerify = 0;
         game.round->timeRoundEndVerify = al_get_time();
@@ -330,7 +330,9 @@ void calcularCarta(){
     int rodadaAtual = (game.round->cardsPlayed/2) + 1;
     int cartasNaMesaUsr = 0;
     double forcaMaoUsr = 0.0;
-
+    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
     int powerTotalBot = 0;
 
     double auxForcaMaoBot = 0.0;
@@ -353,7 +355,7 @@ void calcularCarta(){
     for(int i = 0; i < 3; i++){
         Carta cartaAux = game.cartas->arrCartasOpp[i];
         double forcaReal = cartaAux.power;
-        double riscoPerderCarta = (forcaReal*opponent.desconfianca)/rodadaAtual;
+        double riscoPerderCarta = (forcaReal*desconfianca)/rodadaAtual;
         double auxForcaIaCarta = (forcaReal*0.5) + (forcaMaoUsr*0.4) - (riscoPerderCarta*0.5);
         game.calculo->cartasParaJogar[i] = auxForcaIaCarta;
     }
@@ -363,16 +365,16 @@ void calcularCarta(){
     double situationAux = (game.calculo->situacaoRound == 1) ? 1.0 : ((game.calculo->situacaoRound == 0) ? 0.5 : 0);
 
     game.calculo->forcaMaoTruco = forcaMaoTruco;
-    game.calculo->blefeTruco = (opponent.mentira*0.6) + ((1.0 - forcaMaoTruco)*0.4) - (forcaMaoUsr*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.45;
-    game.calculo->blefeInversoTruco = (opponent.mentira*0.6) + (forcaMaoTruco*0.4) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.25;
-    game.calculo->cantarTruco = (forcaMaoTruco*0.65) + (opponent.agressividade*0.45) - (opponent.desconfianca *0.5) - (forcaMaoUsr*0.35) + (situationAux)*0.3 + (((double)rand()/(double)RAND_MAX)-0.5)*0.4;
+    game.calculo->blefeTruco = (mentira*0.6) + ((1.0 - forcaMaoTruco)*0.4) - (forcaMaoUsr*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.45;
+    game.calculo->blefeInversoTruco = (mentira*0.6) + (forcaMaoTruco*0.4) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.25;
+    game.calculo->cantarTruco = (forcaMaoTruco*0.65) + (agressividade*0.45) - (desconfianca *0.5) - (forcaMaoUsr*0.35) + (situationAux)*0.3 + (((double)rand()/(double)RAND_MAX)-0.5)*0.4;
 }
 void definirCalculoPontos(void){
     // envido calculos
     int botPoints = game.cartas->pontosEnvido[1];
-    double agressividade = opponent.agressividade;
-    double mentira = opponent.mentira;
-    double desconfianca = opponent.desconfianca;
+    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
     double fatorHistorico = game.calculo->fatorHistoricoPontos;
 
     game.calculo->forcaMaoBotPontos = ((double)botPoints/33.0) + (((double)rand()/(double)RAND_MAX) - 0.5)*(0.2);
@@ -399,9 +401,9 @@ void calcularFlor(void){
     for(int i = 0; i < 3; i ++){
         botPoints += game.cartas->arrCartasOpp[i].envido;
     }
-    double agressividade = opponent.agressividade;
-    double mentira = opponent.mentira;
-    double desconfianca = opponent.desconfianca;
+    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
     
     double forcaFlor = ((double)botPoints/38.0)+ (agressividade)*0.2;
     double responderFlor = (forcaFlor)*0.7 + (agressividade)*0.4 - (desconfianca)*0.3 + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
@@ -705,7 +707,7 @@ void negarTruco(int user){
     }
 
     game.round->trucoNegado = user;
-
+    game.round->pointsRound = game.chamadas->pontosNegarCantada;
 
     game.chamadas->cantado = 0;
     game.chamadas->truco = 0;
@@ -1131,7 +1133,7 @@ void aceitarFlor(int user){
 }
 
 int botJogada(void){
-     printf("botjogada");
+    printf("botjogada");
     if(game.chamadas->respostaBot || game.chamadas->envido != 0 || game.chamadas->envido2 != 0 ||
     game.chamadas->realEnvido != 0 || game.chamadas->faltaEnvido != 0 || game.chamadas->trucoAux != 0) {
     return 0;
@@ -1562,7 +1564,11 @@ void mainGameLoop(){
     while(1)
     {
         if(al_event_queue_is_empty(event_queue)){
-            if(toMenu1 || exitGame || newRes || backToMenu) break;
+            if(game.opponentPoints >= 30 || game.userPoints >= 30){
+                venceu = 1;
+                break;
+            }
+            if(toMenu1 || exitGame || newRes) break;
             if(restartGame && animReady){
                 restartGame = 0;
                 mainGameLoop();
@@ -1803,7 +1809,7 @@ void mainGameLoop(){
                             }
                         }
                     }  
-                    if(game.chamadas->flor == 0 && game.chamadas->florFeita == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0 && game.round->usrTurn == 1  && game.round->cardsPlayed< 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed < 2 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0) || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
+                    if(game.chamadas->envidoButtons == 1 && game.chamadas->flor == 0 && game.chamadas->florFeita == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0 && game.round->usrTurn == 1  && game.round->cardsPlayed< 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed < 2 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0) || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
                         if(game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2){
                             game.chamadas->trucoAux = 0;
                             game.chamadas->cantado = 0;
@@ -1864,6 +1870,11 @@ void mainGameLoop(){
                 }
             }
         }
+    }
+    if(venceu == 1){
+        venceuMenu(1);
+    }else if(perdeu == 1){
+        venceuMenu(2);
     }
     if(toMenu1){
         al_destroy_audio_stream(menuTheme);
