@@ -65,9 +65,12 @@ typedef struct carta{
     int envido;
     int power;
     int out;
+    int mostrarExtra;
 }Carta;
 
-typedef struct Cards{
+typedef struct Cards{ 
+    int cartasJogarAux[6][2];
+    int cartasJogarAux2[6][2];
     int indexEnvidop1[2];
     int indexEnvidop2[2];
     Carta arrCartasUsr[3];
@@ -110,6 +113,8 @@ typedef struct Round{
 
 
 typedef struct Chamadas{
+    int audiofirstTime;
+    int envidoAux;
     int envidoAceito;
     int cartasNaMesaVerify;
     double cartasNaMesaVerifyTimer;
@@ -148,8 +153,11 @@ typedef struct Chamadas{
     int realEnvido;
     int faltaEnvido;
 
-    int flor; // usuario que cantou flor
-
+    int flor;
+    int contraFlor;
+    int contraFlorResto;
+    int florFeita;
+    
     int mainButtons;
     int envidoButtons;
     int trucoButtons;
@@ -171,6 +179,9 @@ typedef struct Calculo{
     double inversovalorChamadaPontos;
     double valorRespostaPontos;
     double inversovalorRespostaPontos;
+    double responderFlor;
+    double responderFlorBlefe;
+    double forcaFlor;
 }Calculo;
 
 typedef struct game{

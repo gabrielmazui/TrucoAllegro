@@ -221,7 +221,7 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         char trucoTxt[16] = "Truco"; 
         ALLEGRO_COLOR b1 = cinza, b2 = cinza, b3 = cinza, b4 = cinza;
         if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
-            if(game.chamadas->valeQuatro == 0 && game.round->usrTurn == 1 && (game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->cantado == 0)){
+            if(game.chamadas->valeQuatro == 0 && game.round->usrTurn == 1 && game.chamadas->flor == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && (game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->cantado == 0)){
                 b1 = branco;
                 if(game.chamadas->cantado == 0){
                     strcpy(trucoTxt, "Truco");
@@ -247,13 +247,13 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
             }
             
 
-            if(((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
-                if(game.round->cardsPlayed < 2){
-                    b2 = branco;
-                }
+            if(game.chamadas->flor == 0 && game.chamadas->florFeita == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0 && game.round->usrTurn == 1 && game.round->cardsPlayed< 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed < 2 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
+                b2 = branco;  
             }
-            if(game.round->usrTurn == 1 && game.chamadas->trucoAux == 0){
+            if(game.cartas->cantarFlor[0] == 1 && game.round->usrTurn == 1 && game.round->cardsPlayed < 2 && game.chamadas->florFeita == 0 && (game.chamadas->cantado == 0 || (game.chamadas->cantado == 1 && (game.chamadas->flor == 2 || game.chamadas->contraFlor == 2)))){
                 b3 = branco;
+            }
+            if(game.round->usrTurn == 1 && game.chamadas->trucoAux == 0 && game.chamadas->flor == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0){
                 b4 = branco;
             }
         }
@@ -295,13 +295,13 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
     void envidoButtons(void){
         ALLEGRO_COLOR b1 = cinza, b2 = cinza, b3 = cinza, b4 = cinza;
         if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
-            if(game.round->cardsPlayed < 2 && (game.chamadas->cantado == 0 || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
-                if((game.chamadas->envido == 2 || game.chamadas->cantado == 0)){
+            if(game.chamadas->flor == 0 && game.chamadas->florFeita == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0 && game.round->usrTurn == 1 && game.round->cardsPlayed< 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed < 2 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0) || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
+                if((game.chamadas->envido == 2 || game.chamadas->cantado == 0 || game.chamadas->truco == 2 )){
                     b1 = branco;
-                }if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->cantado == 0){
+                }if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->cantado == 0 || game.chamadas->truco == 2){
                     b2 = branco;
                 }
-                if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->cantado == 0){
+                if(game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->cantado == 0 || game.chamadas->truco == 2){
                     b3 = branco;
                 }
                 if(!game.chamadas->cantado){
@@ -362,6 +362,29 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         al_draw_filled_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgba(196, 143, 0, 200));
         al_draw_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgb(255, 255, 255), 2 * scale);
         al_draw_text(font3, al_map_rgb(255, 255, 255), x + largura_total / 2, y + altura_botao / 2 - al_get_font_line_height(font3) / 2, ALLEGRO_ALIGN_CENTRE, trucoAccStr);
+    }
+
+    void florButtons(void){
+        int botao_largura = 150 * scale;
+        int botao_altura = 50 * scale;
+        int largura_total = botao_largura * 2;
+        int altura_botao = 45 * scale;
+        int x = (larguraEscolhida - largura_total) / 2;
+        int y = alturaEscolhida - botao_altura - altura_botao;
+
+        char FlorAccStr[25];
+        if(game.chamadas->envido == 2 || game.chamadas->truco == 2 ){
+            sprintf(FlorAccStr, "%s", "Flor");
+        }
+        if(game.chamadas->flor == 2){
+            sprintf(FlorAccStr, "%s", "Contra flor");
+        }else if(game.chamadas->contraFlor == 2){
+            sprintf(FlorAccStr, "%s", "Contra flor e o resto");
+        }
+        
+        al_draw_filled_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgba(196, 143, 0, 200));
+        al_draw_rectangle(x, y, x + largura_total, y + altura_botao, al_map_rgb(255, 255, 255), 2 * scale);
+        al_draw_text(font3, al_map_rgb(255, 255, 255), x + largura_total / 2, y + altura_botao / 2 - al_get_font_line_height(font3) / 2, ALLEGRO_ALIGN_CENTRE, FlorAccStr);
     }
 
     void accOrDeny(void){
@@ -484,12 +507,133 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
         al_draw_text(font3, al_map_rgb(0, 0, 0), cx, cy, ALLEGRO_ALIGN_CENTRE, game.chamadas->usrMsg);
     }
     
+int userExtraCount = 0;
+int oppExtraCount = 0;
+for (int i = 0; i < 6; i++) {
+    if (game.cartas->cartasJogadas[i][0] == 0) break;
+    int quem = game.cartas->cartasJogadasOrdem[i][0];
+    if (quem == 1) userExtraCount++;
+    else if (quem == 2) oppExtraCount++;
+}
+
+for (int i = 0; i < 3; i++) {
+    if (game.cartas->arrCartasUsr[i].mostrarExtra) {
+        ALLEGRO_BITMAP *img = game.cartas->arrCartasUsr[i].img;
+        int x = game.animations->cordsAux[userExtraCount];
+        int y = game.animations->cordsAux[5];
+        al_draw_scaled_bitmap(img, 0, 0,
+            al_get_bitmap_width(img), al_get_bitmap_height(img),
+            x, y, 118 * scale, 180 * scale, 0);
+        userExtraCount++;
+    }
+
+    if (game.cartas->arrCartasOpp[i].mostrarExtra) {
+        ALLEGRO_BITMAP *img = game.cartas->arrCartasOpp[i].img;
+        int x = game.animations->cordsAux[oppExtraCount];
+        int y = game.animations->cordsAux[6];
+        al_draw_scaled_bitmap(img, 0, 0,
+            al_get_bitmap_width(img), al_get_bitmap_height(img),
+            x, y, 118 * scale, 180 * scale, 0);
+        oppExtraCount++;
+    }
+}
+void mostrarCartasEnvidoOuFlor(void) {
+    int envidoUsr = game.cartas->pontosEnvido[0];
+    int envidoBot = game.cartas->pontosEnvido[1];
+    int winner = (envidoUsr > envidoBot) ? 1 : (envidoBot > envidoUsr) ? 2 : game.round->mao;
+
+    int userPlayed = 0;
+    int oppPlayed = 0;
+    for (int i = 0; i < 6; i++) {
+        if (game.cartas->cartasJogadas[i][0] == 0) break;
+        int quem = game.cartas->cartasJogadasOrdem[i][0];
+        if (quem == 1) userPlayed++;
+        else if (quem == 2) oppPlayed++;
+    }
+
+    int cartasMostradasUsr = 0;
+    int cartasMostradasBot = 0;
+
+    if (game.chamadas->florFeita) {
+        if (winner == 1) {
+            for (int i = 0; i < 3; i++) {
+                if (!game.cartas->arrCartasUsr[i].out) {
+                    game.cartas->arrCartasUsr[i].mostrarExtra = 1;
+                    game.cartas->arrCartasUsr[i].out = 1;
+                    cartasMostradasUsr++;
+                }
+            }
+            if (cartasMostradasUsr > 0) {
+                sprintf(game.chamadas->usrMsg, "Flor na mesa");
+                game.chamadas->msgPopUpOnUsr = 1;
+                game.chamadas->msgPopUpTimerUsr = al_get_time();
+            }
+        } else {
+            for (int i = 0; i < 3; i++) {
+                if (!game.cartas->arrCartasOpp[i].out) {
+                    game.cartas->arrCartasOpp[i].mostrarExtra = 1;
+                    game.cartas->arrCartasOpp[i].out = 1;
+                    cartasMostradasBot++;
+                }
+            }
+            if (cartasMostradasBot > 0) {
+                sprintf(game.chamadas->botMsg, "Flor na mesa");
+                game.chamadas->msgPopUpOn = 1;
+                game.chamadas->msgPopUpTimer = al_get_time();
+            }
+        }
+    }
+    else if (game.chamadas->envidoAceito) {
+        if (winner == 1) {
+            for (int i = 0; i < 2; i++) {
+                int idx = game.cartas->indexEnvidop1[i];
+                if (idx != -1 && !game.cartas->arrCartasUsr[idx].out) {
+                    game.cartas->arrCartasUsr[idx].mostrarExtra = 1;
+                    game.cartas->arrCartasUsr[idx].out = 1;
+                    cartasMostradasUsr++;
+                }
+            }
+            if (cartasMostradasUsr > 0) {
+                sprintf(game.chamadas->usrMsg, "Meus pontos..");
+                game.chamadas->msgPopUpOnUsr = 1;
+                game.chamadas->msgPopUpTimerUsr = al_get_time();
+            }
+        } else {
+            for (int i = 0; i < 2; i++) {
+                int idx = game.cartas->indexEnvidop2[i];
+                if (idx != -1 && !game.cartas->arrCartasOpp[idx].out) {
+                    game.cartas->arrCartasOpp[idx].mostrarExtra = 1;
+                    game.cartas->arrCartasOpp[idx].out = 1;
+                    cartasMostradasBot++;
+                }
+            }
+            if (cartasMostradasBot > 0) {
+                sprintf(game.chamadas->botMsg, "Meus pontos..");
+                game.chamadas->msgPopUpOn = 1;
+                game.chamadas->msgPopUpTimer = al_get_time();
+            }
+        }
+    }
+
+    if ((cartasMostradasUsr > 0 || cartasMostradasBot > 0) && game.chamadas->audiofirstTime == 0) {
+        game.chamadas->audiofirstTime = 1;
+        // tocar áudio se necessário
+    }
+}
+
+
+
+    if(game.chamadas->cartasNaMesaVerify == 1){
+        mostrarCartasEnvidoOuFlor();
+    }
+
+
+
     if(game.chamadas->mainButtons == 1){
         mainButtons();
     }
     if(game.chamadas->aceitarPopUp == 1){
         accOrDeny();
-        // se quiser animar depois coloca ele em baixo do truco em todas situacoes
     }
     if(game.chamadas->envidoButtons == 1){
         envidoButtons();
@@ -505,6 +649,9 @@ void drawn6(Game game, ALLEGRO_FONT *font, ALLEGRO_FONT *font2, ALLEGRO_FONT *fo
     }
     if(game.chamadas->trucoButtons == 1){
         trucoButtons();
+    }
+    if(game.chamadas->florButtons == 1){
+        florButtons();
     }
 
     al_flip_display();

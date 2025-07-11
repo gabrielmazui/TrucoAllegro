@@ -22,7 +22,7 @@
 
 void UserLoop()
 {
-    ALLEGRO_SAMPLE *error = al_load_sample("sounds/error.wav");
+    ALLEGRO_SAMPLE *error = al_load_sample("sounds/error.ogg");
     double lastTimeError = 0.0;
     int PlayedError = 0;
 

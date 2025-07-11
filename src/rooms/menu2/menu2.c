@@ -20,8 +20,11 @@ void menuLoop2()
     larguraB = al_get_bitmap_width(background);
     alturaB = al_get_bitmap_height(background);
 
-    menuTheme = al_load_audio_stream("sounds/menuTheme.wav", 4, 2048);
-    ALLEGRO_SAMPLE *click = al_load_sample("sounds/gameStart.wav");
+    menuTheme = al_load_audio_stream("sounds/menuTheme.ogg", 4, 2048);
+    al_attach_audio_stream_to_mixer(menuTheme, al_get_default_mixer());
+    al_set_audio_stream_playmode(menuTheme, ALLEGRO_PLAYMODE_LOOP);
+    al_set_audio_stream_gain(menuTheme, menuSound);
+    ALLEGRO_SAMPLE *click = al_load_sample("sounds/gameStart.ogg");
 
     ALLEGRO_FONT *font1 = al_load_ttf_font("fonts/cartoon.ttf",150*scale,0),*font2 = al_load_ttf_font("fonts/retro.ttf",40*scale,0);
 

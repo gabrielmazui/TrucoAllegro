@@ -28,12 +28,14 @@
 #define yUsrTable yUsr - (210*scale)
 #define yOppTable yOpp + (210*scale)
 
+int backToMenu = 0;
 Game game;
 Carta baralho[40];
 int cartasUsadas[40] = {0};
 void verificarFlor(void);
 void verificarEnvidoPontos(void);
 void definirCalculoPontos(void);
+void verificarTurno(void);
 
 void carregar_baralho(Carta baralho[40]) {
     char nome[64];
@@ -128,72 +130,21 @@ void chooseCards(int starter){
     memset(cartasUsadas, 0, sizeof(cartasUsadas));
     memset((game.cartas->cartasJogadasOrdem), 0, sizeof(game.cartas->cartasJogadasOrdem));
 }
-int cartasNamesa(void){
-    if(game.chamadas->envidoAceito){
-        printf("oi");
-        char strUsr[80];
-        char strBot[80];
-        int envidoUsr = game.cartas->pontosEnvido[0];
-        int envidoBot = game.cartas->pontosEnvido[1];
-        int winnerEnvido = (envidoUsr > envidoBot) ? envidoUsr : (envidoBot > envidoUsr) ? envidoBot : game.round->mao;
-        
-        int cartasJogadasAux = game.round->cardsPlayed;
-        if(winnerEnvido == 1){
-            if(game.cartas->indexEnvidop1[1] == -1){
-                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
-                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop1[0];
-            }else{
-                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
-                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop1[0];
-                game.cartas->cartasJogadas[cartasJogadasAux+1][0] = winnerEnvido;
-                game.cartas->cartasJogadas[cartasJogadasAux+1][1] = game.cartas->indexEnvidop1[1];
-            }
-            
-            sprintf(game.chamadas->usrMsg, "Meus pontos..");
-            memcpy(game.chamadas->usrMsg, strUsr, sizeof(strUsr));
-            game.chamadas->msgPopUpOn = 1;
-            game.chamadas->msgPopUpTimer = al_get_time();
-        }else{
-            if(game.cartas->indexEnvidop2[1] == -1){
-                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
-                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop2[0];
-            }else{
-                game.cartas->cartasJogadas[cartasJogadasAux][0] = winnerEnvido;
-                game.cartas->cartasJogadas[cartasJogadasAux][1] = game.cartas->indexEnvidop2[0];
-                game.cartas->cartasJogadas[cartasJogadasAux+1][0] = winnerEnvido;
-                game.cartas->cartasJogadas[cartasJogadasAux+1][1] = game.cartas->indexEnvidop2[1];
-            }
-            sprintf(strBot, "Meus pontos..", game.cartas->pontosEnvido[0]);
-            memcpy(game.chamadas->botMsg, strBot, sizeof(strBot));
-            game.chamadas->msgPopUpOn = 1;
-            game.chamadas->msgPopUpTimer = al_get_time();
-        }
-        if(game.chamadas->cartasNaMesaVerify == 1){
-            game.chamadas->cartasNaMesaVerify = 0;
-            game.chamadas->cartasNaMesaVerifyTimer = al_get_time();
-            return 0;
-        }
-        if(al_get_time() - game.chamadas->cartasNaMesaVerifyTimer >= 15.0){
-            return 1;
-        }else{
-            return 0;
-        }
-        
-    }else{
-        return 1;
-    }
-}
+
 void endRound(int user){
-    
+    if(game.opponentPoints >= 30 || game.userPoints >=30){
+        backToMenu = 1;
+    }
     if(game.round->firstRoundEndVerify){
         game.round->firstRoundEndVerify = 0;
         game.round->timeRoundEndVerify = al_get_time();
         return;
     }
     if(al_get_time() - game.round->timeRoundEndVerify >= 2.0){
-        if(cartasNamesa() == 0){
-            printf("oi");
-            return;
+        
+        for (int i = 0; i < 3; i++) {
+            game.cartas->arrCartasUsr[i].mostrarExtra = 0;
+            game.cartas->arrCartasOpp[i].mostrarExtra = 0;
         }
         if(user == 1){
             game.userPoints += game.round->pointsRound;
@@ -208,12 +159,13 @@ void endRound(int user){
         }
        
 
-        game.chamadas->msgPopUpOnUsr = 1;
-        game.chamadas->msgPopUpTimerUsr = al_get_time();
-
-        game.chamadas->msgPopUpOn = 1;
-        game.chamadas->msgPopUpTimer = al_get_time();
-        
+        game.chamadas->msgPopUpOnUsr = 0;
+        game.chamadas->msgPopUpTimerUsr = 0.0;
+        game.chamadas->cartasNaMesaVerify = 0;
+        game.chamadas->cartasNaMesaVerifyTimer = 0.0;
+        game.chamadas->audiofirstTime = 0;
+        game.chamadas->msgPopUpOn = 0;
+        game.chamadas->msgPopUpTimer = 0.0;
         game.round->alMazo2 = 0;
         game.round->alMazo = 0;
         game.round->trucoNegado = 0;
@@ -236,7 +188,14 @@ void endRound(int user){
         game.chamadas->trucoButtons = 0;
         game.chamadas->trucoAux = 0;
         game.round->firstBotJogadaVerify = 1;
-        game.chamadas->cartasNaMesaVerify = 1;
+        game.chamadas->envidoAceito = 0;
+        game.chamadas->envidoAux = 0;
+        game.chamadas->flor = 0;
+        game.chamadas->contraFlor = 0;
+        game.chamadas->contraFlorResto = 0;
+        game.chamadas->florFeita = 0;
+        game.chamadas->florButtons = 0;
+        game.round->timeBotJogadaVerify = 0.0;
 
         game.gameRounds += 1;
         game.round->mao = (game.round->mao == 1) ? 2 : 1;
@@ -258,7 +217,8 @@ void endRound(int user){
 }
 
 void verificarTurno(void){
-    if(game.round->cardsPlayed % 2 == 0){
+    
+    if(game.round->cardsPlayed % 2 == 0 && game.chamadas->envidoAux == 0){
         int firstCardPlayer = game.cartas->cartasJogadas[(game.round->cardsPlayed) - 2][0];
         int firstCardIndex = game.cartas->cartasJogadas[(game.round->cardsPlayed) - 2][1];
         int firstCardPower = (firstCardPlayer == 1) ? game.cartas->arrCartasUsr[firstCardIndex].power : game.cartas->arrCartasOpp[firstCardIndex].power; 
@@ -286,6 +246,7 @@ void verificarTurno(void){
             game.round->usrTurn = game.round->mao;
         }
         if(game.round->cardsPlayed >= 4){
+            
             if(game.round->roundsWon[0] == 3){
                 if(game.round->roundsWon[1] == 1 || game.round->roundsWon[1] == 2){
                     endRound(game.round->roundsWon[1]);
@@ -317,6 +278,7 @@ void verificarTurno(void){
 void jogarCarta(int user, int cardIndex){
     int cartasJogadasAux = game.round->cardsPlayed;
     game.round->cardsPlayed += 1;
+    game.round->firstBotJogadaVerify = 1;
     if(user == 1){
         game.cartas->arrCartasUsr[cardIndex].out = 1;
         game.cartas->cartasJogadas[cartasJogadasAux][0] = user;
@@ -392,9 +354,9 @@ void calcularCarta(){
     double situationAux = (game.calculo->situacaoRound == 1) ? 1.0 : ((game.calculo->situacaoRound == 0) ? 0.5 : 0);
 
     game.calculo->forcaMaoTruco = forcaMaoTruco;
-    game.calculo->blefeTruco = (opponent.mentira*0.6) + ((1.0 - forcaMaoTruco)*0.3) - (forcaMaoUsr*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
+    game.calculo->blefeTruco = (opponent.mentira*0.6) + ((1.0 - forcaMaoTruco)*0.4) - (forcaMaoUsr*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.45;
     game.calculo->blefeInversoTruco = (opponent.mentira*0.6) + (forcaMaoTruco*0.4) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.25;
-    game.calculo->cantarTruco = (forcaMaoTruco*0.5) + (opponent.agressividade*0.35) - (opponent.desconfianca *0.4) - (forcaMaoUsr*0.3) + (situationAux)*0.3 + (((double)rand()/(double)RAND_MAX)-0.5)*0.15;
+    game.calculo->cantarTruco = (forcaMaoTruco*0.65) + (opponent.agressividade*0.45) - (opponent.desconfianca *0.5) - (forcaMaoUsr*0.35) + (situationAux)*0.3 + (((double)rand()/(double)RAND_MAX)-0.5)*0.4;
 }
 void definirCalculoPontos(void){
     // envido calculos
@@ -414,15 +376,30 @@ void definirCalculoPontos(void){
 
     double forcaMaoBot = game.calculo->forcaMaoBotPontos;
     double forcaMaoUsr = game.calculo->forcaMaoUsrPontos;
-    double faltaEnvidoFator = (double)(game.opponentPoints) / 15.0;
+    double faltaEnvidoFator = ((double)(game.opponentPoints) / 30.0) - (double)(game.userPoints) / 30.0;
 
     game.calculo->valorChamadaPontos = (0.55*forcaMaoBot) + (agressividade*0.25) - (forcaMaoUsr * 0.2) + (faltaEnvidoFator*0.5) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15; 
     game.calculo->inversovalorChamadaPontos = (0.55*forcaMaoBot) - (agressividade*0.3) + (forcaMaoUsr * 0.2) + (mentira*0.6) - (faltaEnvidoFator*0.5) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
     
     game.calculo->valorRespostaPontos = (0.65*forcaMaoBot) + (agressividade*0.35) - (forcaMaoUsr * 0.2) + (faltaEnvidoFator*0.5) - (desconfianca*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
     game.calculo->inversovalorRespostaPontos = (agressividade*0.35) - (forcaMaoUsr * 0.3) - (faltaEnvidoFator*0.5) + (desconfianca*0.4) + (mentira*0.65) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.35;
+}
 
-
+void calcularFlor(void){
+    int botPoints = 20;
+    for(int i = 0; i < 3; i ++){
+        botPoints += game.cartas->arrCartasOpp[i].envido;
+    }
+    double agressividade = opponent.agressividade;
+    double mentira = opponent.mentira;
+    double desconfianca = opponent.desconfianca;
+    
+    double forcaFlor = ((double)botPoints/38.0)+ (agressividade)*0.2;
+    double responderFlor = (forcaFlor)*0.7 + (agressividade)*0.4 - (desconfianca)*0.3 + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
+    double responderFlorBlefe = -(forcaFlor - 1)*0.3 + (agressividade)*0.3 - (desconfianca)*0.5 + (mentira)*0.7 + (((double)rand()/(double)RAND_MAX) - 0.5)*0.35;
+    game.calculo->forcaFlor = forcaFlor;
+    game.calculo->responderFlor = responderFlor;
+    game.calculo->responderFlorBlefe = responderFlorBlefe;
 }
     
 void verificarEnvidoPontos(void){
@@ -524,6 +501,17 @@ void msgBallonsUsr(int mode, int cantou, int type){
                 char Straux[80] = "vale 4";
                 memcpy(str, Straux, sizeof(str));
             }
+        }else if(mode == 3){
+            if(type == 1){
+                char Straux[80] = "Flor";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 2){
+                char Straux[80] = "Contra Flor";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 3){
+                char Straux[80] = "Contra e o resto";
+                memcpy(str, Straux, sizeof(str));
+            }
         }else if(mode == 4){
             game.chamadas->msgPopUpAuxUsr = 1;
             game.chamadas->msgPopUpTimerUsr = al_get_time();
@@ -583,6 +571,17 @@ void msgBallon(int mode, int cantou, int type){
                 char Straux[80] = "vale 4";
                 memcpy(str, Straux, sizeof(str));
             }
+        }else if(mode == 3){
+            if(type == 1){
+                char Straux[80] = "Flor";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 2){
+                char Straux[80] = "Contra Flor";
+                memcpy(str, Straux, sizeof(str));
+            }else if(type == 3){
+                char Straux[80] = "Contra e o resto";
+                memcpy(str, Straux, sizeof(str));
+            }
         }else if(mode == 4){
             game.chamadas->msgPopUpAux = 1;
             game.chamadas->msgPopUpTimer = al_get_time();
@@ -600,10 +599,20 @@ void cantarTruco(int user, int trucoType){
     game.chamadas->cantado = 1;
     game.chamadas->mainButtons = 1;
     game.chamadas->trucoAux = user;
+    int oppCardsPlayed = 0;
     if(user == 2){
-        game.chamadas->aceitarPopUp = 1;
+        for(int i = 0; i<6; i++){
+            if(game.cartas->cartasJogadas[i][0] == 1){
+                oppCardsPlayed++;
+            }
+        }
+        if(game.round->cardsPlayed < 2 && game.cartas->cantarFlor[0] == 1 && game.chamadas->florFeita == 0 && oppCardsPlayed == 0){
+            game.chamadas->florButtons = 1;
+        }else{
+            game.chamadas->trucoButtons = 1;
+            game.chamadas->aceitarPopUp = 1;
+        }
         game.chamadas->respostaBot = 0;
-        game.chamadas->trucoButtons = 1;
         game.round->firstBotJogadaVerify = 1;
         game.round->timeBotJogadaVerify = 0.0;
     }else{
@@ -667,44 +676,97 @@ void aceitarTruco(int user){
     game.chamadas->msgPopUpTimerUsr = al_get_time();
     game.round->firstBotJogadaVerify = 1;
     game.round->timeBotJogadaVerify = 0.0;
+    game.chamadas->envido = 0;
+    game.chamadas->envido2 = 0;
+    game.chamadas->realEnvido = 0;
+    game.chamadas->faltaEnvido = 0;
+    game.chamadas->envidoAux = 0;
+    game.chamadas->florButtons = 0;
 }
 
 void negarTruco(int user){
+    printf("negou");
     if(user == 2){
         msgBallon(1, 0, 2);
     }else{
         msgBallonsUsr(1, 0, 2);
     }
+
     game.round->trucoNegado = user;
-    game.round->pointsRound = game.chamadas->pontosNegarCantada;
+
+    int pontos = game.chamadas->pontosNegarCantada;
+
     game.chamadas->cantado = 0;
+    game.chamadas->truco = 0;
+    game.chamadas->retruco = 0;
+    game.chamadas->valeQuatro = 0;
+    game.chamadas->trucoAux = 0;
     game.chamadas->respostaBot = 0;
+
     game.chamadas->mainButtons = 1;
     game.chamadas->trucoButtons = 0;
     game.chamadas->aceitarPopUp = 0;
-    game.chamadas->trucoAux = 0;
     game.chamadas->msgPopUpAux = 1;
     game.chamadas->msgPopUpTimer = al_get_time();
     game.chamadas->msgPopUpAuxUsr = 1;
     game.chamadas->msgPopUpTimerUsr = al_get_time();
+
     game.round->firstBotJogadaVerify = 1;
     game.round->timeBotJogadaVerify = 0.0;
+    game.chamadas->envidoAux = 0;
 
+    game.chamadas->pontosNegarCantada = 0;
+    game.chamadas->pontosValendoCantada = 0;
+
+    game.chamadas->resultadoPopUpAux = 1;
+    game.chamadas->resultadoPopUpTimer = al_get_time();
     endRound(user);
 }
 
 void cantarEnvido(int user, int envType){
+    game.chamadas->trucoButtons = 0;
+    if(game.chamadas->flor || game.chamadas->contraFlor || game.chamadas->contraFlorResto || game.chamadas->florFeita) return;
     int opp = (user == 1) ? 2 : 1;
+    int oppCardsPlayed = 0;
+    for(int i = 0; i<6; i++){
+        if(game.cartas->cartasJogadas[i][0] == 1){
+            oppCardsPlayed++;
+        }
+    }
     if(user == 2){
-        game.chamadas->aceitarPopUp = 1;
+        if(game.cartas->cantarFlor[0] == 1 && oppCardsPlayed == 0){
+            game.chamadas->florButtons= 1;
+            game.chamadas->mainButtons = 1;
+        }else{
+            game.chamadas->aceitarPopUp = 1;
+            game.chamadas->envidoButtons = 1;
+            game.chamadas->mainButtons = 0;
+            game.chamadas->trucoButtons = 0;
+            game.chamadas->florButtons= 0;
+
+            
+        }
         game.chamadas->respostaBot = 0;
-        game.chamadas->mainButtons = 0;
-        game.chamadas->envidoButtons = 1;
+        
         game.round->firstBotJogadaVerify = 1;
-        game.round->timeBotJogadaVerify = 0.0;
+        game.round->timeBotJogadaVerify = al_get_time();
     }else{
         game.chamadas->respostaBot = 1;
         game.chamadas->aceitarPopUp = 0;
+    }
+    if(game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed == 0 && game.chamadas->envidoFeito == 0){
+        if(user == 2){
+            msgBallon(1, 1, 1);
+        }else{
+            msgBallonsUsr(1, 1, 1);
+        }
+        game.chamadas->trucoAux = 0;
+        game.chamadas->truco = 0;
+        game.chamadas->primeiroEnvido = user;
+        game.chamadas->envido = user;
+        game.chamadas->pontosNegarCantada = 1;
+        game.chamadas->pontosValendoCantada = 2;
+        return;
     }
     if(game.chamadas->cantado == 0){
         game.chamadas->cantado = 1;
@@ -837,10 +899,10 @@ void AceitarEnvido(int user){
     }
     if(game.chamadas->faltaEnvido){
         if(winner == 1){
-            int points = 15 - game.opponentPoints;
+            int points = 30 - game.opponentPoints;
             game.chamadas->pontosValendoCantada = points;
         }else{
-            int points = 15 - game.userPoints;
+            int points = 30 - game.userPoints;
             game.chamadas->pontosValendoCantada = points;
         }
     }
@@ -855,16 +917,17 @@ void AceitarEnvido(int user){
     game.chamadas->realEnvido = 0;
     game.chamadas->faltaEnvido = 0;
     game.chamadas->envidoFeito = 1;
-    game.chamadas->respostaBot = 0;
     game.chamadas->resultadoPopUpAux = 1;
     game.chamadas->mainButtons = 1;
     game.chamadas->envidoButtons = 0;
     game.chamadas->resultadoPopUpTimer = al_get_time();
     game.round->firstBotJogadaVerify = 1;
     game.round->timeBotJogadaVerify = 0.0;
+    game.chamadas->respostaBot = 0;
 }
 
 void negarEnvido(int user){
+    printf("negou");    
     if(user == 1){
         game.opponentPoints += game.chamadas->pontosNegarCantada;
         msgBallonsUsr(1, 0, 2);
@@ -889,12 +952,177 @@ void negarEnvido(int user){
     game.chamadas->pontosNegarCantada = 0;
     game.round->firstBotJogadaVerify = 1;
     game.round->timeBotJogadaVerify = 0.0;
-    
     // end game verificar
 }
 
+void cantarFlor(int user, int tpye){
+    if (game.chamadas->florFeita) return;
+    if(user == 1){
+        game.chamadas->florButtons = 0;
+    }
+    game.chamadas->envidoAceito = 0;
+    int indxOpp = (user == 1) ? 1 : 0;
+
+    if(game.chamadas->cantado == 0){
+        if(game.cartas->cantarFlor[indxOpp] == 0){
+            if(user == 1){
+                msgBallonsUsr(3, 1, 1);
+                game.chamadas->msgPopUpOnUsr  = 1;
+                game.chamadas->msgPopUpAuxUsr = 1;
+                game.chamadas->msgPopUpTimerUsr = al_get_time();
+                game.userPoints += 3;
+                game.chamadas->florFeita = 1;
+            }else{
+                msgBallon(3, 1, 1);
+                game.chamadas->msgPopUpAux = 1;
+                game.chamadas->msgPopUpTimer = al_get_time();
+                game.chamadas->msgPopUpOn = 1;
+                game.opponentPoints += 3;
+                game.chamadas->florFeita = 1;
+            }
+        }else{
+            game.chamadas->cantado = 1;
+            if(user == 1){
+                msgBallonsUsr(3, 1, 1);
+                game.chamadas->flor = 1;
+                game.chamadas->respostaBot = 1;
+            }else{
+                msgBallon(3, 1, 1);
+                game.chamadas->flor = 2;
+                game.chamadas->florButtons = 1;
+                game.chamadas->aceitarPopUp = 1;
+            }
+        }
+    }else if(game.chamadas->envido || game.chamadas->truco ){
+        game.chamadas->envido = 0;
+        game.chamadas->truco = 0;
+        game.chamadas->trucoAux = 0;
+        if(game.cartas->cantarFlor[indxOpp] == 0){
+            if(user == 1){
+                msgBallonsUsr(3, 1, 1);
+                game.chamadas->msgPopUpOnUsr  = 1;
+                game.chamadas->msgPopUpAuxUsr = 1;
+                game.chamadas->msgPopUpTimerUsr = al_get_time();
+                game.userPoints += 3;
+                game.chamadas->florFeita = 1;
+                game.chamadas->cantado = 0;
+            }else{
+                msgBallon(3, 1, 1);
+                game.chamadas->msgPopUpAux = 1;
+                game.chamadas->msgPopUpTimer = al_get_time();
+                game.chamadas->msgPopUpOn = 1;
+                game.opponentPoints += 3;
+                game.chamadas->florFeita = 1;
+                game.chamadas->cantado = 0;
+            }
+        }
+    }else if(game.chamadas->flor){
+        game.chamadas->cantado = 1;
+        game.chamadas->flor = 0;
+        if(user == 1){
+            msgBallonsUsr(3, 1, 2);
+            game.chamadas->contraFlor = 1;
+            game.chamadas->respostaBot = 1;
+        }else{
+            msgBallon(3, 1, 2);
+            game.chamadas->contraFlor = 2;
+            game.chamadas->florButtons = 1;
+            game.chamadas->aceitarPopUp = 1;
+        }
+    }else if(game.chamadas->contraFlor){
+        game.chamadas->cantado = 1;
+        game.chamadas->contraFlor = 0;
+        if(user == 1){
+            msgBallonsUsr(3, 1, 3);
+            game.chamadas->contraFlorResto = 1;
+            game.chamadas->respostaBot = 1;
+        }else{
+            msgBallon(3, 1, 3);
+            game.chamadas->contraFlorResto = 2;
+            game.chamadas->florButtons = 1;
+            game.chamadas->aceitarPopUp = 1;
+        }
+    }
+    game.chamadas->truco = 0;
+    game.chamadas->envido = 0;
+}
+
+void negarFlor(int user){
+    if(game.chamadas->flor){
+        if(user == 1){
+            msgBallonsUsr(1, 0, 2);
+            game.opponentPoints += 3;
+        }else{
+            msgBallon(1, 0, 2);
+            game.userPoints += 3;
+        }
+    }else if(game.chamadas->contraFlor){
+        if(user == 1){
+            msgBallonsUsr(1, 0, 2);
+            game.opponentPoints += 4;
+        }else{
+            msgBallon(1, 0, 2);
+            game.userPoints += 4;
+        }
+    }else if(game.chamadas->contraFlorResto){
+        if(user == 1){
+            msgBallonsUsr(1, 0, 2);
+            game.opponentPoints += 6;
+        }else{
+            msgBallon(1, 0, 2);
+            game.userPoints += 6;
+        }
+    }
+    game.chamadas->flor = 0;
+    game.chamadas->contraFlor = 0;
+    game.chamadas->contraFlorResto = 0;
+    game.chamadas->florButtons = 0;
+    game.chamadas->florFeita = 1;
+    game.chamadas->aceitarPopUp = 0;
+    game.chamadas->trucoAux = 0;
+}
+
+void aceitarFlor(int user){
+    // colocar os pontos no pontos envido mesmo
+    int p1 = 20;
+    int p2 = 20;
+    for(int i = 0; i < 3; i ++){
+        p1 += game.cartas->arrCartasUsr[i].envido;
+    }
+    for(int i = 0; i < 3; i ++){
+        p2 += game.cartas->arrCartasOpp[i].envido;
+    }
+    game.cartas->pontosEnvido[0] = p1;
+    game.cartas->pontosEnvido[1] = p2;
+    if(user == 1){
+        msgBallonsUsr(1, 0, 1);
+    }else{
+        msgBallon(1, 0, 1);
+    }
+    if(game.chamadas->flor){
+        game.chamadas->pontosValendoCantada = 4;
+    }else if(game.chamadas->contraFlor){
+        game.chamadas->pontosValendoCantada = 6;
+    }else if(game.chamadas->contraFlorResto){
+        game.chamadas->pontosValendoCantada = 6;
+    }
+    game.chamadas->flor = 0;
+    game.chamadas->contraFlor = 0;
+    game.chamadas->contraFlorResto = 0;
+    game.chamadas->florButtons = 0;
+    game.chamadas->florFeita = 1;
+    game.chamadas->aceitarPopUp = 0;
+    game.chamadas->resultadoPopUpAux = 1;
+    game.chamadas->resultadoPopUpTimer = al_get_time();
+    game.chamadas->trucoAux = 0;
+}
 
 int botJogada(void){
+    
+    if(game.chamadas->respostaBot || game.chamadas->envido != 0 || game.chamadas->envido2 != 0 ||
+    game.chamadas->realEnvido != 0 || game.chamadas->faltaEnvido != 0 || game.chamadas->trucoAux != 0) {
+    return 0;
+    }
     if(game.chamadas->resultadoPopUp == 1 || game.chamadas->resultadoPopUpAux == 1){
         game.round->firstBotJogadaVerify = 1;
         game.round->timeBotJogadaVerify = 0.0;
@@ -907,7 +1135,10 @@ int botJogada(void){
     if(al_get_time() - game.round->timeBotJogadaVerify >= 2.0 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){
         definirCalculoPontos();
         calcularCarta();
-        if(game.round->cardsPlayed < 2 && game.chamadas->envidoFeito == 0 && game.chamadas->cantado == 0){
+        calcularFlor();
+        
+        // envido
+        if(game.round->cardsPlayed < 2 && game.chamadas->envidoFeito == 0 && game.chamadas->cantado == 0 && game.cartas->cantarFlor[1] == 0 && game.chamadas->florFeita == 0){
             if (game.calculo->forcaMaoBotPontos >= 0.8 && game.calculo->inversovalorChamadaPontos >= 0.85 && game.round->cardsPlayed == 0){
             }else{
                 if(game.calculo->valorChamadaPontos >= 1.1){
@@ -917,7 +1148,7 @@ int botJogada(void){
                     return 1;
 
                 }else if(game.calculo->valorChamadaPontos >= 0.8){
-                    if(15 - game.opponentPoints <= 2){
+                    if(30 - game.opponentPoints <= 2){
                         cantarEnvido(2, 3);
                         return 1;
                     }
@@ -927,7 +1158,7 @@ int botJogada(void){
                     return 1;
 
                 }else if(game.calculo->valorChamadaPontos >= 0.4){
-                    if(15 - game.opponentPoints <= 2){
+                    if(30 - game.opponentPoints <= 2){
                         cantarEnvido(2, 3);
                         return 1;
                     }
@@ -937,6 +1168,19 @@ int botJogada(void){
                     return 1;
                 }
             }
+        }
+        // flor
+        int oppCardsPlayed = 0;
+        for(int i = 0; i<6; i++){
+            if(game.cartas->cartasJogadas[i][0] == 2){
+                oppCardsPlayed++;
+            }
+        }
+        if(oppCardsPlayed == 0 && game.cartas->cantarFlor[1] == 1 && game.round->cardsPlayed < 2 && game.chamadas->envidoFeito == 0 && game.chamadas->flor==0 && game.chamadas->florFeita==0 && (game.chamadas->cantado == 0 || game.chamadas->truco == 1 || game.chamadas->envido == 1)){
+            game.round->firstBotJogadaVerify = 1;
+            game.round->timeBotJogadaVerify = 0.0;
+            cantarFlor(2, 1);
+            return 1;
         }
 
         // decisao truco
@@ -1002,7 +1246,7 @@ int botJogada(void){
                     }
                 }
             }
-            if(game.chamadas->cantado == 0 || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 0 && game.chamadas->envido == 0 && game.chamadas->envido2 == 0 && game.chamadas->realEnvido == 0 && game.chamadas->faltaEnvido == 0)){
+            if(game.chamadas->cantado == 0 || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 0 && game.chamadas->envido == 0 && game.chamadas->envido2 == 0 && game.chamadas->realEnvido == 0 && game.chamadas->faltaEnvido == 0 && game.chamadas->flor == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0)){
                 jogarCarta(2, matrizAux[0][1]);
                 game.round->firstBotJogadaVerify = 1;
                 game.round->timeBotJogadaVerify = 0.0;
@@ -1060,7 +1304,6 @@ int botJogada(void){
 void verificarCantadas(void){
     if(game.chamadas->resultadoPopUp == 1 || game.chamadas->resultadoPopUpAux == 1){
         game.round->firstBotJogadaVerify = 1;
-        game.round->timeBotJogadaVerify = 0.0;
     }
     if(game.chamadas->respostaBot){
         if(game.chamadas->firstChamada == 1){
@@ -1070,9 +1313,63 @@ void verificarCantadas(void){
         }else if(al_get_time() - game.chamadas->timeFirstChamada >= 2.5){
             definirCalculoPontos();
             calcularCarta();
-            if(game.chamadas->envido == 1){
-                if(15 - game.userPoints <= game.chamadas->pontosNegarCantada){
-                    if(15 - game.userPoints >= game.chamadas->pontosValendoCantada + 3){
+            calcularFlor();
+            // flor
+            
+            int oppCardsPlayed = 0;
+            for(int i = 0; i<6; i++){
+                if(game.cartas->cartasJogadas[i][0] == 2){
+                    oppCardsPlayed++;
+                }
+            }   
+
+            if(game.cartas->cantarFlor[1] == 1 && oppCardsPlayed == 0){
+                if(game.chamadas->flor == 1){
+                    if(game.userPoints + 3 >= 30){
+                        cantarFlor(2, 2);
+                    }else{
+                        if(game.calculo->forcaFlor <= 0.4 && game.calculo->responderFlorBlefe >= 0.95){
+                            cantarFlor(2, 2);
+                        }else{
+                            if(game.calculo->responderFlor >= 0.75){
+                                cantarFlor(2, 2);
+                            }else if(game.calculo->responderFlor >= 0.75){
+                                aceitarFlor(2);
+                            }else{
+                                negarFlor(2);
+                            }
+                        }
+                    }
+                }else if(game.chamadas->contraFlor == 1){
+                    if(game.userPoints + 4 >= 30){
+                        cantarFlor(2, 2);
+                    }else{
+                        if(game.calculo->forcaFlor <= 0.4 && game.calculo->responderFlorBlefe >= 1.10){
+                            cantarFlor(2, 3);
+                        }else{
+                            if(game.calculo->responderFlor >= 1.10){
+                                cantarFlor(2, 3);
+                            }else if(game.calculo->responderFlor >= 0.90){
+                                aceitarFlor(2);
+                            }else{
+                                negarFlor(2);
+                            }
+                        }
+                    }
+                }else if(game.chamadas->contraFlorResto == 1){
+                    if(game.calculo->responderFlor >= 1.10){
+                        aceitarFlor(2);
+                    }else{
+                        negarFlor(2);
+                    } 
+                }
+            }
+
+            // envido
+            if((game.chamadas->envido == 1 && game.cartas->cantarFlor[1] == 0)){
+                game.chamadas->truco = 0;
+                if(30 - game.userPoints <= game.chamadas->pontosNegarCantada){
+                    if(30 - game.userPoints >= game.chamadas->pontosValendoCantada + 3){
                         cantarEnvido(2, 3);
                     }else{
                         cantarEnvido(2, 2); 
@@ -1097,8 +1394,8 @@ void verificarCantadas(void){
                     negarEnvido(2);
                 }
             }else if(game.chamadas->envido2 == 1){
-                if(15 - game.opponentPoints <= game.chamadas->pontosNegarCantada){
-                    if(15 - game.userPoints >= game.chamadas->pontosValendoCantada + 3){
+                if(30 - game.opponentPoints <= game.chamadas->pontosNegarCantada){
+                    if(30 - game.userPoints >= game.chamadas->pontosValendoCantada + 3){
                         cantarEnvido(2, 3);
                     }else{
                          cantarEnvido(2, 2); 
@@ -1119,8 +1416,8 @@ void verificarCantadas(void){
                     negarEnvido(2);
                 }
             }else if(game.chamadas->realEnvido == 1){
-                if(15 - game.opponentPoints <= game.chamadas->pontosNegarCantada){
-                    if(15 - game.userPoints >= game.chamadas->pontosValendoCantada + 3){
+                if(30 - game.opponentPoints <= game.chamadas->pontosNegarCantada){
+                    if(30 - game.userPoints >= game.chamadas->pontosValendoCantada + 3){
                         cantarEnvido(2, 3);
                     }
                 }
@@ -1135,17 +1432,17 @@ void verificarCantadas(void){
                     negarEnvido(2);
                 }
             }else if(game.chamadas->faltaEnvido == 1){
-                    double lim = 0.9;
-                    if(15 - game.userPoints <= game.chamadas->pontosNegarCantada){
-                        lim= 0.0;
-                    }else if(15 - game.userPoints - game.chamadas->pontosNegarCantada <= 3){
-                        lim = 0.7;
-                    }
-                    else if (game.calculo->valorRespostaPontos >= lim) {
-                        AceitarEnvido(2);
-                    }else {
-                        negarEnvido(2);
-                    }
+                double lim = 0.9;
+                if(30 - game.userPoints <= game.chamadas->pontosNegarCantada){
+                    lim= 0.0;
+                }else if(30 - game.userPoints - game.chamadas->pontosNegarCantada <= 3){
+                    lim = 0.7;
+                }
+                else if (game.calculo->valorRespostaPontos >= lim) {
+                    AceitarEnvido(2);
+                }else {
+                    negarEnvido(2);
+                }
             }
             // truco
             if(game.chamadas->truco == 1){
@@ -1164,19 +1461,25 @@ void verificarCantadas(void){
                 if(game.calculo->forcaMaoTruco <= 0.4 && game.calculo->blefeTruco >= 1.0){
                     cantarTruco(2, 3);
                 }else{
-                    if(game.calculo->cantarTruco >= 0.95){
+                    if(game.calculo->cantarTruco >= 1.05){
                         cantarTruco(2, 3);
-                    }else if(game.calculo->cantarTruco >= 1.05){
+                    }else if(game.calculo->cantarTruco >= 0.95){
                         aceitarTruco(2);
                     }else{
                         negarTruco(2);
                     }
                 }
+            }else if(game.chamadas->valeQuatro == 1){ 
+                if(game.calculo->cantarTruco >= 1.05){
+                    aceitarTruco(2);  
+                }else{
+                    negarTruco(2);
+                }
             }
+                
+            
             game.chamadas->firstChamada = 1;
             game.chamadas->timeFirstChamada = 0.0;
-            printf("forcaMaoBotPontos =%.2f\n, valorRespostaPontos = %.2f\n, invesovalorRespostaPontos = %.2f\n, inversoValorChamada = %.2f\n, ValorChamada = %.2f\n, pontos=%d\n\n\n ",game.calculo->forcaMaoBotPontos, game.calculo->valorRespostaPontos, game.calculo->inversovalorRespostaPontos, game.calculo->inversovalorChamadaPontos, game.calculo->valorChamadaPontos ,game.cartas->pontosEnvido[1]);
-            printf("forcaMaoTruco = %.2f\n, blefeInversoTruco = %.2f\n, blefeTruco = %.2f\n, cantarTruco = %.2f\n\n\n",game.calculo->forcaMaoTruco, game.calculo->blefeInversoTruco, game.calculo->blefeTruco, game.calculo->cantarTruco);
         }
     }
 }
@@ -1202,7 +1505,7 @@ void mainGameLoop(){
     chamadas.firstChamada = 1;
     
 
-    game.maxPoints = 15;
+    game.maxPoints = 30;
     game.opponentPoints = 0;
     game.userPoints = 0;
     game.imagens = imagens;
@@ -1212,7 +1515,7 @@ void mainGameLoop(){
     game.round = &round;
     game.chamadas = &chamadas;
     game.calculo = &calculo;
-    game.chamadas->cartasNaMesaVerify = 1;
+    game.chamadas->cartasNaMesaVerify = 0;
 
     chooseCards(0);
 
@@ -1245,7 +1548,7 @@ void mainGameLoop(){
     while(1)
     {
         if(al_event_queue_is_empty(event_queue)){
-            if(toMenu1 || exitGame || newRes) break;
+            if(toMenu1 || exitGame || newRes || backToMenu) break;
             if(restartGame && animReady){
                 restartGame = 0;
                 mainGameLoop();
@@ -1262,13 +1565,13 @@ void mainGameLoop(){
         }
         al_wait_for_event(event_queue, &event);
         if(event.type == ALLEGRO_EVENT_TIMER){
-            if(game.round->usrTurn == 2 && game.round->firstRoundEndVerify == 1){
-                botJogada();
-            }if(game.round->firstRoundEndVerify == 0 && game.chamadas->cartasNaMesaVerify == 0){
-                verificarTurno();
-            }
-            if(game.chamadas->respostaBot){
+            if(game.chamadas->respostaBot) {
                 verificarCantadas();
+            }
+        if(game.round->usrTurn == 2 && game.round->firstRoundEndVerify == 1) {
+            botJogada();
+        }if((game.chamadas->envidoAux == 0) && game.round->firstRoundEndVerify == 0){
+                verificarTurno();
             }
             if(game.round->alMazo){
                 endRound(2);
@@ -1324,7 +1627,12 @@ void mainGameLoop(){
                 mouse_x = event.mouse.x;
                 mouse_y = event.mouse.y;
                 if(game.round->firstRoundEndVerify == 1 && game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0){  
-                    if(mouse_y >= yUsr && mouse_y <= yUsr + (180*scale) && game.round->usrTurn == 1 && ((game.chamadas->trucoAux == 0 && game.chamadas->cantado == 1) || game.chamadas->cantado == 0)){
+                    if(mouse_y >= yUsr && mouse_y <= yUsr + (180*scale) && game.round->usrTurn == 1 &&
+                    game.chamadas->resultadoPopUp == 0 && game.chamadas->resultadoPopUpAux == 0 &&
+                    game.chamadas->respostaBot == 0 && ((game.chamadas->envido == 0 && game.chamadas->envido2 == 0 &&
+                    game.chamadas->realEnvido == 0 && game.chamadas->faltaEnvido == 0 &&
+                    game.chamadas->trucoAux == 0)))
+                    {                        
                         if(mouse_x >= x1 && mouse_x <= x1 + (118*scale) && game.cartas->arrCartasUsr[0].out == 0){
                             jogarCarta(1, 0);
                         }
@@ -1398,12 +1706,27 @@ void mainGameLoop(){
                         }
                     }
 
+                    if(game.chamadas->aceitarPopUp && game.chamadas->cantado == 1 && (game.chamadas->flor == 2 ||game.chamadas->contraFlor == 2 || game.chamadas->contraFlorResto == 2)){
+                        if (mouse_x >= x1_quero && mouse_x <= x2_quero && mouse_y >= y_botao_q && mouse_y <= alturaEscolhida) {
+                            aceitarFlor(1);
+                            game.chamadas->aceitarPopUp = 0;
+                            game.chamadas->florButtons = 0;
+                        }
+
+                        if (mouse_x >= x1_naoquero && mouse_x <= x2_naoquero && mouse_y >= y_botao_q && mouse_y <= alturaEscolhida) {
+                            negarTruco(1);
+                            game.chamadas->aceitarPopUp = 0;
+                            game.chamadas->florButtons = 0;
+                        }
+                    }
+
                     int botao_largura2 = 150 * scale;
                     int botao_altura2 = 50 * scale;
                     int largura_total = botao_largura2 * 2;
                     int altura_botao = 45 * scale;
                     int xTruco = (larguraEscolhida - largura_total) / 2;
                     int yTruco = alturaEscolhida - botao_altura2 - altura_botao;
+
                     if(mouse_x >= xTruco && mouse_x <= xTruco + largura_total && mouse_y >= yTruco && mouse_y <= yTruco + altura_botao){
                         if(game.chamadas->trucoButtons){
                             if(game.chamadas->truco == 2){
@@ -1411,12 +1734,20 @@ void mainGameLoop(){
                             }else if(game.chamadas->retruco == 2){
                                 cantarTruco(1, 3);
                             }
+                        }else if(game.chamadas->florButtons){
+                            if(game.chamadas->envido == 2 || game.chamadas->truco == 2){
+                                cantarFlor(1, 1);
+                            }else if(game.chamadas->flor == 2){
+                                cantarFlor(1, 2);
+                            }else if(game.chamadas->contraFlor){
+                                cantarFlor(1, 3);
+                            }
                         }
                     }
 
                     if(game.chamadas->mainButtons == 1){
                         if(mouse_x >= bt1_x1 && mouse_x <= bt1_x2 && mouse_y >= bt1_y1 && mouse_y <= bt1_y2 ) {
-                            if(game.chamadas->valeQuatro == 0 && game.round->usrTurn == 1 && (game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->cantado == 0)){
+                            if(game.chamadas->valeQuatro == 0 && game.round->usrTurn == 1 && game.chamadas->flor == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && (game.chamadas->truco == 2 || game.chamadas->retruco == 2 || game.chamadas->cantado == 0)){
                                 if(game.chamadas->cantado == 0){
                                     cantarTruco(1, 1);
                                 }else if(game.chamadas->truco == 2){
@@ -1428,20 +1759,23 @@ void mainGameLoop(){
                             
                         }
                         
-                        else if(mouse_x >= bt2_x1 && mouse_x <= bt2_x2 && mouse_y >= bt2_y1 && mouse_y <= bt2_y2 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
-                            if(game.round->cardsPlayed < 2){
-                                game.chamadas->envidoButtons = 1;
-                                game.chamadas->mainButtons = 0;
-                                continue;
-                            }
+                        else if(mouse_x >= bt2_x1 && mouse_x <= bt2_x2 && mouse_y >= bt2_y1 && mouse_y <= bt2_y2 && game.chamadas->flor == 0 && game.chamadas->florFeita == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0 && game.round->usrTurn == 1 && game.round->cardsPlayed< 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed < 2 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0))){
+                            game.chamadas->envidoButtons = 1;
+                            game.chamadas->mainButtons = 0;
+                            continue;
                         }
             
-                        else if(mouse_x >= bt3_x1 && mouse_x <= bt3_x2 && mouse_y >= bt3_y1 && mouse_y <= bt3_y2 && game.round->usrTurn == 1) {
-                            printf("flor");
+                        else if(mouse_x >= bt3_x1 && mouse_x <= bt3_x2 && mouse_y >= bt3_y1 && mouse_y <= bt3_y2 && game.cartas->cantarFlor[0] == 1 && game.round->usrTurn == 1 && game.round->cardsPlayed < 2 && game.chamadas->florFeita == 0 && (game.chamadas->cantado == 0 || (game.chamadas->cantado == 1 && (game.chamadas->flor == 2 || game.chamadas->contraFlor == 2)))){
+                            if(game.chamadas->cantado == 0){
+                                cantarFlor(1, 1);
+                            }else if(game.chamadas->flor == 2){
+                                cantarFlor(1, 2);
+                            }else if(game.chamadas->contraFlor == 2){
+                                cantarFlor(1, 3);
+                            }
                         }
 
-                        else if(mouse_x >= bt4_x1 && mouse_x <= bt4_x2 && mouse_y >= bt4_y1 && mouse_y <= bt4_y2 && game.round->usrTurn == 1 && game.chamadas->trucoAux == 0) {
-                            // verificaar truco retruco vale 4
+                        else if(mouse_x >= bt4_x1 && mouse_x <= bt4_x2 && mouse_y >= bt4_y1 && mouse_y <= bt4_y2 && game.round->usrTurn == 1 && game.chamadas->trucoAux == 0 && game.chamadas->flor == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0){
                             if(game.round->cardsPlayed == 0 && (game.chamadas->truco == 0 && game.chamadas->retruco == 0 && game.chamadas->valeQuatro == 0)){
                                 game.round->pointsRound = 2;
                                 game.round->alMazo = 1;
@@ -1455,23 +1789,22 @@ void mainGameLoop(){
                             }
                         }
                     }  
-                    if(game.chamadas->envidoButtons == 1 && game.round->cardsPlayed < 2 && (game.chamadas->cantado == 0 || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0) || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
+                    if(game.chamadas->flor == 0 && game.chamadas->florFeita == 0 && game.chamadas->contraFlor == 0 && game.chamadas->contraFlorResto == 0 && ((game.chamadas->cantado == 0 && game.chamadas->envidoFeito == 0 && game.round->usrTurn == 1  && game.round->cardsPlayed< 2) || (game.chamadas->cantado == 1 && game.chamadas->trucoAux == 2 && game.round->cardsPlayed < 2 && game.chamadas->truco == 2 && game.chamadas->envidoFeito == 0) || (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->faltaEnvido == 2))){
                         if(game.chamadas->cantado == 1 && game.chamadas->trucoAux == 1 && game.round->cardsPlayed == 0 && game.chamadas->truco == 2){
                             game.chamadas->trucoAux = 0;
                             game.chamadas->cantado = 0;
                             game.chamadas->truco = 0;
                         }
                         
-                        if(mouse_x >= bt1_x1 && mouse_x <= bt1_x2 && mouse_y >= bt1_y1 && mouse_y <= bt1_y2 && (game.chamadas->envido == 2 || game.chamadas->cantado == 0)) {
+                        if(mouse_x >= bt1_x1 && mouse_x <= bt1_x2 && mouse_y >= bt1_y1 && mouse_y <= bt1_y2 && (game.chamadas->envido == 2 || game.chamadas->cantado == 0 || game.chamadas->truco == 2)) {
                             cantarEnvido(1, 1);
                         }
                         
-
-                        else if(mouse_x >= bt2_x1 && mouse_x <= bt2_x2 && mouse_y >= bt2_y1 && mouse_y <= bt2_y2 && (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->cantado == 0)) {
+                        else if(mouse_x >= bt2_x1 && mouse_x <= bt2_x2 && mouse_y >= bt2_y1 && mouse_y <= bt2_y2 && (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->cantado == 0 || game.chamadas->truco == 2)) {
                             cantarEnvido(1, 2);
                         }
             
-                        else if(mouse_x >= bt3_x1 && mouse_x <= bt3_x2 && mouse_y >= bt3_y1 && mouse_y <= bt3_y2 && (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->cantado == 0)) {
+                        else if(mouse_x >= bt3_x1 && mouse_x <= bt3_x2 && mouse_y >= bt3_y1 && mouse_y <= bt3_y2 && (game.chamadas->envido == 2 || game.chamadas->envido2 == 2 || game.chamadas->realEnvido == 2 || game.chamadas->cantado == 0 || game.chamadas->truco == 2)) {
                             cantarEnvido(1, 3);
                         }
                     
@@ -1498,6 +1831,10 @@ void mainGameLoop(){
                         game.chamadas->aceitarPopUp = 0;
                         game.chamadas->mainButtons = 1;
                         game.chamadas->envidoButtons = 0;
+                        game.chamadas->florButtons = 0;
+                        game.chamadas->flor = 0;
+                        game.chamadas->contraFlor = 0;
+                        game.chamadas->contraFlorResto = 0;
                         int p1 = game.cartas->pontosEnvido[0];
                         int p2 = game.cartas->pontosEnvido[1];
                         int winner = (p1 > p2) ? 1 : (p2 > p1) ? 2 : game.round->mao;
@@ -1508,7 +1845,7 @@ void mainGameLoop(){
                         }
                         game.chamadas->pontosValendoCantada = 0;
                         game.chamadas->pontosNegarCantada = 0;
-                    // verify game (se passou de 15 end game)
+                    // verify game (se passou de 30 end game)
                     }
                 }
             }

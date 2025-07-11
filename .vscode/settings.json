@@ -8,6 +8,7 @@
         "stdio.h": "c",
         "string.h": "c",
         "limits": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "paused.h": "c"
     }
 }
