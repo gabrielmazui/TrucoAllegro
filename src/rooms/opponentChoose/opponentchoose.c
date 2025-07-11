@@ -27,17 +27,17 @@ void opponentChooseLoop()
     ALLEGRO_FONT* font2 = al_load_ttf_font("fonts/retro.ttf", 20 * scale, 0);
 
     character vetorPers[11] = {
-        {"Mazui", al_load_bitmap("images/chars/mazui.jpg"), 0.5, 0.5, 0.8},
-        {"Artur", al_load_bitmap("images/chars/segat.jpg"), 1.0, 0.3, 1.0},
-        {"Zart", al_load_bitmap("images/chars/zart.jpg"), 1.0, 1.0, 0.5},
-        {"Pivetta", al_load_bitmap("images/chars/pivetta.jpg"), 0.7, 0.3, 0.2},
-        {"Lucas", al_load_bitmap("images/chars/maranhao.jpg"), 0.1, 0.8, 0.3},
-        {"Matheus", al_load_bitmap("images/chars/math.jpg"), 0.3, 0.8, 0.2},
-        {"Izabely", al_load_bitmap("images/chars/iza.jpg"), 0.4, 0.9, 1.0},
-        {"Jacques", al_load_bitmap("images/chars/jacques.jpg"), 0.3, 0.5, 0.6},
-        {"Potter", al_load_bitmap("images/chars/arthur.jpg"), 0.6, 0.5, 0.4},
-        {"Enzo", al_load_bitmap("images/chars/enzo.jpg"), 0.5, 0.5, 0.5},
-        {"Zanetti", al_load_bitmap("images/chars/zanetti.jpg"), 1.0, 1.0, 1.0}
+        {"Mazui", al_load_bitmap("images/chars/mazui.jpg"), 0.5, 0.5, 0.8, "Nem tenta na próxima", "A gente não pode ser bom em tudo mas pode ser ruim em tudo"},
+        {"Artur", al_load_bitmap("images/chars/segat.jpg"), 1.0, 0.3, 1.0, "Tu é muito ruim pia", "Nem tentei ganhar mesmo"},
+        {"Zart", al_load_bitmap("images/chars/zart.jpg"), 1.0, 1.0, 0.5, "Bota ruim tu viu", "Cade meu cigarro"},
+        {"Pivetta", al_load_bitmap("images/chars/pivetta.jpg"), 0.7, 0.3, 0.2, "Truco y ceva", "Quando eu crescer eu tento"},
+        {"Lucas", al_load_bitmap("images/chars/maranhao.jpg"), 0.1, 0.8, 0.3, "Bixo véi ruim", "Oloco mano"},
+        {"Matheus", al_load_bitmap("images/chars/math.jpg"), 0.3, 0.8, 0.2, "", "Affs"},
+        {"Izabely", al_load_bitmap("images/chars/iza.jpg"), 0.4, 0.9, 1.0, "Toma esse rock yo body", "Com essa sorte toda até eu"},
+        {"Jacques", al_load_bitmap("images/chars/jacques.jpg"), 0.3, 0.5, 0.6, "Toma do mini myke tyson", ""},
+        {"Potter", al_load_bitmap("images/chars/arthur.jpg"), 0.6, 0.5, 0.4, "Bixo véi ruim", "Oloco mano"},
+        {"Enzo", al_load_bitmap("images/chars/enzo.jpg"), 0.5, 0.5, 0.5, "It's over pros betinhas", "It's over pros betinhas"},
+        {"Zanetti", al_load_bitmap("images/chars/zanetti.jpg"), 1.0, 1.0, 1.0, "Sem sua IA não consegue né...", "Tu usou CHATGPT"}
     };
     //opponent = op1;
     menu_snapshot = al_create_bitmap(larguraEscolhida, alturaEscolhida); // tirar print da tela (para a transicao)

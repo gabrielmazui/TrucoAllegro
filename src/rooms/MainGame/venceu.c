@@ -11,11 +11,12 @@
 #include "drawnvenceu.h"
 
 void venceuMenu(int vencedor){
-    ALLEGRO_FONT *font = al_load_ttf_font("fonts/retro.ttf",70*scale,0);
-    ALLEGRO_FONT *font2 = al_load_ttf_font("fonts/retro.ttf",45*scale,0);
+    ALLEGRO_FONT *font1 = al_load_ttf_font("fonts/cartoon.ttf",90*scale,0);
+    ALLEGRO_FONT *font2 = al_load_ttf_font("fonts/retro.ttf",30*scale,0);
+    double startTime = al_get_time();
     while(1){
         if(al_event_queue_is_empty(event_queue)){
-            drawnVenceu(font, font2); 
+            drawnVenceu(font1, font2, vencedor, startTime); 
         }
         al_wait_for_event(event_queue, &event);
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){

@@ -44,6 +44,8 @@ typedef struct character{
     double mentira;
     double desconfianca;
     double agressividade;
+    char fraseVitoria[200];
+    char fraseDerrota[200];
 }character; 
 
 extern character opponent;
