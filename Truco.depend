@@ -1302,3 +1302,27 @@
 
 1750643633 c:\users\gabi0\downloads\truco - copia\src\rooms\user\drawn3.h
 
+1752266332 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\maingame.c
+	<stdio.h>
+	<allegro5/allegro5.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	"..\..\..\config\config.h"
+	"..\..\..\config\config.h"
+	"..\..\animations\transition.h"
+	"drawn6.h"
+	"..\opponentChoose\opponentchoose.h"
+	"..\..\paused\paused.h"
+	"..\menu1\menu1.h"
+	"maingame.h"
+	"..\..\extras\newres.h"
+
+1751935326 c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawn6.h
+

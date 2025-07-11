@@ -132,6 +132,7 @@ void chooseCards(int starter){
 }
 
 void endRound(int user){
+    printf("ednRound");
     if(game.opponentPoints >= 30 || game.userPoints >=30){
         backToMenu = 1;
     }
@@ -141,7 +142,14 @@ void endRound(int user){
         return;
     }
     if(al_get_time() - game.round->timeRoundEndVerify >= 2.0){
-        
+        if(game.chamadas->cartasNaMesaVerify == 0){
+            game.chamadas->cartasNaMesaVerify = 1;
+            game.chamadas->cartasNaMesaVerifyTimer = al_get_time();
+            return;
+        }
+        if(al_get_time() - game.chamadas->cartasNaMesaVerifyTimer < 4.0){
+            return;
+        }
         for (int i = 0; i < 3; i++) {
             game.cartas->arrCartasUsr[i].mostrarExtra = 0;
             game.cartas->arrCartasOpp[i].mostrarExtra = 0;
@@ -217,7 +225,7 @@ void endRound(int user){
 }
 
 void verificarTurno(void){
-    
+    printf("verificarTurno");
     if(game.round->cardsPlayed % 2 == 0 && game.chamadas->envidoAux == 0){
         int firstCardPlayer = game.cartas->cartasJogadas[(game.round->cardsPlayed) - 2][0];
         int firstCardIndex = game.cartas->cartasJogadas[(game.round->cardsPlayed) - 2][1];
@@ -276,6 +284,7 @@ void verificarTurno(void){
     }
 }
 void jogarCarta(int user, int cardIndex){
+    printf("jogarCarta");
     int cartasJogadasAux = game.round->cardsPlayed;
     game.round->cardsPlayed += 1;
     game.round->firstBotJogadaVerify = 1;
@@ -403,6 +412,7 @@ void calcularFlor(void){
 }
     
 void verificarEnvidoPontos(void){
+    
     int maxUsr = 0;
     for(int i = 0; i < 3; i++){
         if(game.cartas->arrCartasUsr[i].envido > maxUsr){
@@ -593,6 +603,7 @@ void msgBallon(int mode, int cantou, int type){
 }
 
 void cantarTruco(int user, int trucoType){
+    printf("cantarTruco");
     // 1 truco
     // 2 retruco
     // 3 vale 4
@@ -658,6 +669,7 @@ void cantarTruco(int user, int trucoType){
 }
 
 void aceitarTruco(int user){
+    printf("aceitarTruco");
     game.chamadas->trucoAux = 0;
     if(user == 2){
         msgBallon(1, 0, 1);
@@ -685,7 +697,7 @@ void aceitarTruco(int user){
 }
 
 void negarTruco(int user){
-    printf("negou");
+    printf("negarTruco");
     if(user == 2){
         msgBallon(1, 0, 2);
     }else{
@@ -694,7 +706,6 @@ void negarTruco(int user){
 
     game.round->trucoNegado = user;
 
-    int pontos = game.chamadas->pontosNegarCantada;
 
     game.chamadas->cantado = 0;
     game.chamadas->truco = 0;
@@ -717,13 +728,11 @@ void negarTruco(int user){
 
     game.chamadas->pontosNegarCantada = 0;
     game.chamadas->pontosValendoCantada = 0;
-
-    game.chamadas->resultadoPopUpAux = 1;
-    game.chamadas->resultadoPopUpTimer = al_get_time();
     endRound(user);
 }
 
 void cantarEnvido(int user, int envType){
+    printf("cantarEnvido");
     game.chamadas->trucoButtons = 0;
     if(game.chamadas->flor || game.chamadas->contraFlor || game.chamadas->contraFlorResto || game.chamadas->florFeita) return;
     int opp = (user == 1) ? 2 : 1;
@@ -877,6 +886,7 @@ void cantarEnvido(int user, int envType){
 }
 
 void AceitarEnvido(int user){
+    printf("aceitarEnvido");
     if(user == 2){
         msgBallon(1, 0, 1);
     }else{
@@ -927,7 +937,7 @@ void AceitarEnvido(int user){
 }
 
 void negarEnvido(int user){
-    printf("negou");    
+    printf("negarEnvido");
     if(user == 1){
         game.opponentPoints += game.chamadas->pontosNegarCantada;
         msgBallonsUsr(1, 0, 2);
@@ -956,6 +966,7 @@ void negarEnvido(int user){
 }
 
 void cantarFlor(int user, int tpye){
+    printf("cantarFlor");
     if (game.chamadas->florFeita) return;
     if(user == 1){
         game.chamadas->florButtons = 0;
@@ -1048,6 +1059,7 @@ void cantarFlor(int user, int tpye){
 }
 
 void negarFlor(int user){
+    printf("negarFlor");
     if(game.chamadas->flor){
         if(user == 1){
             msgBallonsUsr(1, 0, 2);
@@ -1083,6 +1095,7 @@ void negarFlor(int user){
 }
 
 void aceitarFlor(int user){
+    printf("aaceitarFlor");
     // colocar os pontos no pontos envido mesmo
     int p1 = 20;
     int p2 = 20;
@@ -1118,7 +1131,7 @@ void aceitarFlor(int user){
 }
 
 int botJogada(void){
-    
+     printf("botjogada");
     if(game.chamadas->respostaBot || game.chamadas->envido != 0 || game.chamadas->envido2 != 0 ||
     game.chamadas->realEnvido != 0 || game.chamadas->faltaEnvido != 0 || game.chamadas->trucoAux != 0) {
     return 0;
@@ -1302,6 +1315,7 @@ int botJogada(void){
 }
 
 void verificarCantadas(void){
+    printf("verificarCantada");
     if(game.chamadas->resultadoPopUp == 1 || game.chamadas->resultadoPopUpAux == 1){
         game.round->firstBotJogadaVerify = 1;
     }
