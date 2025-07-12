@@ -17,7 +17,7 @@ void drawnVenceu(ALLEGRO_FONT *font1, ALLEGRO_FONT *font2, int user, double star
     float centerX = larguraEscolhida / 2.0f;
 
     float texto1_y = 60 * scale;
-    float imagem_y = texto1_y + (200 * scale);
+    float imagem_y = texto1_y + (170 * scale);
     float texto2_y = imagem_y + imageH + 20 * scale;
     float textoBotao_y = alturaEscolhida - 80 * scale;
 
@@ -56,10 +56,10 @@ void drawnVenceu(ALLEGRO_FONT *font1, ALLEGRO_FONT *font2, int user, double star
         sprintf(texto2, "%s", opponent.fraseVitoria);
     }
 
-    ALLEGRO_COLOR corTexto2 = al_map_rgba(255, 255, 255, alpha3); 
+    ALLEGRO_COLOR corTexto2 = al_map_rgba_f(1, 1, 1, alpha3);
     al_draw_text(font2, corTexto2, centerX, texto2_y, ALLEGRO_ALIGN_CENTER, texto2);
 
-    al_draw_text(font2, al_map_rgba(255, 255, 255, alpha4), centerX, textoBotao_y, ALLEGRO_ALIGN_CENTER, "Voltar");
+    al_draw_text(font2, al_map_rgba_f(1, 1, 1, alpha4), centerX, textoBotao_y, ALLEGRO_ALIGN_CENTER, "Voltar");
 
     al_flip_display();
 }

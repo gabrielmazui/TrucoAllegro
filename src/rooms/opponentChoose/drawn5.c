@@ -11,7 +11,7 @@
 #define RADIUS (20 * scale)
 #define GAP_Y (20 * scale)
 
-void desenhar_card(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, ALLEGRO_BITMAP* img, float x, float y, const char* nome, float agressividade, float mentira, float desconfianca) {
+void desenhar_card(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, ALLEGRO_BITMAP* img, float x, float y, const char* nome, float agressividade, float mentira, float desconfianca, int is_selected) {
     float w = CARD_W;
     float h = CARD_H;
     float radius = RADIUS;
@@ -50,11 +50,15 @@ void desenhar_card(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, ALLEGRO_BITMAP* img,
     content_y += 20 * scale;
     al_draw_filled_rectangle(content_x, content_y, content_x + bar_w * desconfianca, content_y + bar_h, al_map_rgb(0, 0, 255));
 
+    if (is_selected){
+        float border_thickness = 3 * scale;
+        al_draw_rounded_rectangle(x, y, x + w, y + h, radius, radius, al_map_rgb(255, 255, 255), border_thickness);
+    }
 }
 
 
 
-void drawn5(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, character vetorPers[]){
+void drawn5(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, character vetorPers[], int selecionado){
     al_draw_tinted_scaled_bitmap(background, al_map_rgb(255, 255, 255), 0, 0, larguraB, alturaB, 0, 0, larguraEscolhida, alturaEscolhida, 0);
 
     float margin_x = 50 * scale;
@@ -63,20 +67,20 @@ void drawn5(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, character vetorPers[]){
     for (int i = 0; i < 4; i++) {
         float x = margin_x;
         float y = margin_x + i * spacing_y;
-        desenhar_card(font, font2, vetorPers[i].pfp, x, y, vetorPers[i].name, vetorPers[i].agressividade, vetorPers[i].mentira, vetorPers[i].desconfianca);
+        desenhar_card(font, font2, vetorPers[i].pfp, x, y, vetorPers[i].name, vetorPers[i].agressividade, vetorPers[i].mentira, vetorPers[i].desconfianca, (selecionado == i) ? 1 : 0);
     }
 
     for (int i = 0; i < 4; i++) {
         float x = larguraEscolhida - CARD_W - margin_x;
         float y = margin_x + i * spacing_y;
-        desenhar_card(font, font2, vetorPers[i+5].pfp, x, y, vetorPers[i+5].name, vetorPers[i+5].agressividade, vetorPers[i+5].mentira, vetorPers[i+5].desconfianca);
+        desenhar_card(font, font2, vetorPers[i+5].pfp, x, y, vetorPers[i+5].name, vetorPers[i+5].agressividade, vetorPers[i+5].mentira, vetorPers[i+5].desconfianca, (selecionado == i+5) ? 1 : 0);
     }
 
     float x_central = (larguraEscolhida - CARD_W) / 2.0f;
     float y_central = alturaEscolhida - CARD_H - 20 * scale;
-    desenhar_card(font, font2, vetorPers[10].pfp, x_central, y_central, vetorPers[10].name, vetorPers[10].agressividade, vetorPers[10].mentira, vetorPers[10].desconfianca);
-    desenhar_card(font, font2, vetorPers[9].pfp, x_central, y_central - CARD_H - 20 * scale, vetorPers[9].name, vetorPers[9].agressividade, vetorPers[9].mentira, vetorPers[9].desconfianca);
-    desenhar_card(font, font2, vetorPers[4].pfp, x_central, y_central - CARD_H - 20 * scale - CARD_H - 20 * scale, vetorPers[4].name, vetorPers[4].agressividade, vetorPers[4].mentira, vetorPers[4].desconfianca);
+    desenhar_card(font, font2, vetorPers[10].pfp, x_central, y_central, vetorPers[10].name, vetorPers[10].agressividade, vetorPers[10].mentira, vetorPers[10].desconfianca, selecionado == 10);
+    desenhar_card(font, font2, vetorPers[9].pfp, x_central, y_central - CARD_H - 20 * scale, vetorPers[9].name, vetorPers[9].agressividade, vetorPers[9].mentira, vetorPers[9].desconfianca, selecionado == 9);
+    desenhar_card(font, font2, vetorPers[4].pfp, x_central, y_central - CARD_H - 20 * scale - CARD_H - 20 * scale, vetorPers[4].name, vetorPers[4].agressividade, vetorPers[4].mentira, vetorPers[4].desconfianca, selecionado == 4);
 
     al_flip_display();
 }

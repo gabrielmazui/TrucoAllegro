@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #include "..\..\..\config\config.h"
 #include "..\..\..\config\config.h"
@@ -134,7 +135,6 @@ void chooseCards(int starter){
 }
 
 void endRound(int user){
-    printf("ednRound");
     
     if(game.round->firstRoundEndVerify){
         game.round->firstRoundEndVerify = 0;
@@ -225,7 +225,6 @@ void endRound(int user){
 }
 
 void verificarTurno(void){
-    printf("verificarTurno");
     if(game.round->cardsPlayed % 2 == 0 && game.chamadas->envidoAux == 0){
         int firstCardPlayer = game.cartas->cartasJogadas[(game.round->cardsPlayed) - 2][0];
         int firstCardIndex = game.cartas->cartasJogadas[(game.round->cardsPlayed) - 2][1];
@@ -284,7 +283,6 @@ void verificarTurno(void){
     }
 }
 void jogarCarta(int user, int cardIndex){
-    printf("jogarCarta");
     int cartasJogadasAux = game.round->cardsPlayed;
     game.round->cardsPlayed += 1;
     game.round->firstBotJogadaVerify = 1;
@@ -330,9 +328,9 @@ void calcularCarta(){
     int rodadaAtual = (game.round->cardsPlayed/2) + 1;
     int cartasNaMesaUsr = 0;
     double forcaMaoUsr = 0.0;
-    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
-    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
-    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
+    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
+    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
     int powerTotalBot = 0;
 
     double auxForcaMaoBot = 0.0;
@@ -372,9 +370,9 @@ void calcularCarta(){
 void definirCalculoPontos(void){
     // envido calculos
     int botPoints = game.cartas->pontosEnvido[1];
-    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
-    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
-    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
+    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
+    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
     double fatorHistorico = game.calculo->fatorHistoricoPontos;
 
     game.calculo->forcaMaoBotPontos = ((double)botPoints/33.0) + (((double)rand()/(double)RAND_MAX) - 0.5)*(0.2);
@@ -392,7 +390,7 @@ void definirCalculoPontos(void){
     game.calculo->valorChamadaPontos = (0.55*forcaMaoBot) + (agressividade*0.25) - (forcaMaoUsr * 0.2) + (faltaEnvidoFator*0.5) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15; 
     game.calculo->inversovalorChamadaPontos = (0.55*forcaMaoBot) - (agressividade*0.3) + (forcaMaoUsr * 0.2) + (mentira*0.6) - (faltaEnvidoFator*0.5) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
     
-    game.calculo->valorRespostaPontos = (0.65*forcaMaoBot) + (agressividade*0.35) - (forcaMaoUsr * 0.2) + (faltaEnvidoFator*0.5) - (desconfianca*0.3) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
+    game.calculo->valorRespostaPontos = (0.65*forcaMaoBot) + (agressividade*0.35) - (forcaMaoUsr * 0.2) + (faltaEnvidoFator*0.5) - (desconfianca*0.25) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
     game.calculo->inversovalorRespostaPontos = (agressividade*0.35) - (forcaMaoUsr * 0.3) - (faltaEnvidoFator*0.5) + (desconfianca*0.4) + (mentira*0.65) + (((double)rand()/(double)RAND_MAX) - 0.5)*0.35;
 }
 
@@ -401,13 +399,13 @@ void calcularFlor(void){
     for(int i = 0; i < 3; i ++){
         botPoints += game.cartas->arrCartasOpp[i].envido;
     }
-    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
-    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
-    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.6;
+    double agressividade = (opponent.agressividade) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
+    double mentira = (opponent.mentira) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
+    double desconfianca = (opponent.desconfianca) + ((double)rand()/(double)RAND_MAX - 0.5)*0.4;
     
     double forcaFlor = ((double)botPoints/38.0)+ (agressividade)*0.2;
     double responderFlor = (forcaFlor)*0.7 + (agressividade)*0.4 - (desconfianca)*0.3 + (((double)rand()/(double)RAND_MAX) - 0.5)*0.15;
-    double responderFlorBlefe = -(forcaFlor - 1)*0.3 + (agressividade)*0.3 - (desconfianca)*0.5 + (mentira)*0.7 + (((double)rand()/(double)RAND_MAX) - 0.5)*0.35;
+    double responderFlorBlefe = -(forcaFlor - 1)*0.3 + (agressividade)*0.3 - (desconfianca)*0.35 + (mentira)*0.7 + (((double)rand()/(double)RAND_MAX) - 0.5)*0.35;
     game.calculo->forcaFlor = forcaFlor;
     game.calculo->responderFlor = responderFlor;
     game.calculo->responderFlorBlefe = responderFlorBlefe;
@@ -547,9 +545,11 @@ void msgBallon(int mode, int cantou, int type){
     char str[80];
     if(cantou == 0){
         if(type == 1){
+            al_play_sample(opponent.cantadas.quero, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             char Straux[80] = "Eu quero";
             memcpy(str, Straux, sizeof(str));
         }else {
+            al_play_sample(opponent.cantadas.naoQuero, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             char Straux[80] = "Não quero";
             memcpy(str, Straux, sizeof(str));
             game.chamadas->msgPopUpAux = 1;
@@ -558,43 +558,54 @@ void msgBallon(int mode, int cantou, int type){
     }else{
         if(mode == 1){
             if(type == 1){
+                al_play_sample(opponent.cantadas.envido, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Envido";
                 memcpy(str, Straux, sizeof(str));
             }else if(type == 2){
+                al_play_sample(opponent.cantadas.envido, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Envido";
                 memcpy(str, Straux, sizeof(str));
             }
             else if(type == 3){
+                al_play_sample(opponent.cantadas.realEnvido, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Real envido";
                 memcpy(str, Straux, sizeof(str));
 
             }else if(type == 4){
+                al_play_sample(opponent.cantadas.faltaEnvido, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Falta envido";
                 memcpy(str, Straux, sizeof(str));
             }
         }else if(mode == 2){
             if(type == 1){
+                al_play_sample(opponent.cantadas.truco, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Truco";
                 memcpy(str, Straux, sizeof(str));
             }else if(type == 2){
+                al_play_sample(opponent.cantadas.retruco, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Retruco";
                 memcpy(str, Straux, sizeof(str));
             }else if(type == 3){
+                al_play_sample(opponent.cantadas.valeQuatro, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "vale 4";
                 memcpy(str, Straux, sizeof(str));
             }
         }else if(mode == 3){
             if(type == 1){
+                al_play_sample(opponent.cantadas.flor, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Flor";
                 memcpy(str, Straux, sizeof(str));
             }else if(type == 2){
+                al_play_sample(opponent.cantadas.contraFlor, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Contra Flor";
                 memcpy(str, Straux, sizeof(str));
             }else if(type == 3){
+                al_play_sample(opponent.cantadas.contraFlorResto, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 char Straux[80] = "Contra e o resto";
                 memcpy(str, Straux, sizeof(str));
             }
         }else if(mode == 4){
+            al_play_sample(opponent.cantadas.mazo, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             game.chamadas->msgPopUpAux = 1;
             game.chamadas->msgPopUpTimer = al_get_time();
             char Straux[80] = "Vou ao baralho";
@@ -605,7 +616,6 @@ void msgBallon(int mode, int cantou, int type){
 }
 
 void cantarTruco(int user, int trucoType){
-    printf("cantarTruco");
     // 1 truco
     // 2 retruco
     // 3 vale 4
@@ -671,7 +681,6 @@ void cantarTruco(int user, int trucoType){
 }
 
 void aceitarTruco(int user){
-    printf("aceitarTruco");
     game.chamadas->trucoAux = 0;
     if(user == 2){
         msgBallon(1, 0, 1);
@@ -699,7 +708,6 @@ void aceitarTruco(int user){
 }
 
 void negarTruco(int user){
-    printf("negarTruco");
     if(user == 2){
         msgBallon(1, 0, 2);
     }else{
@@ -734,7 +742,6 @@ void negarTruco(int user){
 }
 
 void cantarEnvido(int user, int envType){
-    printf("cantarEnvido");
     game.chamadas->trucoButtons = 0;
     if(game.chamadas->flor || game.chamadas->contraFlor || game.chamadas->contraFlorResto || game.chamadas->florFeita) return;
     int opp = (user == 1) ? 2 : 1;
@@ -888,7 +895,6 @@ void cantarEnvido(int user, int envType){
 }
 
 void AceitarEnvido(int user){
-    printf("aceitarEnvido");
     if(user == 2){
         msgBallon(1, 0, 1);
     }else{
@@ -939,7 +945,6 @@ void AceitarEnvido(int user){
 }
 
 void negarEnvido(int user){
-    printf("negarEnvido");
     if(user == 1){
         game.opponentPoints += game.chamadas->pontosNegarCantada;
         msgBallonsUsr(1, 0, 2);
@@ -968,7 +973,6 @@ void negarEnvido(int user){
 }
 
 void cantarFlor(int user, int tpye){
-    printf("cantarFlor");
     if (game.chamadas->florFeita) return;
     if(user == 1){
         game.chamadas->florButtons = 0;
@@ -1061,7 +1065,6 @@ void cantarFlor(int user, int tpye){
 }
 
 void negarFlor(int user){
-    printf("negarFlor");
     if(game.chamadas->flor){
         if(user == 1){
             game.chamadas->msgPopUpOn = 0;
@@ -1103,7 +1106,6 @@ void negarFlor(int user){
 }
 
 void aceitarFlor(int user){
-    printf("aaceitarFlor");
     // colocar os pontos no pontos envido mesmo
     int p1 = 20;
     int p2 = 20;
@@ -1139,7 +1141,6 @@ void aceitarFlor(int user){
 }
 
 int botJogada(void){
-    printf("botjogada");
     if(game.chamadas->respostaBot || game.chamadas->envido != 0 || game.chamadas->envido2 != 0 ||
     game.chamadas->realEnvido != 0 || game.chamadas->faltaEnvido != 0 || game.chamadas->trucoAux != 0) {
     return 0;
@@ -1323,7 +1324,6 @@ int botJogada(void){
 }
 
 void verificarCantadas(void){
-    printf("verificarCantada");
     if(game.chamadas->resultadoPopUp == 1 || game.chamadas->resultadoPopUpAux == 1){
         game.round->firstBotJogadaVerify = 1;
     }
@@ -1567,12 +1567,70 @@ void mainGameLoop(){
     int mouse_x = 0;
     int mouse_y = 0;
     
+        float volumeInicial = menuSound/10.0; 
+        float volumeFinal = menuSound/10.0;   
+
+        
+        
+        double start = al_get_time();
+        float volume = volumeInicial;
+
+        transitionMusic = 1;
+            while (volume > 0.0f) {
+                double elapsed = al_get_time() - start;
+                float t = (float)(elapsed / 1.5); 
+                if (t > 1.0f) t = 1.0f;
+
+                volume = volumeInicial * (1.0f - t); 
+                al_set_audio_stream_gain(menuTheme, volume);
+                al_rest(0.01);
+            }
+
+            al_set_audio_stream_gain(menuTheme, 0.0f);
+            al_set_audio_stream_playing(menuTheme, false);
+            al_destroy_audio_stream(menuTheme);
+            menuTheme = NULL;
+        
+
+        menuTheme = al_load_audio_stream("sounds/menu2.ogg", 4, 2048);
+        
+        al_attach_audio_stream_to_mixer(menuTheme, al_get_default_mixer());
+        al_set_audio_stream_playmode(menuTheme, ALLEGRO_PLAYMODE_LOOP);
+        al_set_audio_stream_playing(menuTheme, true);
+
+       
+        
+            double start2 = al_get_time();
+            float volume2 = 0.0f;
+
+            while (volume2 < volumeFinal) {
+                double elapsed = al_get_time() - start2;
+                float t = (float)(elapsed / 1.5); 
+                if (t > 1.0f) t = 1.0f;
+
+                volume2 = volumeFinal * t; 
+                al_set_audio_stream_gain(menuTheme, volume2);
+                al_rest(0.01);
+            }
+
+            al_set_audio_stream_gain(menuTheme, volumeFinal); 
+        transitionMusic = 0;
+
+    
     while(1)
     {
+        if(transitionMusic == 1){
+            continue;
+        }
         if(al_event_queue_is_empty(event_queue)){
             if(game.opponentPoints >= 30 || game.userPoints >= 30){
-                venceu = 1;
-                break;
+                if(game.opponentPoints >= 30){
+                    perdeu = 1;
+                    break;
+                }else if(game.userPoints >= 30){
+                    venceu = 1;
+                    break;
+                }  
             }
             if(toMenu1 || exitGame || newRes) break;
             if(restartGame && animReady){

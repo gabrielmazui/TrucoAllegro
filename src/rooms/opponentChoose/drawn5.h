@@ -1,6 +1,6 @@
 #ifndef DRAWN5_H
 #define DRAWN5_H
 
-void drawn5(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, character vetorPers[]);
+void drawn5(ALLEGRO_FONT* font, ALLEGRO_FONT* font2, character vetorPers[], int selecionado);
 
 #endif

@@ -992,7 +992,7 @@
 	"..\..\config\config.h"
 	"..\rooms\menu1\menu1.h"
 
-1751837650 source:c:\users\gabi0\downloads\truco - copia\config\config.c
+1752281258 source:c:\users\gabi0\downloads\truco - copia\config\config.c
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
 	<allegro5/allegro_font.h>
@@ -1001,7 +1001,7 @@
 	<string.h>
 	"config.h"
 
-1752271271 c:\users\gabi0\downloads\truco - copia\config\config.h
+1752281583 c:\users\gabi0\downloads\truco - copia\config\config.h
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1220,7 +1220,7 @@
 
 1750643244 c:\users\gabi0\downloads\truco - copia\src\rooms\menu2\drawn2.h
 
-1752242262 source:c:\users\gabi0\downloads\truco - copia\src\rooms\opponentchoose\drawn5.c
+1752285674 source:c:\users\gabi0\downloads\truco - copia\src\rooms\opponentchoose\drawn5.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1229,7 +1229,7 @@
 	<allegro5/allegro_primitives.h>
 	"..\..\..\config\config.h"
 
-1752272135 source:c:\users\gabi0\downloads\truco - copia\src\rooms\opponentchoose\opponentchoose.c
+1752279911 source:c:\users\gabi0\downloads\truco - copia\src\rooms\opponentchoose\opponentchoose.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1302,7 +1302,7 @@
 
 1750643633 c:\users\gabi0\downloads\truco - copia\src\rooms\user\drawn3.h
 
-1752271154 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\maingame.c
+1752283892 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\maingame.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1314,6 +1314,7 @@
 	<string.h>
 	<stdlib.h>
 	<time.h>
+	<math.h>
 	"..\..\..\config\config.h"
 	"..\..\..\config\config.h"
 	"..\..\animations\transition.h"
@@ -1329,7 +1330,7 @@
 
 1752267640 c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\venceu.h
 
-1752268079 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawnvenceu.c
+1752276466 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawnvenceu.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1339,9 +1340,10 @@
 	<allegro5/allegro_audio.h>
 	<allegro5/allegro_acodec.h>
 	<string.h>
+	<math.h>
 	"..\..\..\config\config.h"
 
-1752273715 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\venceu.c
+1752281344 source:c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\venceu.c
 	<stdio.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_ttf.h>
@@ -1353,6 +1355,7 @@
 	<string.h>
 	"..\..\..\config\config.h"
 	"drawnvenceu.h"
+	"..\opponentChoose\opponentchoose.h"
 
 1752273794 c:\users\gabi0\downloads\truco - copia\src\rooms\maingame\drawnvenceu.h
 

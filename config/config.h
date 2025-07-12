@@ -36,7 +36,30 @@ extern ALLEGRO_EVENT event;
 extern int toMenu1;
 extern int exitGame;
 extern int restartGame;
+extern int transitionMusic;
 
+typedef struct Cantadas{
+    ALLEGRO_SAMPLE* quero;
+    ALLEGRO_SAMPLE* naoQuero;
+
+    ALLEGRO_SAMPLE* envido;
+    ALLEGRO_SAMPLE* realEnvido;
+    ALLEGRO_SAMPLE* faltaEnvido;
+
+    ALLEGRO_SAMPLE* truco;
+    ALLEGRO_SAMPLE* retruco;
+    ALLEGRO_SAMPLE* valeQuatro;
+
+    ALLEGRO_SAMPLE* flor;
+    ALLEGRO_SAMPLE* contraFlor;
+    ALLEGRO_SAMPLE* contraFlorResto;
+
+    ALLEGRO_SAMPLE* pontosNaMesa;
+    ALLEGRO_SAMPLE* florNaMesa;
+
+    ALLEGRO_SAMPLE* mazo;
+
+}Cantadas;
 
 typedef struct character{
     char name[USER_MAX+1];
@@ -46,6 +69,7 @@ typedef struct character{
     double agressividade;
     char fraseVitoria[200];
     char fraseDerrota[200];
+    Cantadas cantadas;
 }character; 
 
 extern character opponent;
