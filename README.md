@@ -4,7 +4,7 @@
 ![Allegro](https://img.shields.io/badge/Framework-Allegro-red?style=flat-square)
 ![UFSM](https://img.shields.io/badge/Institution-UFSM-orange?style=flat-square)
 
-## 🎮 Overview
+## Overview
 
 This is a **simple Truco card game** developed in **C** using the **Allegro 5** library, created as a **coursework project for the Algorithms and Programming course at UFSM**.
 The project features:
@@ -18,7 +18,7 @@ The project features:
 
 ---
 
-## 🕹️ Gameplay
+## Gameplay
 
 * Play against AI or other players (local multiplayer if implemented)
 * AI decisions: evaluates probability and randomness to choose moves
@@ -27,7 +27,7 @@ The project features:
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 * **C compiler** (GCC or equivalent)
 * **Allegro 5** installed
@@ -35,7 +35,7 @@ The project features:
 
 ---
 
-## ⚙️ Compilation
+## Compilation
 
 ```sh
 gcc -o TrucoAllegro main.c game/*.c ui/*.c -lallegro -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_font
@@ -45,14 +45,14 @@ gcc -o TrucoAllegro main.c game/*.c ui/*.c -lallegro -lallegro_image -lallegro_a
 
 ---
 
-## 📌 Notes
+## Notes
 
 * The project is intended for learning and experimentation with **Allegro 5**, **C**, and **basic AI logic**
 * AI is simple: it does not cheat, it just calculates probabilities and makes random decisions
 
 ---
 
-## 🌟 Acknowledgements
+## Acknowledgements
 
 * Voices recorded by friends and collaborators
 * Based on the classic Brazilian Truco card game
